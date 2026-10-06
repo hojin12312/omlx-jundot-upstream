@@ -750,8 +750,166 @@ def _self_test(key: tuple):
     return ok
 
 
+# -- routed MoE integration --------------------------------------------------
+#
+# The routed A8 Gate+Up is an opt-in of the *model*, made through the same
+# per-model setting as the dense oQ A8 kernels (``qwen35_oq_a8_enabled``):
+# ``apply_qwen35_oq_a8_patch`` calls ``tag_routed_a8_modules``, which marks the
+# backbone ``SwitchGLU`` modules of that one loaded model. A module without the
+# mark -- every module of a model loaded with the setting off, the MTP draft
+# layer, or anything attached later -- keeps the A16 path.
+
+_TAG = "_omlx_routed_a8_min_tokens"
+
+# Model families whose routed Gate+Up has been measured (speed and NLL) on this
+# path; the check mirrors ``qwen35_moe_gate_up._is_supported_family`` (module
+# path of the model class). Other Qwen MoE families that can enable
+# ``qwen35_oq_a8_enabled`` keep the A16 routed path until they are measured.
+_MEASURED_FAMILIES = ("qwen4_exp",)
+
+# Prefill-sized calls only. Decode and verify windows (at most a few dozen
+# rows) must stay A16, and sequences shorter than this are not measured, so the
+# model's ``qwen35_oq_a8_min_tokens`` can raise but not lower this floor.
+_MIN_TOKENS_FLOOR = 128
+
+
+def _mtp_module_ids(model) -> set[int]:
+    """Ids of every module inside the model's MTP draft head, found the way the
+    MTP integration finds it (the language model's ``mtp`` / ``get_mtp_module``)."""
+    from .mlx_lm_mtp.batch_generator import _mtp_language_model, _mtp_module
+
+    mtp = _mtp_module(_mtp_language_model(model))
+    if mtp is None or not hasattr(mtp, "modules"):
+        return set()
+    return {id(m) for m in mtp.modules()}
+
+
+def _is_measured_family(model) -> bool:
+    module = type(model).__module__ or ""
+    return any(token in module for token in _MEASURED_FAMILIES)
+
+
+def _is_fused_routed_glu(module) -> bool:
+    gate_up = getattr(module, "get", None) and module.get("gate_up_proj")
+    return gate_up is not None and module.get("down_proj") is not None
+
+
+def tag_routed_a8_modules(model, min_tokens: int) -> int:
+    """Opt the backbone routed-expert modules of ``model`` in. Returns how many.
+
+    The MTP draft head is excluded by identity, so the exclusion does not
+    depend on how its modules are named. Never raises: on an error nothing
+    stays tagged and the model keeps the A16 path.
+    """
+    if not enabled() or not _is_measured_family(model):
+        return 0
+    tagged = []
+    try:
+        skip = _mtp_module_ids(model)
+        floor = max(int(min_tokens), _MIN_TOKENS_FLOOR)
+        for _, module in model.named_modules():
+            if id(module) in skip or not _is_fused_routed_glu(module):
+                continue
+            setattr(module, _TAG, floor)
+            tagged.append(module)
+    except Exception:  # noqa: BLE001
+        logger.warning("routed A8 modules not tagged", exc_info=True)
+        for module in tagged:
+            setattr(module, _TAG, None)
+        return 0
+    if tagged:
+        logger.info(
+            "routed A8 gate/up enabled on %d MoE layers (min_tokens=%d)",
+            len(tagged),
+            floor,
+        )
+    return len(tagged)
+
+
+def _eligible(switch_mlp, activation) -> bool:
+    """Plain affine Q4 / GS64 fused Gate+Up with an unclamped SwiGLU, on a
+    module that is not an expert-offload wrapper."""
+    from .m5_gather_qmm import _swiglu_limit
+
+    if not _is_fused_routed_glu(switch_mlp):
+        return False
+    from .moe_expert_offload import OffloadSwitchGLU
+
+    if isinstance(switch_mlp, OffloadSwitchGLU):
+        return False
+    gate_up, down = switch_mlp.get("gate_up_proj"), switch_mlp.get("down_proj")
+    if "bias" in gate_up or "bias" in down:
+        return False
+    # ``None in (...)`` would call ``mx.array.__eq__(None)`` and raise.
+    if any(gate_up.get(k) is None for k in ("weight", "scales", "biases")):
+        return False
+    if (gate_up.bits, gate_up.group_size, gate_up.mode) != (4, _GROUP, "affine"):
+        return False
+    # Unknown or clamped activations are not fused; only silu(gate) * up is.
+    return _swiglu_limit(activation) is None
+
+
+_warned: set[str] = set()
+
+
+def try_routed_a8(switch_mlp, token_rows, idx, seq_len=None):
+    """Entry point of the sorted prefill call sites: the routed rows after the
+    A8 Gate+Up and the A16 Down (``[M, 1, K]``, still sorted), or None to keep
+    the A16 path.
+
+    ``token_rows`` is ``(x_tok, row_map)`` and ``idx`` the sorted expert
+    indices, exactly as ``moe_routes.sort_routes`` returns them. ``seq_len`` is
+    the sequence length of the call (``x.shape[-2]``): the flattened token
+    count is ``batch * seq_len``, so a batched *decode* step of 128 sequences
+    has 128 tokens but a sequence length of 1 and must keep the A16 path.
+    Without it the token count is used.
+
+    Two call sites reach it: ``qwen35_moe_gate_up`` (``SwitchGLU.__call__``,
+    below ``OMLX_QWEN35_MOE_WEIGHTED_SUM_MIN_TOKENS`` = 1024 tokens) and
+    ``qwen35_moe_weighted_sum`` (every larger prefill chunk).
+
+    Never raises: an exception turns the call into the A16 path, with one
+    warning per exception type.
+    """
+    min_tokens = getattr(switch_mlp, _TAG, None)
+    if min_tokens is None:
+        return None
+    try:
+        x_tok, row_map = token_rows
+        tokens = int(x_tok.shape[0])
+        if min(tokens, tokens if seq_len is None else int(seq_len)) < min_tokens:
+            return None
+        if not _eligible(switch_mlp, switch_mlp.activation):
+            return None
+        gate_up = switch_mlp.get("gate_up_proj")
+        h = sorted_gather_qmm_a8(
+            x_tok,
+            gate_up["weight"],
+            gate_up["scales"],
+            gate_up["biases"],
+            idx,
+            row_map,
+            group_size=_GROUP,
+            bits=4,
+            swiglu=True,
+        )
+        if h is None:
+            return None
+        return switch_mlp.down_proj(h, idx, sorted_indices=True)
+    except Exception as exc:  # noqa: BLE001
+        name = type(exc).__name__
+        if name not in _warned:
+            _warned.add(name)
+            logger.warning(
+                "routed A8 gate/up raised %s and fell back to A16", name, exc_info=True
+            )
+        return None
+
+
 __all__ = [
     "enabled",
     "sorted_gather_qmm_a8",
     "supports",
+    "tag_routed_a8_modules",
+    "try_routed_a8",
 ]

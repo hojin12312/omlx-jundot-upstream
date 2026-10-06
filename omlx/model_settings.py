@@ -252,6 +252,9 @@ class ModelSettings:
             tensor operations -- M5-series and newer. On anything older the
             kernels do not load and the setting is refused. Decode is
             unaffected. Changes numerics: activations are quantized to INT8.
+            Also covers the routed-expert gate/up of Qwen3.8-Flash-Next
+            (affine Q4 / GS64 experts); the MTP draft layer and the down
+            projection stay on the A16 path.
             Mutually exclusive with qwen35_ane_prefill_enabled.
         qwen35_oq_a8_min_tokens: Shortest sequence routed to the kernels.
         moe_expert_offload_enabled: Stream MoE expert weights from the
