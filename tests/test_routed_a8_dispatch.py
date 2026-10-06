@@ -401,6 +401,7 @@ def test_the_per_model_a8_setting_tags_the_routed_modules(monkeypatch):
     only place that opts a model in, with the model's own ``min_tokens``."""
     from omlx.patches import qwen35_oq_a8
 
+    monkeypatch.setattr(qwen35_oq_a8, "_kernels_available", lambda: True)
     monkeypatch.setattr(qwen35_oq_a8, "_MLP_PATCHED", True)
     monkeypatch.setattr(qwen35_oq_a8, "_GDN_REGISTERED", True)
     tagged = _switch_glu()
