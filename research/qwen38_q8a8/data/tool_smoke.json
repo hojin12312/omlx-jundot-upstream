@@ -1,0 +1,367 @@
+{
+ "tag": "tools1",
+ "cases": [
+  {
+   "id": "case00",
+   "expect": "read_file",
+   "q0": {
+    "ok": false,
+    "reasons": [
+     "expected tool read_file, got grep"
+    ],
+    "parsed": {
+     "name": "grep",
+     "arguments": {
+      "pattern": "routed.*gate.*up|gate.*up.*routed",
+      "path": "omlx"
+     }
+    },
+    "prompt_tokens": 4895,
+    "a8_calls": 800,
+    "text": null,
+    "seconds": 10.0135657787323
+   },
+   "q1": {
+    "ok": false,
+    "reasons": [
+     "expected tool read_file, got grep"
+    ],
+    "parsed": {
+     "name": "grep",
+     "arguments": {
+      "pattern": "routed.*gate.*up|gate.*up.*routed",
+      "path": "omlx"
+     }
+    },
+    "prompt_tokens": 4895,
+    "a8_calls": 1200,
+    "text": null,
+    "seconds": 6.5343029499053955
+   },
+   "same_call": true
+  },
+  {
+   "id": "case01",
+   "expect": "grep",
+   "q0": {
+    "ok": true,
+    "reasons": [],
+    "parsed": {
+     "name": "grep",
+     "arguments": {
+      "path": "omlx/scheduler",
+      "pattern": "routed"
+     }
+    },
+    "prompt_tokens": 5133,
+    "a8_calls": 0,
+    "text": null,
+    "seconds": 7.970160007476807
+   },
+   "q1": {
+    "ok": true,
+    "reasons": [],
+    "parsed": {
+     "name": "grep",
+     "arguments": {
+      "path": "omlx/scheduler",
+      "pattern": "routed"
+     }
+    },
+    "prompt_tokens": 5133,
+    "a8_calls": 1200,
+    "text": null,
+    "seconds": 6.567087173461914
+   },
+   "same_call": true
+  },
+  {
+   "id": "case02",
+   "expect": "run_tests",
+   "q0": {
+    "ok": true,
+    "reasons": [],
+    "parsed": {
+     "name": "run_tests",
+     "arguments": {
+      "target": "tests/test_m5_gather_qmm_a8.py",
+      "verbose": true
+     }
+    },
+    "prompt_tokens": 8990,
+    "a8_calls": 0,
+    "text": null,
+    "seconds": 14.499889135360718
+   },
+   "q1": {
+    "ok": true,
+    "reasons": [],
+    "parsed": {
+     "name": "run_tests",
+     "arguments": {
+      "target": "tests/test_m5_gather_qmm_a8.py",
+      "verbose": true
+     }
+    },
+    "prompt_tokens": 8990,
+    "a8_calls": 2000,
+    "text": null,
+    "seconds": 10.804044961929321
+   },
+   "same_call": true
+  },
+  {
+   "id": "case03",
+   "expect": "get_weather",
+   "q0": {
+    "ok": true,
+    "reasons": [],
+    "parsed": {
+     "name": "get_weather",
+     "arguments": {
+      "city": "Busan",
+      "unit": "c"
+     }
+    },
+    "prompt_tokens": 4677,
+    "a8_calls": 0,
+    "text": null,
+    "seconds": 8.296108961105347
+   },
+   "q1": {
+    "ok": true,
+    "reasons": [],
+    "parsed": {
+     "name": "get_weather",
+     "arguments": {
+      "city": "Busan",
+      "unit": "c"
+     }
+    },
+    "prompt_tokens": 4677,
+    "a8_calls": 1200,
+    "text": null,
+    "seconds": 6.4697816371917725
+   },
+   "same_call": true
+  },
+  {
+   "id": "case04",
+   "expect": "create_event",
+   "q0": {
+    "ok": true,
+    "reasons": [],
+    "parsed": {
+     "name": "create_event",
+     "arguments": {
+      "title": "Design Review",
+      "start": "2026-11-03T14:00",
+      "duration_min": 45
+     }
+    },
+    "prompt_tokens": 7201,
+    "a8_calls": 0,
+    "text": null,
+    "seconds": 13.142258167266846
+   },
+   "q1": {
+    "ok": true,
+    "reasons": [],
+    "parsed": {
+     "name": "create_event",
+     "arguments": {
+      "title": "Design Review",
+      "start": "2026-11-03T14:00",
+      "duration_min": 45
+     }
+    },
+    "prompt_tokens": 7201,
+    "a8_calls": 1600,
+    "text": null,
+    "seconds": 10.475577116012573
+   },
+   "same_call": true
+  },
+  {
+   "id": "case05",
+   "expect": "read_file",
+   "q0": {
+    "ok": false,
+    "reasons": [
+     "expected tool read_file, got grep"
+    ],
+    "parsed": {
+     "name": "grep",
+     "arguments": {
+      "pattern": "routed.*gate.*up|gate.*up.*routed",
+      "path": "omlx"
+     }
+    },
+    "prompt_tokens": 10030,
+    "a8_calls": 0,
+    "text": null,
+    "seconds": 16.541181802749634
+   },
+   "q1": {
+    "ok": false,
+    "reasons": [
+     "expected tool read_file, got grep"
+    ],
+    "parsed": {
+     "name": "grep",
+     "arguments": {
+      "pattern": "routed.*gate.*up|gate.*up.*routed",
+      "path": "omlx"
+     }
+    },
+    "prompt_tokens": 10030,
+    "a8_calls": 2000,
+    "text": null,
+    "seconds": 12.601683139801025
+   },
+   "same_call": true
+  },
+  {
+   "id": "case06",
+   "expect": "grep",
+   "q0": {
+    "ok": true,
+    "reasons": [],
+    "parsed": {
+     "name": "grep",
+     "arguments": {
+      "path": "omlx/scheduler",
+      "pattern": "routed"
+     }
+    },
+    "prompt_tokens": 6064,
+    "a8_calls": 0,
+    "text": null,
+    "seconds": 10.49669599533081
+   },
+   "q1": {
+    "ok": true,
+    "reasons": [],
+    "parsed": {
+     "name": "grep",
+     "arguments": {
+      "path": "omlx/scheduler",
+      "pattern": "routed"
+     }
+    },
+    "prompt_tokens": 6064,
+    "a8_calls": 1200,
+    "text": null,
+    "seconds": 8.04763913154602
+   },
+   "same_call": true
+  },
+  {
+   "id": "case07",
+   "expect": "run_tests",
+   "q0": {
+    "ok": true,
+    "reasons": [],
+    "parsed": {
+     "name": "run_tests",
+     "arguments": {
+      "target": "tests/test_m5_gather_qmm_a8.py",
+      "verbose": true
+     }
+    },
+    "prompt_tokens": 6171,
+    "a8_calls": 0,
+    "text": null,
+    "seconds": 10.989991903305054
+   },
+   "q1": {
+    "ok": true,
+    "reasons": [],
+    "parsed": {
+     "name": "run_tests",
+     "arguments": {
+      "target": "tests/test_m5_gather_qmm_a8.py",
+      "verbose": true
+     }
+    },
+    "prompt_tokens": 6171,
+    "a8_calls": 1200,
+    "text": null,
+    "seconds": 8.557193994522095
+   },
+   "same_call": true
+  },
+  {
+   "id": "case08",
+   "expect": "get_weather",
+   "q0": {
+    "ok": true,
+    "reasons": [],
+    "parsed": {
+     "name": "get_weather",
+     "arguments": {
+      "city": "Busan",
+      "unit": "c"
+     }
+    },
+    "prompt_tokens": 9139,
+    "a8_calls": 0,
+    "text": null,
+    "seconds": 14.705029010772705
+   },
+   "q1": {
+    "ok": true,
+    "reasons": [],
+    "parsed": {
+     "name": "get_weather",
+     "arguments": {
+      "city": "Busan",
+      "unit": "c"
+     }
+    },
+    "prompt_tokens": 9139,
+    "a8_calls": 2000,
+    "text": null,
+    "seconds": 10.995173215866089
+   },
+   "same_call": true
+  },
+  {
+   "id": "case09",
+   "expect": "create_event",
+   "q0": {
+    "ok": true,
+    "reasons": [],
+    "parsed": {
+     "name": "create_event",
+     "arguments": {
+      "title": "Design Review",
+      "start": "2026-11-03T14:00",
+      "duration_min": 45
+     }
+    },
+    "prompt_tokens": 4778,
+    "a8_calls": 0,
+    "text": null,
+    "seconds": 9.944391965866089
+   },
+   "q1": {
+    "ok": true,
+    "reasons": [],
+    "parsed": {
+     "name": "create_event",
+     "arguments": {
+      "title": "Design review",
+      "start": "2026-11-03T14:00",
+      "duration_min": 45
+     }
+    },
+    "prompt_tokens": 4778,
+    "a8_calls": 1200,
+    "text": null,
+    "seconds": 8.057471990585327
+   },
+   "same_call": false
+  }
+ ]
+}

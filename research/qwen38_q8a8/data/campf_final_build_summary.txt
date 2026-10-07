@@ -1,0 +1,12 @@
+L=1024  complete tuples 4
+   off   median pp/s 846.2  ttft 1.209
+   on    median pp/s 1104.6  ttft 0.927
+   on/off paired: mean +30.73% median +30.62% min +30.12% max +31.55%  faster 4/4
+L=4096  complete tuples 4
+   off   median pp/s 943.4  ttft 4.340
+   on    median pp/s 1244.8  ttft 3.290
+   on/off paired: mean +31.91% median +31.95% min +29.85% max +33.89%  faster 4/4
+L=16384  complete tuples 4
+   off   median pp/s 687.6  ttft 23.823
+   on    median pp/s 956.2  ttft 17.130
+   on/off paired: mean +38.83% median +38.59% min +38.05% max +40.08%  faster 4/4

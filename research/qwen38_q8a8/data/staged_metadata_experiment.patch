@@ -1,0 +1,279 @@
+diff --git a/omlx/custom_kernels/qwen35_prefill/csrc/bindings.cpp b/omlx/custom_kernels/qwen35_prefill/csrc/bindings.cpp
+index 8bc26ae9..9ea05af0 100644
+--- a/omlx/custom_kernels/qwen35_prefill/csrc/bindings.cpp
++++ b/omlx/custom_kernels/qwen35_prefill/csrc/bindings.cpp
+@@ -473,6 +473,7 @@ NB_MODULE(_ext, m) {
+       "act_mode"_a = 0,
+       "variant"_a = 800,
+       "packed"_a = false,
++      "staged"_a = false,
+       "stream"_a = nb::none());
+   m.def(
+       "qwen35_oq_a8_decode_weights",
+diff --git a/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_oq_a8.cpp b/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_oq_a8.cpp
+index 175c6197..5a0dde8c 100644
+--- a/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_oq_a8.cpp
++++ b/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_oq_a8.cpp
+@@ -215,12 +215,14 @@ class Qwen35OqA8QmmTPrimitive : public Primitive {
+       int bits,
+       int act_mode,
+       int variant,
+-      bool packed)
++      bool packed,
++      bool staged)
+       : Primitive(stream),
+         bits_(bits),
+         act_mode_(act_mode),
+         variant_(variant),
+-        packed_(packed) {
++        packed_(packed),
++        staged_(staged) {
+     if (!oq_a8_bits_supported(bits_)) {
+       std::ostringstream msg;
+       msg << "Unsupported oQ A8 bits " << bits_ << " (expected 4, 5 or 8).";
+@@ -263,7 +265,8 @@ class Qwen35OqA8QmmTPrimitive : public Primitive {
+     std::string kname;
+     if (bits_ == 8) {
+       concatenate(kname, "oq_q8_a8_qmm_t_nax_am", act_mode_, "_",
+-                  oq_type_name(out.dtype()), "_wm_", cfg.wm, "_wn_", cfg.wn);
++                  oq_type_name(out.dtype()), "_wm_", cfg.wm, "_wn_", cfg.wn,
++                  staged_ ? "_stg" : "");
+     } else {
+       concatenate(kname, "oq_a8_qmm_t_nax_v8_q", bits_, "_am", act_mode_,
+                   "_", oq_type_name(out.dtype()), "_wm_", cfg.wm, "_wn_",
+@@ -302,10 +305,11 @@ class Qwen35OqA8QmmTPrimitive : public Primitive {
+   bool is_equivalent(const Primitive& other) const override {
+     const auto& rhs = static_cast<const Qwen35OqA8QmmTPrimitive&>(other);
+     return bits_ == rhs.bits_ && act_mode_ == rhs.act_mode_ &&
+-        variant_ == rhs.variant_ && packed_ == rhs.packed_;
++        variant_ == rhs.variant_ && packed_ == rhs.packed_ &&
++        staged_ == rhs.staged_;
+   }
+   auto state() const {
+-    return std::make_tuple(bits_, act_mode_, variant_, packed_);
++    return std::make_tuple(bits_, act_mode_, variant_, packed_, staged_);
+   }
+ 
+  private:
+@@ -313,6 +317,7 @@ class Qwen35OqA8QmmTPrimitive : public Primitive {
+   int act_mode_;
+   int variant_;
+   bool packed_;
++  bool staged_;
+ };
+ 
+ // ---------------------------------------------------------------------------
+@@ -448,6 +453,7 @@ array qwen35_oq_a8_qmm_t(
+     int act_mode,
+     int variant,
+     bool packed,
++    bool staged,
+     StreamOrDevice s) {
+   if (!oq_a8_bits_supported(bits)) {
+     std::ostringstream msg;
+@@ -455,6 +461,11 @@ array qwen35_oq_a8_qmm_t(
+         << " unsupported (expected 4, 5 or 8).";
+     throw std::invalid_argument(msg.str());
+   }
++  if (staged && (bits != 8 || (qa.shape(-1) / kGroupSize) % 4 != 0)) {
++    throw std::invalid_argument(
++        "[omlx_qwen35_prefill.qwen35_oq_a8_qmm_t] staged metadata needs Q8 and "
++        "K % 256 == 0.");
++  }
+   if (bits == 8 && packed) {
+     throw std::invalid_argument(
+         "[omlx_qwen35_prefill.qwen35_oq_a8_qmm_t] Q8 has no packed layout.");
+@@ -532,7 +543,8 @@ array qwen35_oq_a8_qmm_t(
+   const size_t sc_size = static_cast<size_t>(N) * static_cast<size_t>(groups);
+   const bool sc_ok = packed
+       ? scales.size() == sc_size && biases.size() == sc_size
+-      : scales.shape(0) == groups && scales.shape(1) == N &&
++      : (staged ? scales.shape(0) == N && scales.shape(1) == groups
++                : scales.shape(0) == groups && scales.shape(1) == N) &&
+           biases.shape() == scales.shape();
+   if (!sc_ok) {
+     std::ostringstream msg;
+@@ -581,7 +593,7 @@ array qwen35_oq_a8_qmm_t(
+       std::move(out_shape),
+       out_dtype,
+       std::make_shared<Qwen35OqA8QmmTPrimitive>(
+-          stream, bits, act_mode, variant, packed),
++          stream, bits, act_mode, variant, packed, staged),
+       {qa, sa, ra, weight, scales, biases});
+ }
+ 
+diff --git a/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_oq_q8_a8_nax.metal b/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_oq_q8_a8_nax.metal
+index fa036bc2..8e9308ba 100644
+--- a/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_oq_q8_a8_nax.metal
++++ b/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_oq_q8_a8_nax.metal
+@@ -42,7 +42,7 @@ constant constexpr int kDestElems = 2 * kElemsPerFrag;
+ constant constexpr int kStepsPerGroup = kGroupSize / kFragK; // 4
+ constant constexpr uint32_t kCenter = 0x80808080u;
+ 
+-template <typename T, int ACT_MODE, int WM, int WN>
++template <typename T, int ACT_MODE, int WM, int WN, bool STAGED>
+ [[kernel]] void oq_q8_a8_qmm_t_nax(
+     const device int8_t* qa [[buffer(0)]],
+     const device float* sa [[buffer(1)]],
+@@ -55,7 +55,8 @@ template <typename T, int ACT_MODE, int WM, int WN>
+     const constant int& N [[buffer(8)]],
+     const constant int& M [[buffer(9)]],
+     uint3 tid [[threadgroup_position_in_grid]],
+-    uint simd_gid [[simdgroup_index_in_threadgroup]]) {
++    uint simd_gid [[simdgroup_index_in_threadgroup]],
++    uint lin [[thread_index_in_threadgroup]]) {
+   constexpr int TM = 2;
+   constexpr int BM = TM * kFragM * WM;
+   constexpr int BN = kFragN * WN;
+@@ -121,10 +122,30 @@ template <typename T, int ACT_MODE, int WM, int WN>
+   const int w_stride16 = kFragM * w_row;
+ 
+   const int m0_base = row_base + int(coord.y);
++
++  // STAGED reads scales/biases in the checkpoint layout [N, K/64]: four groups of
++  // one column are 8 contiguous bytes, so the threadgroup loads them once per four
++  // groups into a double buffer and every lane reads its columns from there.
++  threadgroup T ts[2][BN * 4];
++  threadgroup T tb[2][BN * 4];
++  const int tg_col0 = int(tid.x) * BN;
++  const int lane_col = sg_n * kFragN + int(coord.x);
++
+   // Which 16-code run of the affine group this lane owns: 0..3.
+   const int cx = int(coord.x) >> 2;
+ 
+   for (int g = 0; g < groups; ++g) {
++    if (STAGED && (g & 3) == 0) {
++      const int buf = (g >> 2) & 1;
++      if (int(lin) < BN) {
++        const size_t i = size_t(tg_col0 + int(lin)) * size_t(groups) + size_t(g);
++        *reinterpret_cast<threadgroup vec<T, 4>*>(&ts[buf][int(lin) * 4]) =
++            *reinterpret_cast<const device vec<T, 4>*>(scales + i);
++        *reinterpret_cast<threadgroup vec<T, 4>*>(&tb[buf][int(lin) * 4]) =
++            *reinterpret_cast<const device vec<T, 4>*>(biases + i);
++      }
++      threadgroup_barrier(mem_flags::mem_threadgroup);
++    }
+     // The lane's 16 codes of one group are four words, so one aligned vector
+     // load per operand row: group bases are 64-byte aligned.
+     uint4 wg[4];
+@@ -187,8 +208,18 @@ template <typename T, int ACT_MODE, int WM, int WN>
+     STEEL_PRAGMA_UNROLL
+     for (int h = 0; h < 2; ++h) {
+       const int n0 = n_run0 + h * kFragM;
+-      sv[h] = *reinterpret_cast<const device vec<T, 4>*>(srow + n0);
+-      bv[h] = *reinterpret_cast<const device vec<T, 4>*>(brow + n0);
++      if (STAGED) {
++        const int buf = (g >> 2) & 1;
++        STEEL_PRAGMA_UNROLL
++        for (int c = 0; c < 4; ++c) {
++          const int slot = (lane_col + h * kFragM + c) * 4 + (g & 3);
++          sv[h][c] = ts[buf][slot];
++          bv[h][c] = tb[buf][slot];
++        }
++      } else {
++        sv[h] = *reinterpret_cast<const device vec<T, 4>*>(srow + n0);
++        bv[h] = *reinterpret_cast<const device vec<T, 4>*>(brow + n0);
++      }
+     }
+ 
+     float r_g[TM][2];
+@@ -262,29 +293,34 @@ template <typename T, int ACT_MODE, int WM, int WN>
+   }
+ }
+ 
+-#define instantiate_oq_q8_a8_qmm_t_nax(act_mode, type, wm, wn)                 \
++#define instantiate_oq_q8_a8_qmm_t_nax(act_mode, type, wm, wn, stg, sfx)       \
+   instantiate_kernel(                                                         \
+-      "oq_q8_a8_qmm_t_nax_am" #act_mode "_" #type "_wm_" #wm "_wn_" #wn,      \
++      "oq_q8_a8_qmm_t_nax_am" #act_mode "_" #type "_wm_" #wm "_wn_" #wn sfx,  \
+       oq_q8_a8_qmm_t_nax,                                                     \
+       type,                                                                   \
+       act_mode,                                                               \
+       wm,                                                                     \
+-      wn)
++      wn,                                                                     \
++      stg)
+ 
+ // Tile variants index the same table as oq_a8_nax_variant() in
+ // qwen35_oq_a8.cpp, from the 800 base.
+-#define instantiate_oq_q8_a8_qmm_t_nax_tiles(act_mode, type)                   \
+-  instantiate_oq_q8_a8_qmm_t_nax(act_mode, type, 2, 2);                        \
+-  instantiate_oq_q8_a8_qmm_t_nax(act_mode, type, 4, 2);                        \
+-  instantiate_oq_q8_a8_qmm_t_nax(act_mode, type, 2, 4);                        \
+-  instantiate_oq_q8_a8_qmm_t_nax(act_mode, type, 4, 4);                        \
+-  instantiate_oq_q8_a8_qmm_t_nax(act_mode, type, 1, 4);                        \
+-  instantiate_oq_q8_a8_qmm_t_nax(act_mode, type, 8, 2);                        \
+-  instantiate_oq_q8_a8_qmm_t_nax(act_mode, type, 1, 2)
++#define instantiate_oq_q8_a8_qmm_t_nax_tiles(act_mode, type, stg, sfx)         \
++  instantiate_oq_q8_a8_qmm_t_nax(act_mode, type, 2, 2, stg, sfx);                        \
++  instantiate_oq_q8_a8_qmm_t_nax(act_mode, type, 4, 2, stg, sfx);                        \
++  instantiate_oq_q8_a8_qmm_t_nax(act_mode, type, 2, 4, stg, sfx);                        \
++  instantiate_oq_q8_a8_qmm_t_nax(act_mode, type, 4, 4, stg, sfx);                        \
++  instantiate_oq_q8_a8_qmm_t_nax(act_mode, type, 1, 4, stg, sfx);                        \
++  instantiate_oq_q8_a8_qmm_t_nax(act_mode, type, 8, 2, stg, sfx);                        \
++  instantiate_oq_q8_a8_qmm_t_nax(act_mode, type, 1, 2, stg, sfx)
+ 
+-instantiate_oq_q8_a8_qmm_t_nax_tiles(0, float16_t);
+-instantiate_oq_q8_a8_qmm_t_nax_tiles(0, bfloat16_t);
+-instantiate_oq_q8_a8_qmm_t_nax_tiles(1, float16_t);
+-instantiate_oq_q8_a8_qmm_t_nax_tiles(1, bfloat16_t);
++instantiate_oq_q8_a8_qmm_t_nax_tiles(0, float16_t, false, "");
++instantiate_oq_q8_a8_qmm_t_nax_tiles(0, float16_t, true, "_stg");
++instantiate_oq_q8_a8_qmm_t_nax_tiles(0, bfloat16_t, false, "");
++instantiate_oq_q8_a8_qmm_t_nax_tiles(0, bfloat16_t, true, "_stg");
++instantiate_oq_q8_a8_qmm_t_nax_tiles(1, float16_t, false, "");
++instantiate_oq_q8_a8_qmm_t_nax_tiles(1, float16_t, true, "_stg");
++instantiate_oq_q8_a8_qmm_t_nax_tiles(1, bfloat16_t, false, "");
++instantiate_oq_q8_a8_qmm_t_nax_tiles(1, bfloat16_t, true, "_stg");
+ 
+ #endif // __has_include(<MetalPerformancePrimitives/MetalPerformancePrimitives.h>)
+diff --git a/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_prefill.h b/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_prefill.h
+index 806687fb..5a184024 100644
+--- a/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_prefill.h
++++ b/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_prefill.h
+@@ -127,6 +127,7 @@ mx::array qwen35_oq_a8_qmm_t(
+     int act_mode = 0,
+     int variant = 800,
+     bool packed = false,
++    bool staged = false,
+     mx::StreamOrDevice s = {});
+ 
+ // Test helper: unpack Q4/Q5 codes to INT8 [N, group_count * 64]. Production
+diff --git a/omlx/custom_kernels/qwen35_prefill/fast.py b/omlx/custom_kernels/qwen35_prefill/fast.py
+index d5e80cef..17b017f9 100644
+--- a/omlx/custom_kernels/qwen35_prefill/fast.py
++++ b/omlx/custom_kernels/qwen35_prefill/fast.py
+@@ -1214,7 +1214,7 @@ def qwen35_moe_weighted_sum(
+     raise RuntimeError("qwen35_moe_weighted_sum native kernel is unavailable")
+ 
+ 
+-# --- oQ mixed-bit QxA8 (Q4/Q5, GS64, affine) on the M5 tensor units ---------
++# --- oQ mixed-bit QxA8 (Q4/Q5/Q8, GS64, affine) on the M5 tensor units ------
+ 
+ OQ_A8_VARIANT = int(os.environ.get("OMLX_OQ_A8_VARIANT", "0"))
+ OQ_A8_ACT_MODE = int(os.environ.get("OMLX_OQ_A8_ACT_MODE", "0"))
+@@ -1267,6 +1267,7 @@ def qwen35_oq_a8_qmm_t(
+     variant: int = 800,
+     *,
+     packed: bool = False,
++    staged: bool = False,
+     stream=None,
+ ) -> mx.array:
+     if _ext is None or not hasattr(_ext, "qwen35_oq_a8_qmm_t"):
+@@ -1282,6 +1283,7 @@ def qwen35_oq_a8_qmm_t(
+         act_mode,
+         variant,
+         packed=packed,
++        staged=staged,
+         **_native_stream_kwargs(stream),
+     )
+ 
+@@ -1372,7 +1374,7 @@ def qwen35_oq_a8_decode_weights(
+     *,
+     stream=None,
+ ) -> mx.array:
+-    """Unpack Q4/Q5 codes to INT8.
++    """Unpack Q4/Q5/Q8 codes to INT8 (Q8 centered to q - 128).
+ 
+     Test helper only: the production path never materializes unpacked weights
+     in device memory.

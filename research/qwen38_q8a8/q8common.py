@@ -25,15 +25,16 @@ def dequant64(weight, scales, biases, gs=64):
     return s * q + b
 
 def stage_a(x, act_mode, layout=1):
-    if layout == 1:
+    if layout in (1, 2):
         return fast.qwen35_oq_a8_stage_a_natural(x, act_mode)
     return fast.qwen35_oq_a8_stage_a_v8(x, act_mode)
 
 def q8a8(x, weight, st_scales, st_biases, act_mode=0, variant=800, layout=1, stage=None):
+    staged = layout == 2
     """x [M,K]; weight packed [N,K/4]; scales/biases group-major [G,N] contiguous."""
     qa, sa, ra = stage if stage is not None else stage_a(x, act_mode, layout)
     return fast.qwen35_oq_a8_qmm_t(qa, sa, ra, weight, st_scales, st_biases, 8,
-                                   act_mode, variant)
+                                   act_mode, variant, **({"staged": True} if staged else {}))
 
 def group_major(scales, biases):
     return mx.contiguous(scales.T), mx.contiguous(biases.T)

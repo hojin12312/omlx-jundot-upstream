@@ -33,7 +33,7 @@ PAGE = 16384
 GiB = 1024 ** 3
 HARNESS = ("quality_down.py", "capture_real.py", "memory_down.py", "measure_down_alt.py", "omlx-server",
            "microbench_down.py", "oracle_down.py", "probe_meta_ceiling.py", "quality_prod.py", "memory_prod.py",
-           "measure_prod.py", "measure_q8.py", "quality_q8.py", "memory_q8.py", "smoke_tools.py", "omlx.cli")
+           "measure_prod.py", "measure_q8.py", "quality_q8.py", "memory_q8.py", "smoke_tools_q8.py", "smoke_tools.py", "omlx.cli")
 
 
 def vm():

@@ -1,0 +1,8 @@
+L=65536  complete tuples 3
+   off   median pp/s 615.0  ttft 106.532
+   on    median pp/s 811.8  ttft 80.702
+   on/off paired: mean +32.16% median +31.87% min +31.69% max +32.91%  faster 3/3
+L=131072  complete tuples 3
+   off   median pp/s 480.1  ttft 272.952
+   on    median pp/s 599.4  ttft 218.627
+   on/off paired: mean +23.99% median +23.72% min +23.40% max +24.85%  faster 3/3
