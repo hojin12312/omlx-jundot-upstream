@@ -1,8 +1,9 @@
-Cleanup round 2, 2026-10-08. Candidate 5f3c536817fde75b1a0e6105c390a49d450d69c9 on upstream 25aebb3ee0bb052a264241953bef6820f102dd0b.
+Cleanup round 2, 2026-10-08. Candidate 675468e930af373b3706a924281b13813b05ad5c on upstream 25aebb3ee0bb052a264241953bef6820f102dd0b.
 Change since b1018b7b: test names and docstrings, one comment in omlx/patches/qwen35_oq_a8.py, and a spelling fix in the commit 2 message, and an SPDX header on the new Q8 kernel file; no test removed or added, no other code change.
 Delta 1affe985 -> candidate under omlx/: Q8-specific env knobs removed (defaults resolve to variant 806, GS64 act mode, natural layout),
-  MTP tagging helper folded into one traversal, comments, one ndim check moved into _q8_backend_candidate; kernel sources unchanged.
-Targeted tests (oq_a8, q4_mlp, m5_gather_qmm_a8, nax; native extension built): 270 passed.
-CI-equivalent (same recipe as ci_equivalent_summary.txt, candidate only): 17144 passed, 703 skipped, 0 failed (1:56).
-  Against the 25aebb3e baseline run: no status change on common node ids; 40 candidate-only ids (4 passed, 36 skipped), 6 baseline-only ids.
+  MTP tagging helper folded into one traversal, comments, one ndim check moved into _q8_backend_candidate; kernel sources unchanged apart from the SPDX header.
+Targeted tests (oq_a8, q4_mlp, m5_gather_qmm_a8, nax; native extension built): 270 passed (final SHA).
+CI-equivalent (same recipe as ci_equivalent_summary.txt, candidate only, run on the final SHA): 17147 passed, 700 skipped, 0 failed (1:49).
+  Against the 25aebb3e baseline run: 40 candidate-only ids (4 passed, 36 skipped), 6 baseline-only ids, and 3 status changes that are
+  tests/test_sse_keepalive.py skipping or passing by xdist order (an earlier run on b4e0346e gave 17144 passed / 703 skipped with those three skipped).
 No performance, quality, memory or full-model inference measurement was repeated in this round.

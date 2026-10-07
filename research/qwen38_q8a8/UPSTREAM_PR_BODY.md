@@ -87,12 +87,12 @@ This is a speed/memory tradeoff and is intentionally left as is. Reading the che
 
 ## Validation
 
-Candidate `5f3c536817fde75b1a0e6105c390a49d450d69c9` on upstream `25aebb3ee0bb052a264241953bef6820f102dd0b`. Performance, quality and memory measurements were taken on `1affe985` (based on `2238a444`); the candidate differs by the rebase and non-functional cleanup, and the Q8 kernel (apart from a license header) and the Q4/Q5 sources are identical. One tool-smoke case was re-run on the cleanup candidate.
+Candidate `675468e930af373b3706a924281b13813b05ad5c` on upstream `25aebb3ee0bb052a264241953bef6820f102dd0b`. Performance, quality and memory measurements were taken on `1affe985` (based on `2238a444`); the candidate differs by the rebase and non-functional cleanup, and the Q8 kernel (apart from a license header) and the Q4/Q5 sources are identical. One tool-smoke case was re-run on the cleanup candidate.
 
 | Check | Result |
 |---|---|
 | Targeted tests (`test_qwen35_oq_a8.py`, `test_qwen35_q4_mlp.py`, `test_m5_gather_qmm_a8.py`, native extension built) | 270 passed |
-| CI command in a fresh Python 3.11 environment, no native extension | 17144 passed, 703 skipped, 0 failed; `main` in the same environment: 17144 passed, 669 skipped, 0 failed. The extra skips are native-kernel tests of this PR, which skip cleanly without the extension |
+| CI command in a fresh Python 3.11 environment, no native extension | 17147 passed, 700 skipped, 0 failed; `main` in the same environment: 17144 passed, 669 skipped, 0 failed. The extra skips are native-kernel tests of this PR, which skip cleanly without the extension; three `test_sse_keepalive` tests skip or pass depending on xdist order |
 | Q4/Q5 A8 outputs on fixed inputs, main vs candidate build | 216 arrays bit-identical; Q4/Q5 kernel sources unchanged |
 | `ruff check` on changed files | no new findings; the N8xx/SIM findings are the same on `main` |
 | `black --check --diff` on changed files | no new findings; the remaining diffs in `fast.py` and `test_qwen35_q4_mlp.py` are identical on `main` |
@@ -123,6 +123,4 @@ The driver uses its own isolated server configuration and in-process condition s
 
 - [ ] I read [CONTRIBUTING.md](https://github.com/jundot/omlx/blob/main/docs/CONTRIBUTING.md).
 - [ ] I understand every change in this PR and can explain it in review.
-- [x] No UI changes in this PR.
-
-AI-assisted contribution.
+- [ ] For UI or UX changes, I attached before and after screenshots.
