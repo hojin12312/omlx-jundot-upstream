@@ -87,12 +87,12 @@ This is a speed/memory tradeoff and is intentionally left as is. Reading the che
 
 ## Validation
 
-Candidate `b1018b7b308ab1aa9c625f7f70fc9d01d26b02ba` on upstream `25aebb3ee0bb052a264241953bef6820f102dd0b`. Performance, quality, memory and tool-smoke measurements were taken on `1affe985` (based on `2238a444`); the candidate differs by the rebase and non-functional cleanup, and the kernel sources are identical.
+Candidate `b4e0346ea0d8691acc5a86b80849ef645e4d5644` on upstream `25aebb3ee0bb052a264241953bef6820f102dd0b`. Performance, quality and memory measurements were taken on `1affe985` (based on `2238a444`); the candidate differs by the rebase and non-functional cleanup, and the Q8 kernel and Q4/Q5 sources are identical. One tool-smoke case was re-run on the cleanup candidate.
 
 | Check | Result |
 |---|---|
 | Targeted tests (`test_qwen35_oq_a8.py`, `test_qwen35_q4_mlp.py`, `test_m5_gather_qmm_a8.py`, native extension built) | 270 passed |
-| CI command in a fresh Python 3.11 environment, no native extension | 17147 passed, 700 skipped, 0 failed; `main` in the same environment: 17144 passed, 669 skipped, 0 failed. The 31 extra skips are native-kernel tests of this PR |
+| CI command in a fresh Python 3.11 environment, no native extension | 17144 passed, 703 skipped, 0 failed; `main` in the same environment: 17144 passed, 669 skipped, 0 failed. The extra skips are native-kernel tests of this PR, which skip cleanly without the extension |
 | Q4/Q5 A8 outputs on fixed inputs, main vs candidate build | 216 arrays bit-identical; Q4/Q5 kernel sources unchanged |
 | `ruff check` on changed files | no new findings; the N8xx/SIM findings are the same on `main` |
 | `black --check --diff` on changed files | no new findings; the remaining diffs in `fast.py` and `test_qwen35_q4_mlp.py` are identical on `main` |
