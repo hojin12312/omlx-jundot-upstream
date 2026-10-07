@@ -132,6 +132,8 @@ def main() -> int:
     ap.add_argument("--checkpoint", required=True)
     ap.add_argument("--model", required=True)
     ap.add_argument("--cases", type=int, default=10)
+    ap.add_argument("--only", nargs="*", default=None, help="run only these case ids (e.g. case00)")
+    ap.add_argument("--cases-root", default=None, help="tree whose files build the prompts (default: --tree)")
     ap.add_argument("--model-settings", default='{"qwen35_oq_a8_enabled": true, "qwen35_oq_a8_min_tokens": 128}')
     ap.add_argument("--tag", required=True)
     ap.add_argument("--out", "-o", required=True)
@@ -164,7 +166,22 @@ def main() -> int:
     res = {"tag": args.tag, "tree": args.tree, "cases": []}
     try:
         m.wait_ready(url + "/v1/models", proc)
-        for case in make_cases(Path(args.tree), args.cases):
+        # The model loads, and the toggle hook installs, only on the first request. A short warm-up
+        # request plus the wait below make sure the first measured case already has both arms hooked.
+        chat(url, args.model, [{"role": "user", "content": "Say hi."}])
+        meta = None
+        for _ in range(240):
+            snap = ctl.call("snap")
+            if snap["installed"] or "install_error" in snap["meta"]:
+                meta = snap["meta"]
+                break
+            time.sleep(0.5)
+        assert meta is not None and "install_error" not in meta, meta
+        assert meta["omlx_file"].startswith(args.tree + "/"), f"wrong tree: {meta}"
+        res["server_files"] = {k: meta.get(k) for k in ("omlx_file", "oa_file", "pid", "native")}
+        for case in make_cases(Path(args.cases_root or args.tree), args.cases):
+            if args.only is not None and case["id"] not in args.only:
+                continue
             row = {"id": case["id"], "expect": case["expect"]}
             for cond, flag in (("q0", "off"), ("q1", "on")):
                 ctl.call("set", state=flag)
@@ -190,11 +207,15 @@ def main() -> int:
                              "text": resp["choices"][0]["message"].get("content"),
                              "seconds": resp["_seconds"]}
             row["same_call"] = row["q0"]["parsed"] == row["q1"]["parsed"]
+            row["arms_clean"] = row["q0"]["a8_calls"] == 0 and row["q1"]["a8_calls"] > 0
             res["cases"].append(row)
             print(f"{row['id']} {row['expect']:<12} q0 ok={row['q0']['ok']} a8={row['q0']['a8_calls']} | "
                   f"q1 ok={row['q1']['ok']} a8={row['q1']['a8_calls']} | same call: {row['same_call']} "
                   f"tokens={row['q1']['prompt_tokens']}", flush=True)
             Path(args.out).write_text(json.dumps(res, indent=2))
+            if not row["arms_clean"]:
+                print("ABORT: the A8 counters do not separate the arms for", row["id"], flush=True)
+                return 1
     finally:
         m.stop_server(proc)
         Path(args.out).write_text(json.dumps(res, indent=2))

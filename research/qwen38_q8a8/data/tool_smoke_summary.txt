@@ -1,0 +1,13 @@
+Tool-call smoke, 10 cases, A8 off (q0) vs on (q1), greedy. case00 is the clean rerun (tool_smoke_case00_rerun.json) on candidate b1018b7b; case01-09 are from tool_smoke.json on 1affe985.
+id expect prompt_tokens a8_calls(off/on) q0 q1 same_call
+case00 read_file 4895 0/1200 grep grep True
+case01 grep 5133 0/1200 grep grep True
+case02 run_tests 8990 0/2000 run_tests run_tests True
+case03 get_weather 4677 0/1200 get_weather get_weather True
+case04 create_event 7201 0/1600 create_event create_event True
+case05 read_file 10030 0/2000 grep grep True
+case06 grep 6064 0/1200 grep grep True
+case07 run_tests 6171 0/1200 run_tests run_tests True
+case08 get_weather 9139 0/2000 get_weather get_weather True
+case09 create_event 4778 0/1200 create_event create_event False
+schema-valid: 10/10 in both arms; identical tool name and arguments: 9/10 (case09 differs only in title casing); expected-tool misses: case00 and case05, identical in both arms; every pair has off a8_calls == 0 and on a8_calls > 0.

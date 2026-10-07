@@ -1,0 +1,56 @@
+{
+  "tag": "tools2",
+  "tree": "$Q8A8_ROOT/src",
+  "cases": [
+    {
+      "id": "case00",
+      "expect": "read_file",
+      "q0": {
+        "ok": false,
+        "reasons": [
+          "expected tool read_file, got grep"
+        ],
+        "parsed": {
+          "name": "grep",
+          "arguments": {
+            "pattern": "routed.*gate.*up|gate.*up.*routed",
+            "path": "omlx"
+          }
+        },
+        "prompt_tokens": 4895,
+        "a8_calls": 0,
+        "text": null,
+        "seconds": 7.765744924545288
+      },
+      "q1": {
+        "ok": false,
+        "reasons": [
+          "expected tool read_file, got grep"
+        ],
+        "parsed": {
+          "name": "grep",
+          "arguments": {
+            "pattern": "routed.*gate.*up|gate.*up.*routed",
+            "path": "omlx"
+          }
+        },
+        "prompt_tokens": 4895,
+        "a8_calls": 1200,
+        "text": null,
+        "seconds": 6.546462059020996
+      },
+      "same_call": true,
+      "arms_clean": true
+    }
+  ],
+  "server_files": {
+    "omlx_file": "$Q8A8_ROOT/src/omlx/__init__.py",
+    "oa_file": "$Q8A8_ROOT/src/omlx/patches/qwen35_oq_a8.py",
+    "pid": 51920,
+    "native": {
+      "$Q8A8_ROOT/src/omlx/custom_kernels/bonsai/_ext.cpython-311-darwin.so": "32c456228fdd1ab3a22398c39da4258bb1cb5563fb7469dfe8dc886069d2bd84",
+      "$Q8A8_ROOT/src/omlx/custom_kernels/glm_moe_dsa/_ext.cpython-311-darwin.so": "d14474f1437fb75bde3aa09198b9443e56a5acb74059427c03f5a8c17f15ffd0",
+      "$Q8A8_ROOT/src/omlx/custom_kernels/qwen35_prefill/_ext.cpython-311-darwin.so": "785df3bdec55d1336ba6a649aff9ffa0ead11fc49838c0e0eebaf0a13654a800"
+    }
+  }
+}

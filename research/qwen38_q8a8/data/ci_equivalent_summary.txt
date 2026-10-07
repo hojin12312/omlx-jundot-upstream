@@ -1,0 +1,16 @@
+CI-equivalent run, 2026-10-08. Command copied from .github/workflows/ci.yml at upstream/main 25aebb3e:
+  python -m pytest tests/ -m "not slow and not integration" -n 3 --dist loadgroup --durations=50 --junitxml=<file>
+Environment: uv venv --python 3.11 (3.11.15); pip install -e ".[mcp]" then pip install pytest pytest-asyncio pytest-xdist;
+env -i with HOME/TMPDIR in a fresh directory. Fresh `git worktree add --detach` checkouts, no native extension
+(0 .so / .metallib files in either tree), MLX 0.32.3 from the install.
+
+  candidate b1018b7b308ab1aa9c625f7f70fc9d01d26b02ba : 17147 passed, 700 skipped, 0 failed (exit 0, 3:40)
+  baseline  25aebb3ee0bb052a264241953bef6820f102dd0b : 17144 passed, 669 skipped, 0 failed (exit 0, 3:20)
+
+Node-id comparison from the junit files:
+  - no failures or errors on either side
+  - 40 node ids exist only on the candidate: 36 skipped (native-kernel tests, skipped cleanly without the extension)
+    and 4 passed (Q6/GS128 rejection, Q8 unpack-vs-dequantize, which need no kernel)
+  - 6 node ids exist only on the baseline: renamed or re-parametrized Q8/Q6 classification tests
+  - 3 tests in tests/test_sse_keepalive.py skipped on the baseline ("global_settings not initialized") and passed on
+    the candidate; they depend on test order under xdist and do not touch this change.
