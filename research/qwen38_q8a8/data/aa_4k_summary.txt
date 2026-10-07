@@ -1,0 +1,6 @@
+L=4096  complete tuples 8
+   off   median pp/s 823.7  ttft 4.971
+   off2  median pp/s 827.0  ttft 4.950
+   on    median pp/s 1306.4  ttft 3.133
+   off2/off paired: mean +0.11% median -0.08% min -2.46% max +2.85%  faster 4/8
+   on/off paired: mean +55.22% median +58.20% min +43.34% max +62.84%  faster 8/8

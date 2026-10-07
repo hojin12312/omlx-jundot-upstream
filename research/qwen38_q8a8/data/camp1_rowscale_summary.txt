@@ -1,0 +1,20 @@
+L=1024  complete tuples 6
+   off   median pp/s 846.3  ttft 1.210
+   on    median pp/s 1192.5  ttft 0.858
+   on/off paired: mean +41.07% median +40.98% min +40.74% max +41.70%  faster 6/6
+L=4096  complete tuples 6
+   off   median pp/s 943.7  ttft 4.339
+   on    median pp/s 1373.3  ttft 2.981
+   on/off paired: mean +45.53% median +45.52% min +43.50% max +47.50%  faster 6/6
+L=8192  complete tuples 6
+   off   median pp/s 621.0  ttft 13.187
+   on    median pp/s 991.5  ttft 8.259
+   on/off paired: mean +58.51% median +58.51% min +56.25% max +60.85%  faster 6/6
+L=16384  complete tuples 6
+   off   median pp/s 623.6  ttft 26.272
+   on    median pp/s 981.3  ttft 16.693
+   on/off paired: mean +57.43% median +57.14% min +57.10% max +58.27%  faster 6/6
+L=32768  complete tuples 6
+   off   median pp/s 607.3  ttft 53.940
+   on    median pp/s 921.2  ttft 35.561
+   on/off paired: mean +51.72% median +51.87% min +50.15% max +53.06%  faster 6/6

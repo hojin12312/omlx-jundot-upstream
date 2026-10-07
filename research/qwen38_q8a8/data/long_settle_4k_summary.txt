@@ -1,0 +1,4 @@
+L=4096  complete tuples 6
+   off   median pp/s 957.9  ttft 4.275
+   on    median pp/s 1372.9  ttft 2.982
+   on/off paired: mean +48.12% median +43.46% min +43.06% max +69.92%  faster 6/6
