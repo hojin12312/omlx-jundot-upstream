@@ -40,6 +40,9 @@ _LM_GDN_PREFILL_BACKEND: (
 _PREFILL_LINEAR_BACKEND: Callable[[Any, mx.array], mx.array | None] | None = None
 _SUPPORTED_QMM_BITS = frozenset((2, 4, 5, 6, 8))
 _Q8_MIN_TOKENS = 16384
+# Decode and verify guard, not a profitability floor: the A8 backend applies
+# qwen35_oq_a8_min_tokens itself, and rows below this never ask it.
+_Q8_BACKEND_MIN_ROWS = 64
 
 
 def register_qwen35_lm_gdn_prefill_backend(
@@ -88,6 +91,16 @@ def _try_backend(linear: Any, x: mx.array) -> mx.array | None:
         # A backend fault must cost throughput, never a request.
         logger.debug("prefill linear backend failed; falling back", exc_info=True)
         return None
+
+
+def _q8_backend_candidate(linear: Any, x: mx.array) -> bool:
+    """8-bit prefill rows the A8 backend may take below the A16 tile's floor."""
+    return (
+        x.ndim == 3
+        and x.shape[-2] >= _Q8_BACKEND_MIN_ROWS
+        and _PREFILL_LINEAR_BACKEND is not None
+        and getattr(linear, "bits", None) == 8
+    )
 
 
 def _backend_or_qmm(linear: Any, x: mx.array, variant: int) -> mx.array:
@@ -466,6 +479,10 @@ class _VLMQuantizedPrefillLinear(nn.QuantizedLinear):
             self, x, self._route_min_tokens, self._route_q8_min_tokens
         ):
             return _backend_or_qmm(self, x, self._route_variant)
+        if _q8_backend_candidate(self, x):
+            routed = _try_backend(self, x)
+            if routed is not None:
+                return routed
         return super().__call__(x)
 
 
@@ -553,9 +570,19 @@ def apply_qwen35_q4_lm_prefill_linear_patch() -> bool:
             and os.environ.get("OMLX_QWEN35_Q4_LM_LINEAR", "1") != "0"
         )
 
+    def serves_q8_a8(linear: Any, x: mx.array) -> bool:
+        return (
+            _q8_backend_candidate(linear, x)
+            and os.environ.get("OMLX_QWEN35_Q4_LM_LINEAR", "1") != "0"
+        )
+
     def qmm_or_linear(linear: Any, x: mx.array) -> mx.array:
         if should_route(linear, x):
             return _backend_or_qmm(linear, x, variant)
+        if serves_q8_a8(linear, x):
+            routed = _try_backend(linear, x)
+            if routed is not None:
+                return routed
         return linear(x)
 
     installed = False
@@ -580,7 +607,7 @@ def apply_qwen35_q4_lm_prefill_linear_patch() -> bool:
                 or x.ndim != 3
                 or x.shape[-2] < min_tokens
                 or not all(
-                    should_route(linear, x)
+                    should_route(linear, x) or serves_q8_a8(linear, x)
                     for linear in (self.q_proj, self.k_proj, self.v_proj)
                 )
             ):
@@ -691,7 +718,8 @@ def apply_qwen35_q4_lm_prefill_linear_patch() -> bool:
                 else None
             )
             if projections is None and not any(
-                should_route(linear, inputs) for linear in input_linears
+                should_route(linear, inputs) or serves_q8_a8(linear, inputs)
+                for linear in input_linears
             ):
                 if n_confirmed:
                     return orig_gdn(

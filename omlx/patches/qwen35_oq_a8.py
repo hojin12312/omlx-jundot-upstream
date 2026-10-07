@@ -1,7 +1,7 @@
 # ruff: noqa: N806
 """Model-local routing for Qwen INT8-activation prefill.
 
-Eligible Q4/Q5 projections cache a dispatch plan and share activation
+Eligible Q4/Q5/Q8 projections cache a dispatch plan and share activation
 quantization where possible. Class wrappers are installed once, but only
 modules tagged by an enabled model are routed. Environment overrides also
 support direct callers. Importing this module installs no patches.
@@ -17,14 +17,13 @@ from typing import Any
 import mlx.core as mx
 import mlx.nn as nn
 
-from .m5_gather_qmm_a8 import tag_routed_a8_modules
+from .m5_gather_qmm_a8 import _mtp_module_ids, tag_routed_a8_modules
 from .qwen35_packed_linear import PackedLinear
 
 logger = logging.getLogger(__name__)
 
-# Only Q4 and Q5 GS64 affine matter for this checkpoint; everything else is
-# fallback.
-_SUPPORTED_BITS = frozenset((4, 5))
+# Only Q4, Q5 and Q8 GS64 affine are routed; everything else is fallback.
+_SUPPORTED_BITS = frozenset((4, 5, 8))
 _GROUP_SIZE = 64
 
 # Variant-rejection messages already logged, so a bad environment variable
@@ -35,7 +34,7 @@ _PLAN_ATTR = "_omlx_oq_a8_plan"
 _PREPARED_ATTR = "_omlx_oq_a8_prepared"
 
 # Packed weights are reused; only scale/bias metadata and activations are copied.
-# Rowwise and GS64 activation scaling are supported independently for Q4/Q5.
+# Rowwise and GS64 activation scaling are supported independently per bit width.
 _ACT_MODE_ROW = 0
 _ACT_MODE_G64 = 1
 
@@ -102,10 +101,20 @@ def _tag_modules(model: Any, config: OqA8Config) -> int:
     the linear backend gets first refusal on (``linear_attn.out_proj``) are
     reached as themselves, not through a parent.
     """
-    modules = [module for _, module in model.named_modules()]
-    for module in modules:
+    # An 8-bit MTP draft head keeps its existing path: Q8A8 covers the target
+    # model's prefill only.
+    mtp_ids = _mtp_module_ids(model)
+    tagged = 0
+    for _, module in model.named_modules():
+        if id(module) in mtp_ids and any(_is_q8_linear(m) for m in module.modules()):
+            continue
         setattr(module, _CONFIG_ATTR, config)
-    return len(modules)
+        tagged += 1
+    return tagged
+
+
+def _is_q8_linear(module: Any) -> bool:
+    return isinstance(module, nn.QuantizedLinear) and module.bits == 8
 
 
 def _kernels_available() -> bool:
@@ -134,11 +143,29 @@ class OqA8Plan:
     def kernel(self) -> str:
         return f"q{self.bits}a8_g{self.group_size}"
 
+    @property
+    def layout(self) -> int:
+        return _layout_for_bits(self.bits)
+
 
 def _act_mode_for_bits(bits: int) -> int:
+    if bits == 8:
+        # GS64 scaling keeps activation outliers from setting the scale of a
+        # whole row.
+        return _ACT_MODE_G64
     if bits == 5:
         return _env_int("OMLX_OQ_A8_Q5_ACT_MODE", _ACT_MODE_ROW)
     return _env_int("OMLX_OQ_A8_Q4_ACT_MODE", _ACT_MODE_ROW)
+
+
+# Q4/Q5 read Qa in Stage A v8's permuted K order. A Q8 byte is a whole code, so
+# the Q8 kernel reads Qa in checkpoint order and no permuting copy is needed.
+_LAYOUT_V8 = 0
+_LAYOUT_NATURAL = 1
+
+
+def _layout_for_bits(bits: int) -> int:
+    return _LAYOUT_NATURAL if bits == 8 else _LAYOUT_V8
 
 
 # 800-806 are the same kernel over different simdgroup grids. The field is
@@ -147,6 +174,7 @@ def _act_mode_for_bits(bits: int) -> int:
 # window per row and prefers a smaller tile.
 _DEFAULT_VARIANT_Q4 = 806
 _DEFAULT_VARIANT_Q5 = 800
+_DEFAULT_VARIANT_Q8 = 806
 
 # The only family the kernels carry. A variant outside it names no kernel, so
 # it is refused where it enters rather than at the op boundary.
@@ -157,8 +185,12 @@ _VARIANT_MAX = 806
 def _variant_for_bits(bits: int) -> int:
     # Q4 and Q5 are autotuned independently: Q5 reads a second plane per
     # weight row and costs more registers, so the best tile need not match.
-    default = _DEFAULT_VARIANT_Q5 if bits == 5 else _DEFAULT_VARIANT_Q4
+    default = {5: _DEFAULT_VARIANT_Q5, 8: _DEFAULT_VARIANT_Q8}.get(
+        bits, _DEFAULT_VARIANT_Q4
+    )
     shared = _env_int("OMLX_OQ_A8_VARIANT", default)
+    if bits == 8:
+        return shared
     if bits == 5:
         return _env_int("OMLX_OQ_A8_Q5_VARIANT", shared)
     return _env_int("OMLX_OQ_A8_Q4_VARIANT", shared)
@@ -330,20 +362,27 @@ class StageA:
     sa: mx.array
     ra: mx.array
     act_mode: int
+    layout: int = _LAYOUT_V8
 
 
-def stage_a(x: mx.array, act_mode: int = _ACT_MODE_ROW) -> StageA:
+def stage_a(
+    x: mx.array, act_mode: int = _ACT_MODE_ROW, layout: int = _LAYOUT_V8
+) -> StageA:
     """Quantize one activation into the layout the kernel reads.
 
-    Qa carries the schedule's within-group K order, and Ra (and Sa in
-    per-group mode) come back group-major to match the weight metadata. This
-    is the only operand that is reordered, and it is rebuilt on every prefill,
-    which uses temporary activation memory without changing the checkpoint.
+    For Q4/Q5, Qa carries the schedule's within-group K order, and Ra (and Sa
+    in per-group mode) come back group-major to match the weight metadata. Q8
+    keeps Qa in checkpoint order and only transposes the metadata. Qa is
+    rebuilt on every prefill, which uses temporary activation memory without
+    changing the checkpoint.
     """
     from omlx.custom_kernels.qwen35_prefill import fast
 
-    qa, sa, ra = fast.qwen35_oq_a8_stage_a_v8(x, act_mode)
-    return StageA(qa=qa, sa=sa, ra=ra, act_mode=act_mode)
+    if layout == _LAYOUT_NATURAL:
+        qa, sa, ra = fast.qwen35_oq_a8_stage_a_natural(x, act_mode)
+    else:
+        qa, sa, ra = fast.qwen35_oq_a8_stage_a_v8(x, act_mode)
+    return StageA(qa=qa, sa=sa, ra=ra, act_mode=act_mode, layout=layout)
 
 
 def apply_plan(linear: Any, stage: StageA, plan: OqA8Plan) -> mx.array:
@@ -353,6 +392,11 @@ def apply_plan(linear: Any, stage: StageA, plan: OqA8Plan) -> mx.array:
             "Stage-A activation mode "
             f"{stage.act_mode} does not match the projection's plan "
             f"({plan.act_mode}); quantize once per activation policy."
+        )
+    if stage.layout != plan.layout:
+        raise ValueError(
+            f"Stage-A layout {stage.layout} does not match the projection's "
+            f"plan ({plan.layout}); quantize once per kernel layout."
         )
     from omlx.custom_kernels.qwen35_prefill import fast
 
@@ -377,7 +421,7 @@ def oq_a8_linear(linear: Any, x: mx.array) -> mx.array:
     plan = classify_linear(linear) if config is not None else None
     if plan is None or not _shape_eligible(x, config):
         return linear(x)
-    return apply_plan(linear, stage_a(x, plan.act_mode), plan)
+    return apply_plan(linear, stage_a(x, plan.act_mode, plan.layout), plan)
 
 
 # Below this many rows the Stage-A quantization pass costs more than the
@@ -420,17 +464,17 @@ def oq_a8_mlp(mlp: Any, x: mx.array, activation) -> mx.array | None:
     down_plan = classify_linear(down)
     if gate_plan is None or up_plan is None or down_plan is None:
         return None
-    if gate_plan.act_mode != up_plan.act_mode:
+    if (gate_plan.act_mode, gate_plan.layout) != (up_plan.act_mode, up_plan.layout):
         return None
 
-    shared = stage_a(x, gate_plan.act_mode)
+    shared = stage_a(x, gate_plan.act_mode, gate_plan.layout)
     g = apply_plan(gate, shared, gate_plan)
     u = apply_plan(up, shared, up_plan)
     h = activation(g, u)
 
     if not _shape_eligible(h, config):
         return down(h)
-    return apply_plan(down, stage_a(h, down_plan.act_mode), down_plan)
+    return apply_plan(down, stage_a(h, down_plan.act_mode, down_plan.layout), down_plan)
 
 
 def oq_a8_gdn_projections(
@@ -458,13 +502,13 @@ def oq_a8_gdn_projections(
             return None
         plans[name] = plan
 
-    modes = {plan.act_mode for plan in plans.values()}
-    if len(modes) != 1:
-        # A split policy would need one Stage A per mode, which costs more
+    policies = {(plan.act_mode, plan.layout) for plan in plans.values()}
+    if len(policies) != 1:
+        # A split policy would need one Stage A per policy, which costs more
         # than the mixed dispatch saves on the shapes measured here.
         return None
 
-    shared = stage_a(x, modes.pop())
+    shared = stage_a(x, *policies.pop())
     return {
         name: apply_plan(getattr(gdn, name), shared, plan)
         for name, plan in plans.items()
@@ -569,7 +613,7 @@ def _prefill_linear_backend(linear: Any, x: mx.array) -> mx.array | None:
     plan = classify_linear(linear) if config is not None else None
     if plan is None or not _shape_eligible(x, config):
         return None
-    return apply_plan(linear, stage_a(x, plan.act_mode), plan)
+    return apply_plan(linear, stage_a(x, plan.act_mode, plan.layout), plan)
 
 
 def _patch_mlp_class(module_name: str, class_name: str) -> bool:

@@ -497,6 +497,50 @@ def test_qwen35_q4_prefill_linear_patch_offers_packed_projections(monkeypatch):
     assert seen == [32, 64]
 
 
+def test_qwen35_q8_backend_offered_below_a16_floor(monkeypatch):
+    fast = _require_qmm_kernels([8])
+    import mlx_vlm.models.qwen3_5.language as qwen35_lang
+
+    import omlx.patches.qwen35_q4_mlp as q4patch
+
+    monkeypatch.setenv("OMLX_QWEN35_Q4_LINEAR", "1")
+    monkeypatch.setenv("OMLX_QWEN35_Q4_LINEAR_MIN_TOKENS", "2048")
+    monkeypatch.setenv("OMLX_QWEN35_Q8_LINEAR_MIN_TOKENS", "16384")
+    q8 = nn.QuantizedLinear(256, 128, bias=False, group_size=64, bits=8)
+    q4 = nn.QuantizedLinear(256, 128, bias=False, group_size=64, bits=4)
+    for linear in (q8, q4):
+        linear.set_dtype(mx.bfloat16)
+
+    routed = mx.ones((1, 128, 128), dtype=mx.bfloat16)
+    seen = []
+
+    def backend(linear, x):
+        seen.append((linear.bits, x.shape[-2]))
+        return routed if x.shape[-2] == 128 else None
+
+    native = []
+    monkeypatch.setattr(q4patch, "_PREFILL_LINEAR_BACKEND", backend)
+    monkeypatch.setattr(
+        fast,
+        "qwen35_q8_affine_qmm_t",
+        lambda *a, **k: native.append(a[0].shape[-2]),
+    )
+    module = qwen35_lang.Qwen3_5Attention.__new__(qwen35_lang.Qwen3_5Attention)
+    nn.Module.__init__(module)
+    module.q_proj, module.k_proj = q8, q4
+    assert q4patch.apply_qwen35_q4_prefill_linear_patch(module) is True
+
+    assert module.q_proj(mx.zeros((1, 128, 256), mx.bfloat16)) is routed
+    # Declined: stock MLX runs, never the A16 tile below its own floor.
+    out = module.q_proj(mx.zeros((1, 96, 256), mx.bfloat16))
+    assert out.shape == (1, 96, 128) and native == []
+    # Decode and verify rows never reach the backend, and Q4 keeps its floor.
+    module.q_proj(mx.zeros((1, 1, 256), mx.bfloat16))
+    module.q_proj(mx.zeros((1, 8, 256), mx.bfloat16))
+    module.k_proj(mx.zeros((1, 128, 256), mx.bfloat16))
+    assert seen == [(8, 128), (8, 96)]
+
+
 def test_qwen35_q4_lm_attention_uses_sdpa_installed_after_the_patch(monkeypatch):
     """The patch must not freeze the SDPA it saw at install time (issue #2372).
 

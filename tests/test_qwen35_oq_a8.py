@@ -3,7 +3,7 @@
 Kernel correctness and model accuracy are separate concerns, and the kernel
 tests come first.
 
-  1. decoded Q4/Q5 codes are bit-exact against an independent bit unpacker,
+  1. decoded Q4/Q5/Q8 codes are bit-exact against an independent bit unpacker,
      which is in turn tied to MLX's own dequantize semantics
   2. Stage A's Qa is bit-exact and Ra is exactly the sum of the codes
   3. the INT32 dot and the FP32 affine accumulation match an independent
@@ -132,7 +132,7 @@ def make_quantized(n_out: int, K: int, bits: int, dtype=mx.float16, seed: int = 
 # --------------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("bits", [4, 5])
+@pytest.mark.parametrize("bits", [4, 5, 8])
 def test_unpack_matches_mlx_dequantize(bits):
     """Tie the reference unpacker to MLX's affine semantics.
 
@@ -170,9 +170,9 @@ def test_group_words(bits):
 
 
 @requires_kernels
-@pytest.mark.parametrize("bits", [4, 5])
+@pytest.mark.parametrize("bits", [4, 5, 8])
 def test_kernel_decode_is_bit_exact(bits):
-    """Every decoded code matches the reference unpacker exactly."""
+    """Decoded codes match the reference unpacker (Q8 centered)."""
     fast = _kernels()
     K = 512
     packed, _, _ = make_quantized(96, K, bits, seed=bits)
@@ -180,8 +180,23 @@ def test_kernel_decode_is_bit_exact(bits):
     decoded = fast.qwen35_oq_a8_decode_weights(packed, bits, K // GROUP_SIZE)
     mx.eval(decoded)
 
-    expected = unpack_codes(np.array(packed), bits, K)
+    expected = unpack_codes(np.array(packed), bits, K) - (128 if bits == 8 else 0)
     np.testing.assert_array_equal(np.array(decoded).astype(np.int64), expected)
+
+
+@requires_kernels
+def test_q8_decode_edge_codes():
+    """0, 127, 128 and 255 straddle the centering sign flip."""
+    fast = _kernels()
+    codes = np.tile(
+        np.array([0, 127, 128, 255, 1, 126, 129, 254], dtype=np.uint8), (4, 8)
+    )
+    packed = mx.array(codes.view("<u4").copy())
+    decoded = fast.qwen35_oq_a8_decode_weights(packed, 8, 1)
+    mx.eval(decoded)
+    np.testing.assert_array_equal(
+        np.array(decoded).astype(np.int64), codes.astype(np.int64) - 128
+    )
 
 
 # --------------------------------------------------------------------------
@@ -295,7 +310,7 @@ def test_qmm_matches_affine_reference(bits, act_mode):
 
 
 @requires_kernels
-@pytest.mark.parametrize("bits", [4, 5])
+@pytest.mark.parametrize("bits", [4, 5, 8])
 def test_qmm_tracks_the_unquantized_projection(bits):
     """Accuracy sanity: A8 changes numerics but must not change the answer.
 
@@ -434,9 +449,9 @@ def test_dispatch_runs_and_tracks_the_original(monkeypatch, variant):
     assert 0.0 < rel < 0.05, f"dispatch did not reach the kernel (rel={rel})"
 
 
-@pytest.mark.parametrize("bits", [2, 6, 8])
+@pytest.mark.parametrize("bits", [2, 6])
 def test_unsupported_bit_widths_are_not_claimed(bits):
-    """Only Q4 and Q5 are production paths here; the rest stay on MLX."""
+    """Only Q4, Q5 and Q8 are production paths here; the rest stay on MLX."""
     from omlx.patches import qwen35_oq_a8 as dispatch
 
     assert dispatch.classify_linear(_quantized_linear(256, 128, bits)) is None
@@ -444,10 +459,9 @@ def test_unsupported_bit_widths_are_not_claimed(bits):
 
 @requires_kernels
 @pytest.mark.parametrize(
-    "bits, kernel", [(4, "q4a8_g64"), (5, "q5a8_g64")]
+    "bits, kernel", [(4, "q4a8_g64"), (5, "q5a8_g64"), (8, "q8a8_g64")]
 )
-def test_q4_and_q5_gs64_projections_get_an_a8_plan(bits, kernel):
-    """The supported dense contract: affine Q4 and Q5 at GS64 route to A8."""
+def test_gs64_projections_have_a8_plan(bits, kernel):
     from omlx.patches import qwen35_oq_a8 as dispatch
 
     plan = dispatch.classify_linear(_quantized_linear(256, 128, bits))
@@ -455,18 +469,17 @@ def test_q4_and_q5_gs64_projections_get_an_a8_plan(bits, kernel):
     assert (plan.bits, plan.group_size, plan.kernel) == (bits, 64, kernel)
 
 
-@pytest.mark.parametrize("bits", [6, 8])
-def test_q6_and_q8_projections_have_no_a8_plan(bits):
-    """Q6/Q8 stay on the A16 path, at either supported group size."""
+def test_q6_projections_have_no_a8_plan():
+    """Q6 stays on the A16 path, at either supported group size."""
     from omlx.patches import qwen35_oq_a8 as dispatch
 
     for group_size in (64, 128):
-        linear = _quantized_linear(256, 128, bits, group_size=group_size)
+        linear = _quantized_linear(256, 128, 6, group_size=group_size)
         assert dispatch.classify_linear(linear) is None
 
 
 @requires_kernels
-@pytest.mark.parametrize("bits", [4, 5])
+@pytest.mark.parametrize("bits", [4, 5, 8])
 def test_output_width_that_does_not_tile_has_no_a8_plan(bits):
     """N must be a multiple of the tile width (64). Qwen3.8's linear-attention
     in_proj_a / in_proj_b are N=48, so those projections stay on the A16 path."""
@@ -476,10 +489,11 @@ def test_output_width_that_does_not_tile_has_no_a8_plan(bits):
     assert dispatch.classify_linear(_quantized_linear(256, 64, bits)) is not None
 
 
-def test_group_size_128_is_not_claimed():
+@pytest.mark.parametrize("bits", [4, 8])
+def test_group_size_128_is_not_claimed(bits):
     from omlx.patches import qwen35_oq_a8 as dispatch
 
-    linear = _quantized_linear(256, 128, 4, group_size=128)
+    linear = _quantized_linear(256, 128, bits, group_size=128)
     assert dispatch.classify_linear(linear) is None
 
 
@@ -1040,3 +1054,287 @@ def test_mlp_routing_errors_are_not_silently_ignored(monkeypatch):
     with pytest.raises(RuntimeError, match="kernel failure"):
         wrapped(object(), mx.ones((1, 128, 64), dtype=mx.float16))
     original.assert_not_called()
+
+
+# --------------------------------------------------------------------------
+# Q8 (GS64 affine, W8A8)
+# --------------------------------------------------------------------------
+
+
+@requires_kernels
+@pytest.mark.parametrize("dtype", [mx.float16, mx.bfloat16])
+@pytest.mark.parametrize("act_mode", [0, 1])
+@pytest.mark.parametrize("m", [1, 17, 130])
+def test_q8_gemm_matches_affine_reference(dtype, act_mode, m):
+    """Centered GEMM vs unsigned-code affine reference; m covers partial tiles."""
+    fast = _kernels()
+    n, k = 128, 192
+    rng = np.random.default_rng(m + 5 * act_mode)
+    codes = rng.integers(0, 256, size=(n, k), dtype=np.uint8)
+    codes[:, :4] = [0, 127, 128, 255]
+    codes[0, :] = 255
+    codes[1, :] = 0
+    packed = mx.array(codes.view("<u4").copy())
+    scales = mx.array(
+        rng.uniform(0.001, 0.02, (n, k // GROUP_SIZE)).astype(np.float32), dtype
+    )
+    biases = mx.array(
+        rng.uniform(-1, 1, (n, k // GROUP_SIZE)).astype(np.float32), dtype
+    )
+    x = mx.array((rng.standard_normal((m, k)) * 0.5).astype(np.float32), dtype)
+
+    qa, sa, ra = fast.qwen35_oq_a8_quantize(x, act_mode)
+    qa8, sa8, ra8 = fast.qwen35_oq_a8_stage_a_natural(x, act_mode)
+    got = fast.qwen35_oq_a8_qmm_t(
+        qa8,
+        sa8,
+        ra8,
+        packed,
+        mx.contiguous(scales.T),
+        mx.contiguous(biases.T),
+        8,
+        act_mode,
+        806,
+    )
+    mx.eval(qa, sa, ra, got)
+
+    expected = affine_reference(
+        np.array(qa).astype(np.int64),
+        np.array(sa).reshape(m) if act_mode == 0 else np.array(sa),
+        np.array(ra).astype(np.int64),
+        codes.astype(np.int64),
+        np.array(scales.astype(mx.float32)),
+        np.array(biases.astype(mx.float32)),
+        act_mode,
+    )
+    got_np = np.array(got.astype(mx.float32))
+    assert np.isfinite(got_np).all()
+    # Only the output rounding to `dtype` separates the two.
+    np.testing.assert_allclose(got_np, expected, rtol=2**-7, atol=2e-3)
+
+
+@requires_kernels
+@pytest.mark.parametrize("act_mode", [0, 1])
+def test_stage_a_natural_keeps_k_order(act_mode):
+    """Qa stays unpermuted; only the group metadata is transposed."""
+    fast = _kernels()
+    rng = np.random.default_rng(3)
+    x = mx.array((rng.standard_normal((40, 256)) * 0.7).astype(np.float32), mx.float16)
+    qa, sa, ra = fast.qwen35_oq_a8_quantize(x, act_mode)
+    qn, sn, rn = fast.qwen35_oq_a8_stage_a_natural(x, act_mode)
+    mx.eval(qa, sa, ra, qn, sn, rn)
+
+    np.testing.assert_array_equal(np.array(qn), np.array(qa))
+    np.testing.assert_array_equal(np.array(rn), np.array(ra).T)
+    expected_sa = np.array(sa).T if act_mode else np.array(sa)
+    np.testing.assert_array_equal(np.array(sn), expected_sa)
+
+
+@requires_kernels
+@pytest.mark.parametrize("variant", [802, 805, 806])
+def test_q8_tiles_agree(variant):
+    fast = _kernels()
+    m, k, n = 96, 256, 128
+    packed, scales, biases = make_quantized(n, k, 8, seed=5)
+    rng = np.random.default_rng(5)
+    x = mx.array((rng.standard_normal((m, k)) * 0.5).astype(np.float32), mx.float16)
+    qa, sa, ra = fast.qwen35_oq_a8_stage_a_natural(x, 0)
+    sc_t, bi_t = mx.contiguous(scales.T), mx.contiguous(biases.T)
+
+    base = fast.qwen35_oq_a8_qmm_t(qa, sa, ra, packed, sc_t, bi_t, 8, 0, 800)
+    got = fast.qwen35_oq_a8_qmm_t(qa, sa, ra, packed, sc_t, bi_t, 8, 0, variant)
+    mx.eval(base, got)
+    np.testing.assert_array_equal(
+        np.array(got.astype(mx.float32)), np.array(base.astype(mx.float32))
+    )
+
+
+@requires_kernels
+def test_q8_has_no_persistent_weight_copy():
+    """Packed bytes are read in place; only the metadata is transposed."""
+    from omlx.patches import qwen35_oq_a8 as dispatch
+
+    linear = _quantized_linear(512, 128, 8)
+    plan = dispatch.classify_linear(linear)
+    assert plan is not None and plan.layout == dispatch._LAYOUT_NATURAL
+    weight, scales, biases = dispatch._prepared_weights(linear)
+    assert weight is linear.weight
+    np.testing.assert_array_equal(np.array(scales), np.array(linear.scales).T)
+    np.testing.assert_array_equal(np.array(biases), np.array(linear.biases).T)
+
+
+def _stage_a_counter(monkeypatch, dispatch):
+    calls = []
+    real = dispatch.stage_a
+
+    def counting(x, act_mode=dispatch._ACT_MODE_ROW, layout=dispatch._LAYOUT_V8):
+        calls.append(layout)
+        return real(x, act_mode, layout)
+
+    monkeypatch.setattr(dispatch, "stage_a", counting)
+    return calls
+
+
+@requires_kernels
+def test_q8_mlp_shares_gate_up_stage_a(monkeypatch):
+    """gate and up share one Stage A; down quantizes its own input."""
+    import mlx.nn as nn
+
+    from omlx.patches import qwen35_oq_a8 as dispatch
+
+    monkeypatch.setenv("OMLX_OQ_A8", "1")
+
+    class MLP(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.gate_proj = _quantized_linear(256, 512, 8)
+            self.up_proj = _quantized_linear(256, 512, 8)
+            self.down_proj = _quantized_linear(512, 256, 8)
+
+    mlp = MLP()
+    x = mx.array(
+        (np.random.default_rng(1).standard_normal((1, 256, 256)) * 0.4).astype(
+            np.float32
+        ),
+        mx.float16,
+    )
+    calls = _stage_a_counter(monkeypatch, dispatch)
+    got = dispatch.oq_a8_mlp(mlp, x, lambda g, u: nn.silu(g) * u)
+    ref = mlp.down_proj(nn.silu(mlp.gate_proj(x)) * mlp.up_proj(x))
+    mx.eval(got, ref)
+
+    assert calls == [dispatch._LAYOUT_NATURAL] * 2
+    g, r = (np.array(a.astype(mx.float32)) for a in (got, ref))
+    rel = np.abs(g - r).max() / max(np.abs(r).max(), 1e-6)
+    assert 0.0 < rel < 0.08, f"Q8 MLP did not reach the kernel (rel={rel})"
+
+
+@requires_kernels
+def test_mixed_stage_a_layouts_decline(monkeypatch):
+    """A Q4 gate with a Q8 up would need two Stage A layouts."""
+    import mlx.nn as nn
+
+    from omlx.patches import qwen35_oq_a8 as dispatch
+
+    monkeypatch.setenv("OMLX_OQ_A8", "1")
+
+    class MLP(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.gate_proj = _quantized_linear(256, 512, 4)
+            self.up_proj = _quantized_linear(256, 512, 8)
+            self.down_proj = _quantized_linear(512, 256, 4)
+
+    x = mx.zeros((1, 256, 256), mx.float16)
+    assert dispatch.oq_a8_mlp(MLP(), x, lambda g, u: g * u) is None
+
+
+class _GatedDeltaProjections:
+    def __init__(self, bits, n_ab=64):
+        self.in_proj_qkv = _quantized_linear(256, 384, bits)
+        self.in_proj_z = _quantized_linear(256, 128, bits)
+        self.in_proj_a = _quantized_linear(256, n_ab, bits)
+        self.in_proj_b = _quantized_linear(256, n_ab, bits)
+
+
+@requires_kernels
+@pytest.mark.parametrize("bits", [4, 8])
+def test_gdn_projections_share_one_stage_a(monkeypatch, bits):
+    from omlx.patches import qwen35_oq_a8 as dispatch
+
+    monkeypatch.setenv("OMLX_OQ_A8", "1")
+    gdn = _GatedDeltaProjections(bits)
+    x = mx.array(
+        (np.random.default_rng(2).standard_normal((1, 256, 256)) * 0.5).astype(
+            np.float32
+        ),
+        mx.float16,
+    )
+    calls = _stage_a_counter(monkeypatch, dispatch)
+    out = dispatch.oq_a8_gdn_projections(gdn, x)
+    mx.eval(*out.values())
+
+    assert calls == [dispatch._layout_for_bits(bits)]
+    assert set(out) == {"in_proj_qkv", "in_proj_z", "in_proj_a", "in_proj_b"}
+    for name, got in out.items():
+        ref = np.array(getattr(gdn, name)(x).astype(mx.float32))
+        rel = np.abs(np.array(got.astype(mx.float32)) - ref).max() / np.abs(ref).max()
+        assert 0.0 < rel < 0.08
+
+
+@requires_kernels
+@pytest.mark.parametrize("bits", [4, 8])
+def test_gdn_untiled_projection_declines_block(monkeypatch, bits):
+    """in_proj_a/b are N=48 on Qwen3.8; one untiled projection declines the block."""
+    from omlx.patches import qwen35_oq_a8 as dispatch
+
+    monkeypatch.setenv("OMLX_OQ_A8", "1")
+    gdn = _GatedDeltaProjections(bits, n_ab=48)
+    assert (
+        dispatch.oq_a8_gdn_projections(gdn, mx.zeros((1, 256, 256), mx.float16)) is None
+    )
+
+
+@requires_kernels
+def test_stage_a_layout_mismatch_raises(monkeypatch):
+    from omlx.patches import qwen35_oq_a8 as dispatch
+
+    monkeypatch.setenv("OMLX_OQ_A8", "1")
+    linear = _quantized_linear(256, 128, 8)
+    plan = dispatch.classify_linear(linear)
+    x = mx.zeros((64, 256), mx.float16)
+    with pytest.raises(ValueError, match="layout"):
+        dispatch.apply_plan(linear, dispatch.stage_a(x, plan.act_mode, 0), plan)
+
+
+@requires_kernels
+def test_q8_standalone_route_and_fallback(monkeypatch):
+    from omlx.patches import qwen35_oq_a8 as dispatch
+
+    monkeypatch.setenv("OMLX_OQ_A8", "1")
+    monkeypatch.setenv("OMLX_OQ_A8_MIN_TOKENS", "128")
+    linear = _quantized_linear(256, 128, 8)
+    x = mx.array(
+        (np.random.default_rng(6).standard_normal((1, 256, 256)) * 0.5).astype(
+            np.float32
+        ),
+        mx.float16,
+    )
+    routed = dispatch._prefill_linear_backend(linear, x)
+    mx.eval(routed)
+    ref = linear(x)
+    assert routed is not None
+    rel = (
+        np.abs(
+            np.array(routed.astype(mx.float32)) - np.array(ref.astype(mx.float32))
+        ).max()
+        / np.abs(np.array(ref.astype(mx.float32))).max()
+    )
+    assert 0.0 < rel < 0.05
+
+    assert dispatch._prefill_linear_backend(linear, x[:, :64]) is None
+    assert dispatch._prefill_linear_backend(linear, x[:, :1]) is None
+
+
+@requires_kernels
+@pytest.mark.parametrize("head_bits, tagged", [(8, False), (4, True)])
+def test_q8_mtp_head_not_tagged(head_bits, tagged):
+    import mlx.nn as nn
+
+    from omlx.patches import qwen35_oq_a8 as dispatch
+
+    class Model(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.proj = _quantized_linear(256, 128, 8)
+            self.head = nn.Module()
+            self.head.proj = _quantized_linear(256, 128, head_bits)
+
+        def get_mtp_module(self):
+            return self.head
+
+    model = Model()
+    dispatch.apply_qwen35_oq_a8_patch(model, min_tokens=64)
+
+    assert dispatch._config_for(model.proj) is not None
+    assert (dispatch._config_for(model.head.proj) is not None) is tagged
