@@ -115,6 +115,7 @@ NATIVE_SYMBOLS = (
     "qwen35_oq_a8_qmm_t",
     "qwen35_oq_a8_decode_weights",
     "qwen35_oq_a8_stage_a_v8",
+    "qwen35_oq_a8_stage_a_natural",
 )
 
 
@@ -1213,7 +1214,7 @@ def qwen35_moe_weighted_sum(
     raise RuntimeError("qwen35_moe_weighted_sum native kernel is unavailable")
 
 
-# --- oQ mixed-bit QxA8 (Q4/Q5, GS64, affine) on the M5 tensor units ---------
+# --- oQ mixed-bit QxA8 (Q4/Q5/Q8, GS64, affine) on the M5 tensor units ------
 
 OQ_A8_VARIANT = int(os.environ.get("OMLX_OQ_A8_VARIANT", "0"))
 OQ_A8_ACT_MODE = int(os.environ.get("OMLX_OQ_A8_ACT_MODE", "0"))
@@ -1297,7 +1298,8 @@ def qwen35_oq_a8_linear(
     stream=None,
 ) -> mx.array:
     """Convenience Stage-A + GEMM for a projection with no shared activation."""
-    qa, sa, ra = qwen35_oq_a8_stage_a_v8(x, act_mode, stream=stream)
+    stage = qwen35_oq_a8_stage_a_natural if bits == 8 else qwen35_oq_a8_stage_a_v8
+    qa, sa, ra = stage(x, act_mode, stream=stream)
     return qwen35_oq_a8_qmm_t(
         qa,
         sa,
@@ -1345,6 +1347,24 @@ def qwen35_oq_a8_stage_a_v8(
     return qa, sa, ra
 
 
+def qwen35_oq_a8_stage_a_natural(
+    x: mx.array,
+    act_mode: int = 0,
+    *,
+    stream=None,
+) -> tuple[mx.array, mx.array, mx.array]:
+    """Stage A for the Q8 kernel: activations stay in checkpoint K order.
+
+    Q4/Q5 use :func:`qwen35_oq_a8_stage_a_v8`. Only the group metadata is
+    transposed here, so there is no INT8 activation copy.
+    """
+    qa, sa, ra = qwen35_oq_a8_quantize(x, act_mode, stream=stream)
+    ra = mx.contiguous(ra.reshape(qa.size // qa.shape[-1], -1).T)
+    if act_mode != 0:
+        sa = mx.contiguous(sa.reshape(qa.size // qa.shape[-1], -1).T)
+    return qa, sa, ra
+
+
 def qwen35_oq_a8_decode_weights(
     weight: mx.array,
     bits: int,
@@ -1352,7 +1372,7 @@ def qwen35_oq_a8_decode_weights(
     *,
     stream=None,
 ) -> mx.array:
-    """Unpack Q4/Q5 codes to INT8.
+    """Unpack Q4/Q5/Q8 codes to INT8 (Q8 centered to q - 128).
 
     Test helper only: the production path never materializes unpacked weights
     in device memory.
