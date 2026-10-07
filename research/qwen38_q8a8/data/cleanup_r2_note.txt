@@ -1,5 +1,5 @@
-Cleanup round 2, 2026-10-08. Candidate c55951df9b4a7f403535a517b8271224d085c903 on upstream 25aebb3ee0bb052a264241953bef6820f102dd0b.
-Change since b1018b7b: test names and docstrings, one comment in omlx/patches/qwen35_oq_a8.py, and a spelling fix in the commit 2 message; no test removed or added, no code change.
+Cleanup round 2, 2026-10-08. Candidate 5f3c536817fde75b1a0e6105c390a49d450d69c9 on upstream 25aebb3ee0bb052a264241953bef6820f102dd0b.
+Change since b1018b7b: test names and docstrings, one comment in omlx/patches/qwen35_oq_a8.py, and a spelling fix in the commit 2 message, and an SPDX header on the new Q8 kernel file; no test removed or added, no other code change.
 Delta 1affe985 -> candidate under omlx/: Q8-specific env knobs removed (defaults resolve to variant 806, GS64 act mode, natural layout),
   MTP tagging helper folded into one traversal, comments, one ndim check moved into _q8_backend_candidate; kernel sources unchanged.
 Targeted tests (oq_a8, q4_mlp, m5_gather_qmm_a8, nax; native extension built): 270 passed.

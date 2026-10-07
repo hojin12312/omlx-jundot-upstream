@@ -87,7 +87,7 @@ This is a speed/memory tradeoff and is intentionally left as is. Reading the che
 
 ## Validation
 
-Candidate `c55951df9b4a7f403535a517b8271224d085c903` on upstream `25aebb3ee0bb052a264241953bef6820f102dd0b`. Performance, quality and memory measurements were taken on `1affe985` (based on `2238a444`); the candidate differs by the rebase and non-functional cleanup, and the Q8 kernel and Q4/Q5 sources are identical. One tool-smoke case was re-run on the cleanup candidate.
+Candidate `5f3c536817fde75b1a0e6105c390a49d450d69c9` on upstream `25aebb3ee0bb052a264241953bef6820f102dd0b`. Performance, quality and memory measurements were taken on `1affe985` (based on `2238a444`); the candidate differs by the rebase and non-functional cleanup, and the Q8 kernel (apart from a license header) and the Q4/Q5 sources are identical. One tool-smoke case was re-run on the cleanup candidate.
 
 | Check | Result |
 |---|---|
