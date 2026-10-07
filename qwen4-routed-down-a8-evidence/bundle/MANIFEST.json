@@ -1,0 +1,15 @@
+{
+ "files": {
+  "README.md": "610f793e60928f675b40ba4c418a72264162860fde63b35c3c736eb46ba664f1",
+  "analyze_matched.py": "6d229951a413d4268955b9959abfb153f020dc67c9c8fde112301510182b3dde",
+  "build_perf_corpus.py": "26837b6115d3f5700cb70afc9ae0d9c7e11c10a2f3e568ab4c3f19d6988267be",
+  "corpus.json": "2fcc28eb3d2e7a4ed71b5cf7bcb63ac70b4edbb84140ad6642b858955796bd52",
+  "guard_run.py": "9e9d4868ddc176f0199c515817b22da2650f2b8fe1720b153217b178afc8c83f",
+  "measure_pp2.py": "a8b57cb0b2dcedbf9d122f49a7e57bfc00a2afe9ed3c23a30edb02174a8dc2d0",
+  "measure_prod.py": "9a9359e67498620ae0a5cfd558a16cf006ec3802a3658afe5b981c5f35be12d0",
+  "memory_prod.py": "0157df60558ae058a0f3a34b6d1f7071230d93ebb3caf94412ac996c0ae2dc3d",
+  "prod_toggle/sitecustomize.py": "ca5695fdc75703d54163fd890e94d89c7b9143071e2ba835e848a41b2d1bfbfe",
+  "smoke_guard_on.py": "6d35f634e5f328f18aefad1f6054feb7d956af45d840db33449c1edf0168bf6e",
+  "smoke_tools.py": "2bb83f0b6e65257af6248d6772a5dc5db989c6a59914e7c9728ae630a8c0d0ca"
+ }
+}

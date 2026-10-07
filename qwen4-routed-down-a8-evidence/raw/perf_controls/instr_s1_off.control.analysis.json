@@ -1,0 +1,37 @@
+{
+ "runs": [
+  "instr_s1_off.json",
+  "instr_s1_on.json",
+  "instr_s2_off.json",
+  "instr_s2_on.json"
+ ],
+ "lengths": {
+  "32768": {
+   "triplets": 6,
+   "pp_mean": {
+    "off": 2734.815088631149,
+    "on": 2804.154258491224
+   },
+   "ttft_median": {
+    "off": 12.000332739251462,
+    "on": 11.702423760249076
+   },
+   "ratios": {
+    "on/off": {
+     "gain_pct": 2.5336796281553164,
+     "ci_pct": [
+      1.8199262925629345,
+      3.2474329637476984
+     ],
+     "n": 6
+    }
+   }
+  }
+ },
+ "analysis_sha256_of_inputs": {
+  "instr_s1_off.json": "559a8c0093b28cb74e5b63a1c41991f2dcf07d98ffb0e28d3712e005aa9bb12f",
+  "instr_s1_on.json": "c00031fa0efe099ff421060663cd6d81351bf4406f470fdd893b6a024973571c",
+  "instr_s2_off.json": "74f45645297926ed6309b2f1306837f670c5c3ec0e5d0b630cf0097a586cf9fd",
+  "instr_s2_on.json": "73a1a3ccfe85e942a02d92b2b0e820291fbeb7b1f9a515d841fe0a5de084127f"
+ }
+}

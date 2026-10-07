@@ -1,0 +1,12 @@
+tools: ruff 0.16.10, black, 25.11.0 (compiled: yes); base=4b6b4458a53dfb1a3c6ce2af7379f75ce13e24bd candidate=2d313a591fca71fe29a6746b70f0056d514e8a42
+changed python files: omlx/model_settings.py omlx/patches/m5_gather_qmm_a8.py omlx/patches/qwen35_moe_gate_up.py omlx/patches/qwen35_moe_weighted_sum.py tests/test_m5_gather_qmm_a8.py
+all changed files: omlx/admin/i18n/en.json omlx/model_settings.py omlx/patches/m5_gather_qmm_a8.py omlx/patches/qwen35_moe_gate_up.py omlx/patches/qwen35_moe_weighted_sum.py tests/test_m5_gather_qmm_a8.py 
+ruff findings: base 123  candidate 123  new 0  resolved 0
+black (changed lines only) ok: omlx/model_settings.py
+black (changed lines only) ok: omlx/patches/m5_gather_qmm_a8.py
+black (changed lines only) ok: omlx/patches/qwen35_moe_gate_up.py
+black (changed lines only) ok: omlx/patches/qwen35_moe_weighted_sum.py
+black (changed lines only) ok: tests/test_m5_gather_qmm_a8.py
+git diff --check: ok
+node --check dashboard.js: ok
+i18n key sets identical base vs HEAD in all 10 locale files: True

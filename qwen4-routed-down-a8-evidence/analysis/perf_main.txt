@@ -1,0 +1,42 @@
+paired_1.json: tag=paired_1 mode=paired first=b0 nonce_set=paired_1 tree=2d313a59 timed=50 invalid=2 {'no token text in the stream': 4, 'completion_tokens=0': 4}
+paired_2.json: tag=paired_2 mode=paired first=b1 nonce_set=paired_2 tree=2d313a59 timed=48 invalid=0 {}
+
+== 16K  pairs=12  prompt tokens 16376..16382
+   PP/s b0 2846.6  b1 2899.7   gain +1.92%  95% t-CI [+0.73%, +3.11%]  min/max -3.48%/+4.22%  b1 faster in 11/12
+   per run: paired_1 +1.77% (n=6), paired_2 +2.07% (n=6)   by order: b0 first +1.29% (n=6), b1 first +2.55% (n=6)
+   median TTFT b0 5.83 s  b1 5.71 s   (mean 5.76 / 5.65)
+   coverage b0: down results/req [0]  down launches (G10 mode2) [0]  gate_up results [96]  gate_up launches (G40 mode1) [96]  max rows per Down call 0
+   coverage b1: down results/req [96]  down launches (G10 mode2) [96]  gate_up results [96]  gate_up launches (G40 mode1) [96]  max rows per Down call 81920
+
+== 32K  pairs=12  prompt tokens 32756..32761
+   PP/s b0 2679.1  b1 2733.5   gain +2.03%  95% t-CI [+1.88%, +2.19%]  min/max +1.61%/+2.35%  b1 faster in 12/12
+   per run: paired_1 +2.02% (n=6), paired_2 +2.05% (n=6)   by order: b0 first +1.95% (n=6), b1 first +2.12% (n=6)
+   median TTFT b0 12.23 s  b1 12.01 s   (mean 12.23 / 11.99)
+   coverage b0: down results/req [0]  down launches (G10 mode2) [0]  gate_up results [192]  gate_up launches (G40 mode1) [192]  max rows per Down call 0
+   coverage b1: down results/req [192]  down launches (G10 mode2) [192]  gate_up results [192]  gate_up launches (G40 mode1) [192]  max rows per Down call 81920
+
+== 64K  pairs=12  prompt tokens 65514..65523
+   PP/s b0 2570.5  b1 2620.0   gain +1.93%  95% t-CI [+1.75%, +2.10%]  min/max +1.52%/+2.30%  b1 faster in 12/12
+   per run: paired_1 +1.83% (n=6), paired_2 +2.02% (n=6)   by order: b0 first +1.71% (n=6), b1 first +2.15% (n=6)
+   median TTFT b0 25.56 s  b1 25.05 s   (mean 25.49 / 25.01)
+   coverage b0: down results/req [0]  down launches (G10 mode2) [0]  gate_up results [384]  gate_up launches (G40 mode1) [384]  max rows per Down call 0
+   coverage b1: down results/req [384]  down launches (G10 mode2) [384]  gate_up results [384]  gate_up launches (G40 mode1) [384]  max rows per Down call 81920
+
+== 128K  pairs=12  prompt tokens 131033..131042
+   PP/s b0 2433.5  b1 2480.4   gain +1.93%  95% t-CI [+1.76%, +2.09%]  min/max +1.49%/+2.24%  b1 faster in 12/12
+   per run: paired_1 +1.92% (n=6), paired_2 +1.94% (n=6)   by order: b0 first +1.73% (n=6), b1 first +2.12% (n=6)
+   median TTFT b0 53.87 s  b1 52.90 s   (mean 53.85 / 52.83)
+   coverage b0: down results/req [0]  down launches (G10 mode2) [0]  gate_up results [768]  gate_up launches (G40 mode1) [768]  max rows per Down call 0
+   coverage b1: down results/req [768]  down launches (G10 mode2) [768]  gate_up results [768]  gate_up launches (G40 mode1) [768]  max rows per Down call 81920
+
+PERF_ROWS:
+| 16K | 2846.6 | 2899.7 | +1.92% [+0.73%, +3.11%] |
+| 32K | 2679.1 | 2733.5 | +2.03% [+1.88%, +2.19%] |
+| 64K | 2570.5 | 2620.0 | +1.93% [+1.75%, +2.10%] |
+| 128K | 2433.5 | 2480.4 | +1.93% [+1.76%, +2.09%] |
+TTFT 16K: A16 5.83 s, A8 5.71 s
+TTFT 32K: A16 12.23 s, A8 12.01 s
+TTFT 64K: A16 25.56 s, A8 25.05 s
+TTFT 128K: A16 53.87 s, A8 52.90 s
+
+receipt keys: ['runs', 'lengths', 'analysis_sha256_of_inputs']

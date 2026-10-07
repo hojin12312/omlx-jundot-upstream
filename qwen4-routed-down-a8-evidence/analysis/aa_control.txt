@@ -1,0 +1,23 @@
+aa_1.json: tag=aa_1 mode=aa first=b0 nonce_set=aa_1 tree=2d313a59 timed=24 invalid=0 {}
+
+== 32K  pairs=6  prompt tokens 32758..32762
+   PP/s b0 2672.0  b1 2670.7   gain -0.04%  95% t-CI [-0.64%, +0.56%]  min/max -0.91%/+0.76%  b1 faster in 3/6
+   per run: aa_1 -0.04% (n=6)   by order: b0 first -0.47% (n=3), b1 first +0.39% (n=3)
+   median TTFT b0 12.29 s  b1 12.31 s   (mean 12.26 / 12.27)
+   coverage b0: down results/req [0]  down launches (G10 mode2) [0]  gate_up results [192]  gate_up launches (G40 mode1) [192]  max rows per Down call 0
+   coverage b1: down results/req [0]  down launches (G10 mode2) [0]  gate_up results [192]  gate_up launches (G40 mode1) [192]  max rows per Down call 0
+
+== 128K  pairs=6  prompt tokens 131038..131043
+   PP/s b0 2455.7  b1 2455.9   gain +0.01%  95% t-CI [-0.15%, +0.17%]  min/max -0.16%/+0.22%  b1 faster in 3/6
+   per run: aa_1 +0.01% (n=6)   by order: b0 first -0.12% (n=3), b1 first +0.14% (n=3)
+   median TTFT b0 53.39 s  b1 53.35 s   (mean 53.36 / 53.36)
+   coverage b0: down results/req [0]  down launches (G10 mode2) [0]  gate_up results [768]  gate_up launches (G40 mode1) [768]  max rows per Down call 0
+   coverage b1: down results/req [0]  down launches (G10 mode2) [0]  gate_up results [768]  gate_up launches (G40 mode1) [768]  max rows per Down call 0
+
+PERF_ROWS:
+| 32K | 2672.0 | 2670.7 | -0.04% [-0.64%, +0.56%] |
+| 128K | 2455.7 | 2455.9 | +0.01% [-0.15%, +0.17%] |
+TTFT 32K: A16 12.29 s, A8 12.31 s
+TTFT 128K: A16 53.39 s, A8 53.35 s
+
+receipt keys: ['runs', 'lengths', 'analysis_sha256_of_inputs']

@@ -1,0 +1,15 @@
+instr_s1_off.json: label=off hook=off tree=2d313a59 env_down=0 nonce_set=instr timed=6 invalid=0
+instr_s1_on.json: label=on hook=off tree=2d313a59 env_down=1 nonce_set=instr timed=6 invalid=0
+instr_s2_on.json: label=on hook=off tree=2d313a59 env_down=1 nonce_set=instr timed=6 invalid=0
+instr_s2_off.json: label=off hook=off tree=2d313a59 env_down=0 nonce_set=instr timed=6 invalid=0
+
+== 32K  matched triplets (same request bytes under every label): 6
+   PP/s off 2734.8  on 2804.2   median TTFT off 12.00s  on 11.70s
+   on/off: +2.53%  95% t-CI [+1.82%, +3.25%]  n=6
+   coverage off: no counters (hook off)
+   coverage on: no counters (hook off)
+
+REFERENCE_CONTROL_ROWS:
+| 32K | 2734.8 | 2804.2 |
+
+receipt keys: ['runs', 'lengths', 'analysis_sha256_of_inputs']

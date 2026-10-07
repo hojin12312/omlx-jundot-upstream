@@ -1,0 +1,30 @@
+ctl_s1_ref.json: label=ref hook=on tree=4b6b4458 env_down=None nonce_set=control timed=14 invalid=2
+ctl_s1_off.json: label=off hook=on tree=2d313a59 env_down=0 nonce_set=control timed=14 invalid=2
+ctl_s1_on.json: label=on hook=on tree=2d313a59 env_down=1 nonce_set=control timed=12 invalid=0
+ctl_s2_on.json: label=on hook=on tree=2d313a59 env_down=1 nonce_set=control timed=12 invalid=0
+ctl_s2_off.json: label=off hook=on tree=2d313a59 env_down=0 nonce_set=control timed=14 invalid=2
+ctl_s2_ref.json: label=ref hook=on tree=4b6b4458 env_down=None nonce_set=control timed=14 invalid=2
+
+== 8K  matched triplets (same request bytes under every label): 6
+   PP/s ref 3118.7  off 3122.9  on 3188.5   median TTFT ref 2.63s  off 2.63s  on 2.57s
+   off/ref: +0.13%  95% t-CI [-0.15%, +0.42%]  n=6
+   on/ref: +2.24%  95% t-CI [+1.96%, +2.52%]  n=6
+   on/off: +2.10%  95% t-CI [+1.63%, +2.58%]  n=6
+   coverage ref: down results/req [0]  down launches (G10 mode2) [0]  gate_up results [48]  gate_up launches (G40 mode1) [0]  max rows per Down call 0
+   coverage off: down results/req [0]  down launches (G10 mode2) [0]  gate_up results [48]  gate_up launches (G40 mode1) [48]  max rows per Down call 0
+   coverage on: down results/req [48]  down launches (G10 mode2) [48]  gate_up results [48]  gate_up launches (G40 mode1) [48]  max rows per Down call 81910
+
+== 32K  matched triplets (same request bytes under every label): 5
+   PP/s ref 2794.2  off 2804.8  on 2864.3   median TTFT ref 11.75s  off 11.71s  on 11.44s
+   off/ref: +0.38%  95% t-CI [+0.34%, +0.41%]  n=5
+   on/ref: +2.51%  95% t-CI [+2.15%, +2.86%]  n=5
+   on/off: +2.12%  95% t-CI [+1.78%, +2.46%]  n=5
+   coverage ref: down results/req [0]  down launches (G10 mode2) [0]  gate_up results [192]  gate_up launches (G40 mode1) [0]  max rows per Down call 0
+   coverage off: down results/req [0]  down launches (G10 mode2) [0]  gate_up results [192]  gate_up launches (G40 mode1) [192]  max rows per Down call 0
+   coverage on: down results/req [192]  down launches (G10 mode2) [192]  gate_up results [192]  gate_up launches (G40 mode1) [192]  max rows per Down call 81920
+
+REFERENCE_CONTROL_ROWS:
+| 8K | 3118.7 | 3122.9 | 3188.5 |
+| 32K | 2794.2 | 2804.8 | 2864.3 |
+
+receipt keys: ['runs', 'lengths', 'analysis_sha256_of_inputs']

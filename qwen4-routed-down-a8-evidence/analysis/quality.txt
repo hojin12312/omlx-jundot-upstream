@@ -1,0 +1,98 @@
+sequences=36 (primary 24, extra 12), positions=163840
+control KL max (Q0 vs Q0 again) = 0.0   all finite = True
+coverage by pass:
+  a16   gate_up=    0 down=    0 down_rows=        0 dense_qmm=2200 stage_a=2200 stage_mode={}
+  ref   gate_up= 1920 down=    0 down_rows=        0 dense_qmm=2200 stage_a=4121 stage_mode={'G40p:1': 3841}
+  cand  gate_up= 1920 down= 1920 down_rows= 78643200 dense_qmm=2200 stage_a=6042 stage_mode={'G40p:1': 3840, 'G10:2': 3841}
+  ctrl  gate_up= 1920 down=    0 down_rows=        0 dense_qmm=2200 stage_a=4120 stage_mode={'G40p:1': 3840}
+  off   gate_up=    0 down=    0 down_rows=        0 dense_qmm=0 stage_a=0 stage_mode={}
+greedy identical over 36 sequences: Q0 vs Q1 16, all A16 vs Q1 15
+
+=== inc: Q0 -> Q1 (Down A8 only) ===
+  primary corpus (24)                n=24 pos=114688 dNLL=+0.00083 CI[-0.0033,+0.0049] boot[-0.0024,+0.0047] PPLx1.00083 top1=0.9156 KL=0.0765 (positive 12/24)
+  extra structured (12)              n=12 pos= 49152 dNLL=-0.01046 CI[-0.0348,+0.0139] boot[-0.0369,+0.0086] PPLx0.98960 top1=0.9258 KL=0.1068 (positive 7/12)
+  union (36)                         n=36 pos=163840 dNLL=-0.00256 CI[-0.0111,+0.0060] boot[-0.0112,+0.0038] PPLx0.99744 top1=0.9186 KL=0.0856 (positive 19/36)
+  tool-like + structured (all 16)    n=16 pos= 65536 dNLL=-0.00477 CI[-0.0240,+0.0145] boot[-0.0258,+0.0109] PPLx0.99524 top1=0.8926 KL=0.1833 (positive 10/16)
+    category english                 n= 4 pos= 16384 dNLL=+0.00056 CI[-0.0035,+0.0046] boot[-0.0035,+0.0030] PPLx1.00056 top1=0.9163 KL=0.0315 (positive 3/4)
+    category korean                  n= 4 pos= 16384 dNLL=-0.00234 CI[-0.0104,+0.0057] boot[-0.0096,+0.0036] PPLx0.99766 top1=0.9343 KL=0.0219 (positive 2/4)
+    category code                    n= 4 pos= 16384 dNLL=-0.00064 CI[-0.0052,+0.0039] boot[-0.0044,+0.0031] PPLx0.99936 top1=0.9605 KL=0.0164 (positive 2/4)
+    category reasoning               n= 4 pos= 16384 dNLL=-0.00308 CI[-0.0093,+0.0031] boot[-0.0077,+0.0030] PPLx0.99693 top1=0.9357 KL=0.0115 (positive 1/4)
+    category tool-like               n= 4 pos= 16384 dNLL=+0.01230 CI[-0.0084,+0.0330] boot[-0.0053,+0.0299] PPLx1.01238 top1=0.7930 KL=0.4128 (positive 3/4)
+    category long-prose              n= 4 pos= 32768 dNLL=-0.00051 CI[-0.0030,+0.0019] boot[-0.0025,+0.0017] PPLx0.99949 top1=0.9346 KL=0.0207 (positive 1/4)
+    category tool-agent              n= 4 pos= 16384 dNLL=-0.03516 CI[-0.1069,+0.0366] boot[-0.0929,+0.0225] PPLx0.96545 top1=0.8563 KL=0.3010 (positive 2/4)
+    category json-reply              n= 4 pos= 16384 dNLL=+0.00154 CI[-0.0114,+0.0145] boot[-0.0105,+0.0134] PPLx1.00154 top1=0.9472 KL=0.0116 (positive 3/4)
+    category schema-code             n= 4 pos= 16384 dNLL=+0.00224 CI[-0.0014,+0.0059] boot[-0.0004,+0.0056] PPLx1.00225 top1=0.9739 KL=0.0078 (positive 2/4)
+
+=== cum: routed A16 (dense A8 on) -> Q1 (Gate+Up A8 + Down A8) ===
+  primary corpus (24)                n=24 pos=114688 dNLL=+0.00401 CI[-0.0035,+0.0115] boot[-0.0009,+0.0116] PPLx1.00402 top1=0.9168 KL=0.0766 (positive 13/24)
+  extra structured (12)              n=12 pos= 49152 dNLL=-0.01164 CI[-0.0300,+0.0068] boot[-0.0316,+0.0031] PPLx0.98843 top1=0.9256 KL=0.1065 (positive 7/12)
+  union (36)                         n=36 pos=163840 dNLL=-0.00068 CI[-0.0088,+0.0075] boot[-0.0085,+0.0063] PPLx0.99932 top1=0.9194 KL=0.0856 (positive 20/36)
+  tool-like + structured (all 16)    n=16 pos= 65536 dNLL=-0.00241 CI[-0.0209,+0.0161] boot[-0.0208,+0.0151] PPLx0.99759 top1=0.8937 KL=0.1830 (positive 10/16)
+    category english                 n= 4 pos= 16384 dNLL=-0.00131 CI[-0.0067,+0.0040] boot[-0.0053,+0.0035] PPLx0.99869 top1=0.9178 KL=0.0323 (positive 1/4)
+    category korean                  n= 4 pos= 16384 dNLL=-0.00037 CI[-0.0044,+0.0037] boot[-0.0040,+0.0032] PPLx0.99963 top1=0.9348 KL=0.0227 (positive 2/4)
+    category code                    n= 4 pos= 16384 dNLL=-0.00019 CI[-0.0047,+0.0043] boot[-0.0038,+0.0034] PPLx0.99981 top1=0.9619 KL=0.0162 (positive 2/4)
+    category reasoning               n= 4 pos= 16384 dNLL=+0.00434 CI[-0.0001,+0.0088] boot[+0.0006,+0.0081] PPLx1.00435 top1=0.9344 KL=0.0119 (positive 3/4)
+    category tool-like               n= 4 pos= 16384 dNLL=+0.02527 CI[-0.0173,+0.0678] boot[-0.0062,+0.0657] PPLx1.02559 top1=0.7982 KL=0.4125 (positive 3/4)
+    category long-prose              n= 4 pos= 32768 dNLL=+0.00018 CI[-0.0006,+0.0010] boot[-0.0005,+0.0009] PPLx1.00018 top1=0.9352 KL=0.0204 (positive 2/4)
+    category tool-agent              n= 4 pos= 16384 dNLL=-0.03578 CI[-0.0822,+0.0106] boot[-0.0827,+0.0012] PPLx0.96486 top1=0.8588 KL=0.2987 (positive 1/4)
+    category json-reply              n= 4 pos= 16384 dNLL=-0.00005 CI[-0.0212,+0.0211] boot[-0.0217,+0.0138] PPLx0.99995 top1=0.9449 KL=0.0132 (positive 3/4)
+    category schema-code             n= 4 pos= 16384 dNLL=+0.00092 CI[-0.0009,+0.0028] boot[-0.0008,+0.0022] PPLx1.00092 top1=0.9730 KL=0.0075 (positive 3/4)
+
+=== base: routed A16 (dense A8 on) -> Q0 (#4320) ===
+  primary corpus (24)                n=24 pos=114688 dNLL=+0.00319 CI[-0.0020,+0.0084] boot[-0.0007,+0.0083] PPLx1.00319 top1=0.9192 KL=0.0723 (positive 13/24)
+  extra structured (12)              n=12 pos= 49152 dNLL=-0.00118 CI[-0.0143,+0.0120] boot[-0.0139,+0.0112] PPLx0.99882 top1=0.9289 KL=0.1006 (positive 5/12)
+  union (36)                         n=36 pos=163840 dNLL=+0.00188 CI[-0.0036,+0.0074] boot[-0.0030,+0.0069] PPLx1.00188 top1=0.9221 KL=0.0808 (positive 18/36)
+  tool-like + structured (all 16)    n=16 pos= 65536 dNLL=+0.00236 CI[-0.0100,+0.0147] boot[-0.0095,+0.0143] PPLx1.00236 top1=0.8967 KL=0.1739 (positive 7/16)
+    category english                 n= 4 pos= 16384 dNLL=-0.00187 CI[-0.0061,+0.0024] boot[-0.0056,+0.0016] PPLx0.99813 top1=0.9224 KL=0.0289 (positive 1/4)
+    category korean                  n= 4 pos= 16384 dNLL=+0.00197 CI[-0.0050,+0.0090] boot[-0.0039,+0.0079] PPLx1.00197 top1=0.9371 KL=0.0197 (positive 2/4)
+    category code                    n= 4 pos= 16384 dNLL=+0.00045 CI[-0.0030,+0.0039] boot[-0.0026,+0.0035] PPLx1.00045 top1=0.9619 KL=0.0153 (positive 2/4)
+    category reasoning               n= 4 pos= 16384 dNLL=+0.00741 CI[+0.0031,+0.0117] boot[+0.0036,+0.0112] PPLx1.00744 top1=0.9352 KL=0.0116 (positive 4/4)
+    category tool-like               n= 4 pos= 16384 dNLL=+0.01297 CI[-0.0178,+0.0437] boot[-0.0122,+0.0381] PPLx1.01305 top1=0.8004 KL=0.3937 (positive 2/4)
+    category long-prose              n= 4 pos= 32768 dNLL=+0.00069 CI[-0.0011,+0.0025] boot[-0.0008,+0.0022] PPLx1.00069 top1=0.9386 KL=0.0185 (positive 2/4)
+    category tool-agent              n= 4 pos= 16384 dNLL=-0.00062 CI[-0.0355,+0.0342] boot[-0.0297,+0.0285] PPLx0.99938 top1=0.8616 KL=0.2823 (positive 2/4)
+    category json-reply              n= 4 pos= 16384 dNLL=-0.00159 CI[-0.0276,+0.0244] boot[-0.0235,+0.0211] PPLx0.99841 top1=0.9484 KL=0.0128 (positive 2/4)
+    category schema-code             n= 4 pos= 16384 dNLL=-0.00133 CI[-0.0043,+0.0016] boot[-0.0041,+0.0014] PPLx0.99867 top1=0.9765 KL=0.0067 (positive 1/4)
+
+=== tot: A8 setting OFF (dense and routed A16) -> Q1 (what the setting does in total) ===
+  primary corpus (24)                n=24 pos=114688 dNLL=+0.00590 CI[-0.0020,+0.0138] boot[+0.0000,+0.0135] PPLx1.00591 top1=0.9178 KL=0.0717 (positive 14/24)
+  extra structured (12)              n=12 pos= 49152 dNLL=-0.01264 CI[-0.0358,+0.0105] boot[-0.0360,+0.0084] PPLx0.98744 top1=0.9267 KL=0.1028 (positive 5/12)
+  union (36)                         n=36 pos=163840 dNLL=+0.00034 CI[-0.0093,+0.0100] boot[-0.0086,+0.0086] PPLx1.00034 top1=0.9204 KL=0.0811 (positive 19/36)
+  tool-like + structured (all 16)    n=16 pos= 65536 dNLL=+0.00157 CI[-0.0203,+0.0234] boot[-0.0202,+0.0217] PPLx1.00157 top1=0.8953 KL=0.1732 (positive 9/16)
+    category english                 n= 4 pos= 16384 dNLL=-0.00415 CI[-0.0097,+0.0014] boot[-0.0089,+0.0006] PPLx0.99586 top1=0.9196 KL=0.0311 (positive 2/4)
+    category korean                  n= 4 pos= 16384 dNLL=+0.00077 CI[-0.0060,+0.0075] boot[-0.0052,+0.0058] PPLx1.00077 top1=0.9329 KL=0.0225 (positive 3/4)
+    category code                    n= 4 pos= 16384 dNLL=-0.00184 CI[-0.0051,+0.0014] boot[-0.0046,+0.0009] PPLx0.99816 top1=0.9625 KL=0.0153 (positive 1/4)
+    category reasoning               n= 4 pos= 16384 dNLL=+0.00021 CI[-0.0036,+0.0040] boot[-0.0022,+0.0040] PPLx1.00021 top1=0.9338 KL=0.0101 (positive 1/4)
+    category tool-like               n= 4 pos= 16384 dNLL=+0.04418 CI[+0.0201,+0.0682] boot[+0.0233,+0.0650] PPLx1.04517 top1=0.8013 KL=0.3842 (positive 4/4)
+    category long-prose              n= 4 pos= 32768 dNLL=+0.00106 CI[-0.0025,+0.0046] boot[-0.0018,+0.0039] PPLx1.00106 top1=0.9371 KL=0.0195 (positive 3/4)
+    category tool-agent              n= 4 pos= 16384 dNLL=-0.02851 CI[-0.0994,+0.0424] boot[-0.0872,+0.0301] PPLx0.97189 top1=0.8600 KL=0.2893 (positive 1/4)
+    category json-reply              n= 4 pos= 16384 dNLL=-0.01101 CI[-0.0273,+0.0053] boot[-0.0247,+0.0027] PPLx0.98905 top1=0.9462 KL=0.0119 (positive 1/4)
+    category schema-code             n= 4 pos= 16384 dNLL=+0.00161 CI[-0.0001,+0.0033] boot[+0.0001,+0.0031] PPLx1.00161 top1=0.9738 KL=0.0073 (positive 3/4)
+
+=== tot0: A8 setting OFF -> Q0 (#4320 with the setting on) ===
+  primary corpus (24)                n=24 pos=114688 dNLL=+0.00507 CI[-0.0001,+0.0102] boot[+0.0011,+0.0100] PPLx1.00508 top1=0.9207 KL=0.0686 (positive 16/24)
+  extra structured (12)              n=12 pos= 49152 dNLL=-0.00218 CI[-0.0134,+0.0091] boot[-0.0122,+0.0092] PPLx0.99782 top1=0.9290 KL=0.0939 (positive 3/12)
+  union (36)                         n=36 pos=163840 dNLL=+0.00290 CI[-0.0022,+0.0080] boot[-0.0016,+0.0077] PPLx1.00290 top1=0.9232 KL=0.0762 (positive 19/36)
+  tool-like + structured (all 16)    n=16 pos= 65536 dNLL=+0.00633 CI[-0.0049,+0.0176] boot[-0.0044,+0.0173] PPLx1.00635 top1=0.8984 KL=0.1637 (positive 7/16)
+    category english                 n= 4 pos= 16384 dNLL=-0.00471 CI[-0.0100,+0.0005] boot[-0.0101,-0.0018] PPLx0.99530 top1=0.9251 KL=0.0286 (positive 0/4)
+    category korean                  n= 4 pos= 16384 dNLL=+0.00311 CI[-0.0015,+0.0077] boot[-0.0006,+0.0068] PPLx1.00311 top1=0.9370 KL=0.0192 (positive 3/4)
+    category code                    n= 4 pos= 16384 dNLL=-0.00120 CI[-0.0041,+0.0017] boot[-0.0035,+0.0011] PPLx0.99880 top1=0.9639 KL=0.0139 (positive 2/4)
+    category reasoning               n= 4 pos= 16384 dNLL=+0.00328 CI[+0.0005,+0.0061] boot[+0.0009,+0.0061] PPLx1.00329 top1=0.9365 KL=0.0092 (positive 4/4)
+    category tool-like               n= 4 pos= 16384 dNLL=+0.03187 CI[+0.0262,+0.0375] boot[+0.0286,+0.0375] PPLx1.03239 top1=0.8066 KL=0.3731 (positive 4/4)
+    category long-prose              n= 4 pos= 32768 dNLL=+0.00157 CI[-0.0012,+0.0043] boot[-0.0001,+0.0043] PPLx1.00157 top1=0.9377 KL=0.0182 (positive 3/4)
+    category tool-agent              n= 4 pos= 16384 dNLL=+0.00665 CI[-0.0265,+0.0398] boot[-0.0226,+0.0359] PPLx1.00667 top1=0.8651 KL=0.2648 (positive 2/4)
+    category json-reply              n= 4 pos= 16384 dNLL=-0.01255 CI[-0.0196,-0.0055] boot[-0.0189,-0.0072] PPLx0.98753 top1=0.9470 KL=0.0106 (positive 0/4)
+    category schema-code             n= 4 pos= 16384 dNLL=-0.00064 CI[-0.0029,+0.0016] boot[-0.0029,+0.0012] PPLx0.99936 top1=0.9749 KL=0.0062 (positive 1/4)
+
+per sequence (inc, sorted by delta):
+  #19 tool-like  transcript-3               n=4096  dNLL=+0.03374 z=+1.40 KL=0.4937 top1=0.7786 cum dNLL=+0.08504
+  #17 tool-like  transcript-1               n=4096  dNLL=+0.02611 z=+1.11 KL=0.4347 top1=0.7822 cum dNLL=+0.00750
+  #26 tool-agent agent-2                    n=4096  dNLL=+0.02598 z=+1.10 KL=0.3350 top1=0.8469 cum dNLL=+0.01053
+  #24 tool-agent agent-0                    n=4096  dNLL=+0.01911 z=+0.84 KL=0.2732 top1=0.8706 cum dNLL=-0.02487
+  #29 json-reply json-1                     n=4096  dNLL=+0.01757 z=+0.78 KL=0.0095 top1=0.9504 cum dNLL=+0.00893
+  #34 schema-code model_discovery.py         n=4096  dNLL=+0.00751 z=+0.39 KL=0.0076 top1=0.9722 cum dNLL=+0.00246
+  #15 reasoning  synthetic-3                n=4096  dNLL=+0.00576 z=+0.33 KL=0.0116 top1=0.9382 cum dNLL=+0.00974
+  #5  korean     ko-stream[4096:8192]       n=4096  dNLL=+0.00555 z=+0.32 KL=0.0236 top1=0.9358 cum dNLL=-0.00107
+  #9  code       vlm.py                     n=4096  dNLL=+0.00433 z=+0.27 KL=0.0154 top1=0.9612 cum dNLL=+0.00205
+  #2  english    docs-stream[8192:12288]    n=4096  dNLL=+0.00325 z=+0.23 KL=0.0429 top1=0.9009 cum dNLL=+0.00621
+  #1  english    docs-stream[4096:8192]     n=4096  dNLL=+0.00277 z=+0.21 KL=0.0329 top1=0.9124 cum dNLL=-0.00462
+  #20 long-prose BTW-SIDE-AGENT-DESIGN.md   n=8192  dNLL=+0.00269 z=+0.21 KL=0.0275 top1=0.9180 cum dNLL=+0.00123

@@ -1,0 +1,14 @@
+== native default (candidate 2d313a59 vs reference 4b6b4458)
+candidate {'tests': '17822', 'failures': '5', 'errors': '0', 'skipped': '384'} reference {'tests': '17765', 'failures': '5', 'errors': '0', 'skipped': '384'}
+failing ids candidate: 5 reference: 5 | only candidate: [] | only reference: []
+same id and same message after masking object addresses: 5 of 5
+  tests.test_deepseek_v4_dspark::test_dspark_ring_gemm_matches_materialized_decode_rows[2]
+  tests.test_deepseek_v4_dspark::test_dspark_ring_gemm_matches_materialized_decode_rows[3]
+  tests.test_deepseek_v4_dspark::test_dspark_ring_gemm_matches_materialized_decode_rows[5]
+  tests.test_deepseek_v4_dspark::test_dspark_ring_gemm_matches_materialized_decode_rows[6]
+  tests.test_deepseek_v4_dspark::test_dspark_ring_sparse_attention_matches_materialized_path[5]
+
+== CI-equivalent
+candidate {'tests': '17822', 'failures': '0', 'errors': '0', 'skipped': '844'} reference {'tests': '17765', 'failures': '0', 'errors': '0', 'skipped': '795'}
+failing ids candidate: 0 reference: 0 | only candidate: [] | only reference: []
+same id and same message after masking object addresses: 0 of 0

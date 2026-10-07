@@ -1,0 +1,1042 @@
+{
+  "schema": 2,
+  "tag": "ctl_s2_on",
+  "mode": "single",
+  "lengths": [
+    8192,
+    32768
+  ],
+  "samples": 6,
+  "first": "b0",
+  "nonce_set": "control",
+  "label": "on",
+  "hook": "on",
+  "design": "matched prompt per pair, per-pair condition order AB/BA, salted prompts, prefix cache off",
+  "argv": [
+    "<WORK>/bundle/measure_prod.py",
+    "--python",
+    "<WORK>/venv_repro2/bin/python",
+    "--workdir",
+    "<WORK>/runs2",
+    "--model-dir",
+    "<MODEL_ROOT>",
+    "--checkpoint",
+    "<MODEL_ROOT>/qwen3.8-flash-next-oQ4e-mtp",
+    "--model",
+    "qwen3.8-flash-next-oQ4e-mtp",
+    "--corpus",
+    "<WORK>/bundle/corpus.json",
+    "--tag",
+    "ctl_s2_on",
+    "--out",
+    "<WORK>/runs2/ctl_s2_on.json",
+    "--tree",
+    "<WORK>/repro",
+    "--mode",
+    "single",
+    "--nonce-set",
+    "control",
+    "--lengths",
+    "8192",
+    "32768",
+    "--samples",
+    "6",
+    "--label",
+    "on",
+    "--down-env",
+    "1"
+  ],
+  "tree": "<WORK>/repro",
+  "tree_git_head": "2d313a591fca71fe29a6746b70f0056d514e8a42",
+  "env": {
+    "PYTHONPATH": "<WORK>/repro:<WORK>/bundle/prod_toggle",
+    "HOME": "<WORK>/runs2/prod_ctl_s2_on/home",
+    "OMLX_PROD_CTL": "<WORK>/runs2/prod_ctl_s2_on/ctl",
+    "OMLX_M5_ROUTED_DOWN_A8": "1"
+  },
+  "settings": {
+    "version": 1.0,
+    "server": {
+      "host": "127.0.0.1",
+      "log_level": "info"
+    },
+    "model": {
+      "model_dir": "<MODEL_ROOT>",
+      "model_fallback": false
+    },
+    "cache": {
+      "enabled": false
+    },
+    "scheduler": {
+      "max_concurrent_requests": 1,
+      "chunked_prefill": true
+    },
+    "sampling": {
+      "temperature": 0.0,
+      "max_tokens": 4096
+    },
+    "auth": {
+      "api_key": null,
+      "skip_api_key_verification": true
+    },
+    "logging": {
+      "log_dir": "<WORK>/runs2/prod_ctl_s2_on/logs",
+      "retention_days": 1
+    },
+    "memory": {
+      "prefill_memory_guard": false
+    },
+    "huggingface": {
+      "hf_cache_enabled": false
+    }
+  },
+  "model_settings": {
+    "qwen35_oq_a8_enabled": true,
+    "qwen35_oq_a8_min_tokens": 128
+  },
+  "host": {
+    "hw_model": "Mac17,6",
+    "chip": "Apple M5 Max",
+    "memory_gib": 128.0,
+    "macos": "27.0.1",
+    "gpu_cores": 40
+  },
+  "versions": {
+    "omlx_file": "<WORK>/repro/omlx/__init__.py",
+    "python": "3.11.15",
+    "mlx": "0.32.3",
+    "mlx_lm": "0.31.4.dev132+g94cdcae13",
+    "tokenizers": "0.23.2"
+  },
+  "fingerprints": {
+    "omlx/patches/m5_gather_qmm_a8.py": "6add445caad7fc9badf109e96d25c7b16224921a18fdc055c04b7e459fdcc50b",
+    "omlx/patches/qwen35_moe_gate_up.py": "4bed72d78e32717a59fc7506b5a33c75d93dce8a6ccbe1121d38e26a377f892d",
+    "omlx/patches/qwen35_moe_weighted_sum.py": "407d55c377e58b603b1d6f9f582fe7b398efb1131c28b337e081d0738158ea69",
+    "omlx/custom_kernels/nax.py": "a8b99c77f82a1efff7e7258b0e18590b7fd81b3d380072e7a6dcd450cb4f9dac"
+  },
+  "corpus": {
+    "path": "<WORK>/bundle/corpus.json",
+    "tokens": 302250,
+    "sha256": "fa11d794cea95de0aa88966e77602aa0615173304ae3b69004ac60d42ed2ab62"
+  },
+  "prefill_memory_guard": false,
+  "measurements": [
+    {
+      "ttft_s": 27.05372904199612,
+      "token_seen": true,
+      "first_event_s": 20.23088899999857,
+      "events": 3,
+      "finish_reason": "length",
+      "total_s": 27.054028374994232,
+      "usage": {
+        "prompt_tokens": 8187,
+        "completion_tokens": 1,
+        "total_tokens": 8188,
+        "input_tokens": 8187,
+        "output_tokens": 1,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "model_load_duration": 20.21,
+        "time_to_first_token": 6.82,
+        "total_time": 6.82,
+        "prompt_eval_duration": 6.82,
+        "generation_duration": 0.0,
+        "prompt_tokens_per_second": 1199.95,
+        "generation_tokens_per_second": 5481.95
+      },
+      "prompt_tokens": 8187,
+      "completion_tokens": 1,
+      "cached_tokens": 0,
+      "cached_tokens_reported": true,
+      "cond": "on",
+      "phase": "warmup",
+      "sample": 0,
+      "attempt": 0,
+      "length_requested": 8192,
+      "nonce": "warm-8192",
+      "t": 1791359107.21362,
+      "set_gen": null,
+      "down_state_ack": null,
+      "request_body_sha256": "283a7c7d5d5efce710e6501ef1791b9a43ef9a91e78359de5feca684b12d00dc",
+      "pp_tokens_per_s": 302.62001912162026,
+      "power_before": "Now drawing from 'AC Power'",
+      "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+      "coverage": {
+        "counts": {
+          "down_a8_results": 48,
+          "down_a8_rows": 3929280,
+          "gate_up_a8_results": 48
+        },
+        "launch": {
+          "gate_up:G40:mode1": 49,
+          "down:G10:mode0": 1,
+          "down:G10:mode2": 49
+        },
+        "mode_query": {
+          "gate_up:G40:mode1": 97,
+          "down:G10:mode2": 97
+        },
+        "down_rows": {
+          "81860": 48
+        }
+      },
+      "valid": true
+    },
+    {
+      "ttft_s": 2.545910749999166,
+      "token_seen": true,
+      "first_event_s": 0.02637066699389834,
+      "events": 3,
+      "finish_reason": "length",
+      "total_s": 2.546144957996148,
+      "usage": {
+        "prompt_tokens": 8190,
+        "completion_tokens": 1,
+        "total_tokens": 8191,
+        "input_tokens": 8190,
+        "output_tokens": 1,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "time_to_first_token": 2.52,
+        "total_time": 2.52,
+        "prompt_eval_duration": 2.52,
+        "generation_duration": 0.0,
+        "prompt_tokens_per_second": 3250.63,
+        "generation_tokens_per_second": 6250.0
+      },
+      "prompt_tokens": 8190,
+      "completion_tokens": 1,
+      "cached_tokens": 0,
+      "cached_tokens_reported": true,
+      "cond": "on",
+      "phase": "timed",
+      "sample": 0,
+      "attempt": 0,
+      "length_requested": 8192,
+      "nonce": "prod-control-8192-0",
+      "t": 1791359110.761204,
+      "set_gen": null,
+      "down_state_ack": null,
+      "request_body_sha256": "c995c186671bf30074d31e5a7e00c92ec6e9d4b1aafff8650af7ad9df3fe04c7",
+      "planned_ids_sha256": "da8f359a30e50a4ccdf38e63c61ceb89325901db311772e044f3c19ff0885463",
+      "prompt_ids_sha256": "a650b4fb86512d8858352e18ca80d1239920d7c41f0816ddd6d6bb3d1e91c952",
+      "prompt_ids_count": 8190,
+      "pp_tokens_per_s": 3216.923452639761,
+      "power_before": "Now drawing from 'AC Power'",
+      "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+      "coverage": {
+        "counts": {
+          "down_a8_results": 48,
+          "gate_up_a8_results": 48,
+          "down_a8_rows": 3930720
+        },
+        "launch": {
+          "gate_up:G40:mode1": 48,
+          "down:G10:mode2": 48
+        },
+        "mode_query": {
+          "gate_up:G40:mode1": 96,
+          "down:G10:mode2": 96
+        },
+        "down_rows": {
+          "81890": 48
+        }
+      },
+      "valid": true,
+      "invalid_reasons": []
+    },
+    {
+      "ttft_s": 2.5675485000028857,
+      "token_seen": true,
+      "first_event_s": 0.02474583300499944,
+      "events": 3,
+      "finish_reason": "length",
+      "total_s": 2.567790083005093,
+      "usage": {
+        "prompt_tokens": 8191,
+        "completion_tokens": 1,
+        "total_tokens": 8192,
+        "input_tokens": 8191,
+        "output_tokens": 1,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "time_to_first_token": 2.54,
+        "total_time": 2.54,
+        "prompt_eval_duration": 2.54,
+        "generation_duration": 0.0,
+        "prompt_tokens_per_second": 3221.28,
+        "generation_tokens_per_second": 6127.15
+      },
+      "prompt_tokens": 8191,
+      "completion_tokens": 1,
+      "cached_tokens": 0,
+      "cached_tokens_reported": true,
+      "cond": "on",
+      "phase": "timed",
+      "sample": 1,
+      "attempt": 0,
+      "length_requested": 8192,
+      "nonce": "prod-control-8192-1",
+      "t": 1791359114.333807,
+      "set_gen": null,
+      "down_state_ack": null,
+      "request_body_sha256": "d309ed4cea0cbdd546e7c1c9105fcf3d90eabd6f2def7b138567a595310d8613",
+      "planned_ids_sha256": "d368049b01334a6d6a6b1b00d4474a398f3f7ef5554199f3425151ccf8e52527",
+      "prompt_ids_sha256": "7419d9a9ecc3cc462cdb441eb02a32525069f9d533fe9b5f49ffeba1ae7b2210",
+      "prompt_ids_count": 8191,
+      "pp_tokens_per_s": 3190.202638817064,
+      "power_before": "Now drawing from 'AC Power'",
+      "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+      "coverage": {
+        "counts": {
+          "down_a8_results": 48,
+          "gate_up_a8_results": 48,
+          "down_a8_rows": 3931200
+        },
+        "launch": {
+          "gate_up:G40:mode1": 48,
+          "down:G10:mode2": 48
+        },
+        "mode_query": {
+          "gate_up:G40:mode1": 96,
+          "down:G10:mode2": 96
+        },
+        "down_rows": {
+          "81900": 48
+        }
+      },
+      "valid": true,
+      "invalid_reasons": []
+    },
+    {
+      "ttft_s": 2.5774542080034735,
+      "token_seen": true,
+      "first_event_s": 0.023775624998961575,
+      "events": 3,
+      "finish_reason": "length",
+      "total_s": 2.577723624999635,
+      "usage": {
+        "prompt_tokens": 8192,
+        "completion_tokens": 1,
+        "total_tokens": 8193,
+        "input_tokens": 8192,
+        "output_tokens": 1,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "time_to_first_token": 2.55,
+        "total_time": 2.55,
+        "prompt_eval_duration": 2.55,
+        "generation_duration": 0.0,
+        "prompt_tokens_per_second": 3207.98,
+        "generation_tokens_per_second": 5956.81
+      },
+      "prompt_tokens": 8192,
+      "completion_tokens": 1,
+      "cached_tokens": 0,
+      "cached_tokens_reported": true,
+      "cond": "on",
+      "phase": "timed",
+      "sample": 2,
+      "attempt": 0,
+      "length_requested": 8192,
+      "nonce": "prod-control-8192-2",
+      "t": 1791359117.899171,
+      "set_gen": null,
+      "down_state_ack": null,
+      "request_body_sha256": "05d317927f5a12183f0e22e75b36d686d63d42fe98190f73222b4832c3e053d3",
+      "planned_ids_sha256": "58ebc0042f16c9e2155117dc405658903d2e9ae4a21e700183b9fa6a7980f9c0",
+      "prompt_ids_sha256": "296784e151c1962bc8abab082c9543ab61136c560d0ba0eac791610b0ba4f07c",
+      "prompt_ids_count": 8192,
+      "pp_tokens_per_s": 3178.3299872262796,
+      "power_before": "Now drawing from 'AC Power'",
+      "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+      "coverage": {
+        "counts": {
+          "down_a8_results": 48,
+          "gate_up_a8_results": 48,
+          "down_a8_rows": 3931680
+        },
+        "launch": {
+          "gate_up:G40:mode1": 48,
+          "down:G10:mode2": 48
+        },
+        "mode_query": {
+          "gate_up:G40:mode1": 96,
+          "down:G10:mode2": 96
+        },
+        "down_rows": {
+          "81910": 48
+        }
+      },
+      "valid": true,
+      "invalid_reasons": []
+    },
+    {
+      "ttft_s": 2.5689905830004136,
+      "token_seen": true,
+      "first_event_s": 0.025398958001460414,
+      "events": 3,
+      "finish_reason": "length",
+      "total_s": 2.569232500005455,
+      "usage": {
+        "prompt_tokens": 8190,
+        "completion_tokens": 1,
+        "total_tokens": 8191,
+        "input_tokens": 8190,
+        "output_tokens": 1,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "time_to_first_token": 2.54,
+        "total_time": 2.54,
+        "prompt_eval_duration": 2.54,
+        "generation_duration": 0.0,
+        "prompt_tokens_per_second": 3219.88,
+        "generation_tokens_per_second": 6124.0
+      },
+      "prompt_tokens": 8190,
+      "completion_tokens": 1,
+      "cached_tokens": 0,
+      "cached_tokens_reported": true,
+      "cond": "on",
+      "phase": "timed",
+      "sample": 3,
+      "attempt": 0,
+      "length_requested": 8192,
+      "nonce": "prod-control-8192-3",
+      "t": 1791359121.465148,
+      "set_gen": null,
+      "down_state_ack": null,
+      "request_body_sha256": "379a40fb5e9e3ef28e8e1d1765463c5988ad0ea60d2fbd056345a418ead76715",
+      "planned_ids_sha256": "01eaaa3f356b652bacbefee01ec630969786c833576f35c445853bdf50533506",
+      "prompt_ids_sha256": "0c6b683b7b2c67ec0687acca0f387e50d549dae08fb3e74228df13c407601b87",
+      "prompt_ids_count": 8190,
+      "pp_tokens_per_s": 3188.022585288971,
+      "power_before": "Now drawing from 'AC Power'",
+      "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+      "coverage": {
+        "counts": {
+          "down_a8_results": 48,
+          "gate_up_a8_results": 48,
+          "down_a8_rows": 3930720
+        },
+        "launch": {
+          "gate_up:G40:mode1": 48,
+          "down:G10:mode2": 48
+        },
+        "mode_query": {
+          "gate_up:G40:mode1": 96,
+          "down:G10:mode2": 96
+        },
+        "down_rows": {
+          "81890": 48
+        }
+      },
+      "valid": true,
+      "invalid_reasons": []
+    },
+    {
+      "ttft_s": 2.5651300829995307,
+      "token_seen": true,
+      "first_event_s": 0.024244000000180677,
+      "events": 3,
+      "finish_reason": "length",
+      "total_s": 2.5653695829969365,
+      "usage": {
+        "prompt_tokens": 8191,
+        "completion_tokens": 1,
+        "total_tokens": 8192,
+        "input_tokens": 8191,
+        "output_tokens": 1,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "time_to_first_token": 2.54,
+        "total_time": 2.54,
+        "prompt_eval_duration": 2.54,
+        "generation_duration": 0.0,
+        "prompt_tokens_per_second": 3223.63,
+        "generation_tokens_per_second": 6474.25
+      },
+      "prompt_tokens": 8191,
+      "completion_tokens": 1,
+      "cached_tokens": 0,
+      "cached_tokens_reported": true,
+      "cond": "on",
+      "phase": "timed",
+      "sample": 4,
+      "attempt": 0,
+      "length_requested": 8192,
+      "nonce": "prod-control-8192-4",
+      "t": 1791359125.031918,
+      "set_gen": null,
+      "down_state_ack": null,
+      "request_body_sha256": "411aa16403b3169c56d158cb3a271a0a8d049d5f1598edf92e208771b56f74f0",
+      "planned_ids_sha256": "07ead491f9b32c669511e6c16e2b4dd830a3a4c2b989b6d642c5c97b817b7f59",
+      "prompt_ids_sha256": "a3b7e0a49f6c278906ab241067d2f774506852b5e73d4ce4d7636a14c46d1bc0",
+      "prompt_ids_count": 8191,
+      "pp_tokens_per_s": 3193.210377238205,
+      "power_before": "Now drawing from 'AC Power'",
+      "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+      "coverage": {
+        "counts": {
+          "down_a8_results": 48,
+          "gate_up_a8_results": 48,
+          "down_a8_rows": 3931200
+        },
+        "launch": {
+          "gate_up:G40:mode1": 48,
+          "down:G10:mode2": 48
+        },
+        "mode_query": {
+          "gate_up:G40:mode1": 96,
+          "down:G10:mode2": 96
+        },
+        "down_rows": {
+          "81900": 48
+        }
+      },
+      "valid": true,
+      "invalid_reasons": []
+    },
+    {
+      "ttft_s": 2.565846124998643,
+      "token_seen": true,
+      "first_event_s": 0.0233654999974533,
+      "events": 3,
+      "finish_reason": "length",
+      "total_s": 2.5661001249973197,
+      "usage": {
+        "prompt_tokens": 8191,
+        "completion_tokens": 1,
+        "total_tokens": 8192,
+        "input_tokens": 8191,
+        "output_tokens": 1,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "time_to_first_token": 2.54,
+        "total_time": 2.54,
+        "prompt_eval_duration": 2.54,
+        "generation_duration": 0.0,
+        "prompt_tokens_per_second": 3221.7,
+        "generation_tokens_per_second": 6227.31
+      },
+      "prompt_tokens": 8191,
+      "completion_tokens": 1,
+      "cached_tokens": 0,
+      "cached_tokens_reported": true,
+      "cond": "on",
+      "phase": "timed",
+      "sample": 5,
+      "attempt": 0,
+      "length_requested": 8192,
+      "nonce": "prod-control-8192-5",
+      "t": 1791359128.594761,
+      "set_gen": null,
+      "down_state_ack": null,
+      "request_body_sha256": "7d94aebaf7e19eb1137e88b28cecb05792866a88e8577f9a06b9b7a70e6f5a4c",
+      "planned_ids_sha256": "74c93246e7828429cd50ebdb4874df845a076a42543c6cba58195dea1d686a2f",
+      "prompt_ids_sha256": "08d9ec51dba9f2a040dc01bd958e99a0f576837d0f3163fa56713e388fa601fe",
+      "prompt_ids_count": 8191,
+      "pp_tokens_per_s": 3192.3192588192837,
+      "power_before": "Now drawing from 'AC Power'",
+      "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+      "coverage": {
+        "counts": {
+          "down_a8_results": 48,
+          "gate_up_a8_results": 48,
+          "down_a8_rows": 3931200
+        },
+        "launch": {
+          "gate_up:G40:mode1": 48,
+          "down:G10:mode2": 48
+        },
+        "mode_query": {
+          "gate_up:G40:mode1": 96,
+          "down:G10:mode2": 96
+        },
+        "down_rows": {
+          "81900": 48
+        }
+      },
+      "valid": true,
+      "invalid_reasons": []
+    },
+    {
+      "ttft_s": 11.406111250005779,
+      "token_seen": true,
+      "first_event_s": 0.06689054100570502,
+      "events": 4,
+      "finish_reason": "length",
+      "total_s": 11.406386000002385,
+      "usage": {
+        "prompt_tokens": 32761,
+        "completion_tokens": 1,
+        "total_tokens": 32762,
+        "input_tokens": 32761,
+        "output_tokens": 1,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "time_to_first_token": 11.34,
+        "total_time": 11.34,
+        "prompt_eval_duration": 11.34,
+        "generation_duration": 0.0,
+        "prompt_tokens_per_second": 2889.19,
+        "generation_tokens_per_second": 6009.0
+      },
+      "prompt_tokens": 32761,
+      "completion_tokens": 1,
+      "cached_tokens": 0,
+      "cached_tokens_reported": true,
+      "cond": "on",
+      "phase": "warmup",
+      "sample": 0,
+      "attempt": 0,
+      "length_requested": 32768,
+      "nonce": "warm-32768",
+      "t": 1791359140.989124,
+      "set_gen": null,
+      "down_state_ack": null,
+      "request_body_sha256": "e622ab37a0005a78967828b646e8f170ee70ab86dcc47d0eab625a0499d9e53b",
+      "pp_tokens_per_s": 2872.232199206667,
+      "power_before": "Now drawing from 'AC Power'",
+      "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+      "coverage": {
+        "counts": {
+          "down_a8_results": 192,
+          "gate_up_a8_results": 192,
+          "down_a8_rows": 15724800
+        },
+        "launch": {
+          "gate_up:G40:mode1": 192,
+          "down:G10:mode2": 192
+        },
+        "mode_query": {
+          "gate_up:G40:mode1": 384,
+          "down:G10:mode2": 384
+        },
+        "down_rows": {
+          "81840": 48,
+          "81920": 144
+        }
+      },
+      "valid": true
+    },
+    {
+      "ttft_s": 11.402521000003617,
+      "token_seen": true,
+      "first_event_s": 0.059441750003315974,
+      "events": 4,
+      "finish_reason": "length",
+      "total_s": 11.402749667002354,
+      "usage": {
+        "prompt_tokens": 32761,
+        "completion_tokens": 1,
+        "total_tokens": 32762,
+        "input_tokens": 32761,
+        "output_tokens": 1,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "time_to_first_token": 11.34,
+        "total_time": 11.34,
+        "prompt_eval_duration": 11.34,
+        "generation_duration": 0.0,
+        "prompt_tokens_per_second": 2888.2,
+        "generation_tokens_per_second": 6569.91
+      },
+      "prompt_tokens": 32761,
+      "completion_tokens": 1,
+      "cached_tokens": 0,
+      "cached_tokens_reported": true,
+      "cond": "on",
+      "phase": "timed",
+      "sample": 0,
+      "attempt": 0,
+      "length_requested": 32768,
+      "nonce": "prod-control-32768-0",
+      "t": 1791359153.432443,
+      "set_gen": null,
+      "down_state_ack": null,
+      "request_body_sha256": "47eec707b6cd2c8d0bbb60dc31b97828b7e7c48450f66fe4b54930b996d2429f",
+      "planned_ids_sha256": "0588fb01407abc207d85b9caa0cc58c8edea24bcd497bf677f5d882a78a5d00c",
+      "prompt_ids_sha256": "1a70003a7e2b3b70f08cf25be65ee5c3d827e86df6b7ba9be4ca6a35a10522fd",
+      "prompt_ids_count": 32761,
+      "pp_tokens_per_s": 2873.1365633959026,
+      "power_before": "Now drawing from 'AC Power'",
+      "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+      "coverage": {
+        "counts": {
+          "down_a8_results": 192,
+          "gate_up_a8_results": 192,
+          "down_a8_rows": 15724800
+        },
+        "launch": {
+          "gate_up:G40:mode1": 192,
+          "down:G10:mode2": 192
+        },
+        "mode_query": {
+          "gate_up:G40:mode1": 384,
+          "down:G10:mode2": 384
+        },
+        "down_rows": {
+          "81840": 48,
+          "81920": 144
+        }
+      },
+      "valid": true,
+      "invalid_reasons": []
+    },
+    {
+      "ttft_s": 11.419715208001435,
+      "token_seen": true,
+      "first_event_s": 0.06818345799547387,
+      "events": 4,
+      "finish_reason": "length",
+      "total_s": 11.419967417001317,
+      "usage": {
+        "prompt_tokens": 32761,
+        "completion_tokens": 1,
+        "total_tokens": 32762,
+        "input_tokens": 32761,
+        "output_tokens": 1,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "time_to_first_token": 11.35,
+        "total_time": 11.35,
+        "prompt_eval_duration": 11.35,
+        "generation_duration": 0.0,
+        "prompt_tokens_per_second": 2886.05,
+        "generation_tokens_per_second": 6248.36
+      },
+      "prompt_tokens": 32761,
+      "completion_tokens": 1,
+      "cached_tokens": 0,
+      "cached_tokens_reported": true,
+      "cond": "on",
+      "phase": "timed",
+      "sample": 1,
+      "attempt": 0,
+      "length_requested": 32768,
+      "nonce": "prod-control-32768-1",
+      "t": 1791359165.888988,
+      "set_gen": null,
+      "down_state_ack": null,
+      "request_body_sha256": "63ff710829857ab7b6eaf13cceb55928187feb151198f38629724e71521a1743",
+      "planned_ids_sha256": "79ae4983f35de4dc40a0f40ef642ab302b22183df7c3fbb3b9217becd08bfca2",
+      "prompt_ids_sha256": "d635131c8364b180ec86561d57e7b9e2a0710feb30ce9e3de038e3f62d49309b",
+      "prompt_ids_count": 32761,
+      "pp_tokens_per_s": 2868.8105966990665,
+      "power_before": "Now drawing from 'AC Power'",
+      "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+      "coverage": {
+        "counts": {
+          "down_a8_results": 192,
+          "gate_up_a8_results": 192,
+          "down_a8_rows": 15724800
+        },
+        "launch": {
+          "gate_up:G40:mode1": 192,
+          "down:G10:mode2": 192
+        },
+        "mode_query": {
+          "gate_up:G40:mode1": 384,
+          "down:G10:mode2": 384
+        },
+        "down_rows": {
+          "81840": 48,
+          "81920": 144
+        }
+      },
+      "valid": true,
+      "invalid_reasons": []
+    },
+    {
+      "ttft_s": 11.442595957996673,
+      "token_seen": true,
+      "first_event_s": 0.06417262499599019,
+      "events": 4,
+      "finish_reason": "length",
+      "total_s": 11.442846250000002,
+      "usage": {
+        "prompt_tokens": 32761,
+        "completion_tokens": 1,
+        "total_tokens": 32762,
+        "input_tokens": 32761,
+        "output_tokens": 1,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "time_to_first_token": 11.38,
+        "total_time": 11.38,
+        "prompt_eval_duration": 11.38,
+        "generation_duration": 0.0,
+        "prompt_tokens_per_second": 2879.24,
+        "generation_tokens_per_second": 5707.47
+      },
+      "prompt_tokens": 32761,
+      "completion_tokens": 1,
+      "cached_tokens": 0,
+      "cached_tokens_reported": true,
+      "cond": "on",
+      "phase": "timed",
+      "sample": 2,
+      "attempt": 0,
+      "length_requested": 32768,
+      "nonce": "prod-control-32768-2",
+      "t": 1791359178.371665,
+      "set_gen": null,
+      "down_state_ack": null,
+      "request_body_sha256": "3e09f9daa1b5f43217401052e3a7afd99a6e982a2be89388f5aaa92fd6a32877",
+      "planned_ids_sha256": "6139de94d9d659af3e3d6e951f12319c0ff3d643208b27af5ca9d2d5236d7eb1",
+      "prompt_ids_sha256": "da9db769d71dc84981b0a4c449a0558b7dcef68de20a30542d8a847a391b21d2",
+      "prompt_ids_count": 32761,
+      "pp_tokens_per_s": 2863.0740891541254,
+      "power_before": "Now drawing from 'AC Power'",
+      "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+      "coverage": {
+        "counts": {
+          "down_a8_results": 192,
+          "gate_up_a8_results": 192,
+          "down_a8_rows": 15724800
+        },
+        "launch": {
+          "gate_up:G40:mode1": 192,
+          "down:G10:mode2": 192
+        },
+        "mode_query": {
+          "gate_up:G40:mode1": 384,
+          "down:G10:mode2": 384
+        },
+        "down_rows": {
+          "81840": 48,
+          "81920": 144
+        }
+      },
+      "valid": true,
+      "invalid_reasons": []
+    },
+    {
+      "ttft_s": 11.439920208998956,
+      "token_seen": true,
+      "first_event_s": 0.06266762500308687,
+      "events": 4,
+      "finish_reason": "length",
+      "total_s": 11.440156666998519,
+      "usage": {
+        "prompt_tokens": 32761,
+        "completion_tokens": 1,
+        "total_tokens": 32762,
+        "input_tokens": 32761,
+        "output_tokens": 1,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "time_to_first_token": 11.38,
+        "total_time": 11.38,
+        "prompt_eval_duration": 11.38,
+        "generation_duration": 0.0,
+        "prompt_tokens_per_second": 2879.53,
+        "generation_tokens_per_second": 6369.43
+      },
+      "prompt_tokens": 32761,
+      "completion_tokens": 1,
+      "cached_tokens": 0,
+      "cached_tokens_reported": true,
+      "cond": "on",
+      "phase": "timed",
+      "sample": 3,
+      "attempt": 0,
+      "length_requested": 32768,
+      "nonce": "prod-control-32768-3",
+      "t": 1791359190.844995,
+      "set_gen": null,
+      "down_state_ack": null,
+      "request_body_sha256": "601e34fa820bf5903342d04b602db2246ccd9c3ca0ee2090b64a6a690ab4d4ef",
+      "planned_ids_sha256": "d9f29216795703b640b337d560434d089860ff907f9836d1dbdd50dd19db9ed8",
+      "prompt_ids_sha256": "43e5e72fda86ba18cf45edf837082b6c4e42fe14520a2b654e0f05534669c0fc",
+      "prompt_ids_count": 32761,
+      "pp_tokens_per_s": 2863.7437500857127,
+      "power_before": "Now drawing from 'AC Power'",
+      "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+      "coverage": {
+        "counts": {
+          "down_a8_results": 192,
+          "gate_up_a8_results": 192,
+          "down_a8_rows": 15724800
+        },
+        "launch": {
+          "gate_up:G40:mode1": 192,
+          "down:G10:mode2": 192
+        },
+        "mode_query": {
+          "gate_up:G40:mode1": 384,
+          "down:G10:mode2": 384
+        },
+        "down_rows": {
+          "81840": 48,
+          "81920": 144
+        }
+      },
+      "valid": true,
+      "invalid_reasons": []
+    },
+    {
+      "ttft_s": 11.439575042000797,
+      "token_seen": true,
+      "first_event_s": 0.06317708300048253,
+      "events": 4,
+      "finish_reason": "length",
+      "total_s": 11.43983775000379,
+      "usage": {
+        "prompt_tokens": 32761,
+        "completion_tokens": 1,
+        "total_tokens": 32762,
+        "input_tokens": 32761,
+        "output_tokens": 1,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "time_to_first_token": 11.38,
+        "total_time": 11.38,
+        "prompt_eval_duration": 11.38,
+        "generation_duration": 0.0,
+        "prompt_tokens_per_second": 2879.75,
+        "generation_tokens_per_second": 5838.02
+      },
+      "prompt_tokens": 32761,
+      "completion_tokens": 1,
+      "cached_tokens": 0,
+      "cached_tokens_reported": true,
+      "cond": "on",
+      "phase": "timed",
+      "sample": 4,
+      "attempt": 0,
+      "length_requested": 32768,
+      "nonce": "prod-control-32768-4",
+      "t": 1791359203.310613,
+      "set_gen": null,
+      "down_state_ack": null,
+      "request_body_sha256": "8e9a63d5cc572b9194e6ef112394d43b794744b44e2148e1eeac78d339bb6781",
+      "planned_ids_sha256": "9040fc2d7769eee4054f85364a67b8504c9cd81df767d389ca2572c1a60eecc6",
+      "prompt_ids_sha256": "8b437a3d9a9c51e86ea5695fbe55e6c480fb9836138c31886f73f5c56c32956b",
+      "prompt_ids_count": 32761,
+      "pp_tokens_per_s": 2863.830158001224,
+      "power_before": "Now drawing from 'AC Power'",
+      "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+      "coverage": {
+        "counts": {
+          "down_a8_results": 192,
+          "gate_up_a8_results": 192,
+          "down_a8_rows": 15724800
+        },
+        "launch": {
+          "gate_up:G40:mode1": 192,
+          "down:G10:mode2": 192
+        },
+        "mode_query": {
+          "gate_up:G40:mode1": 384,
+          "down:G10:mode2": 384
+        },
+        "down_rows": {
+          "81840": 48,
+          "81920": 144
+        }
+      },
+      "valid": true,
+      "invalid_reasons": []
+    },
+    {
+      "ttft_s": 11.476177416996507,
+      "token_seen": true,
+      "first_event_s": 0.05787779200181831,
+      "events": 4,
+      "finish_reason": "length",
+      "total_s": 11.476422708998143,
+      "usage": {
+        "prompt_tokens": 32762,
+        "completion_tokens": 1,
+        "total_tokens": 32763,
+        "input_tokens": 32762,
+        "output_tokens": 1,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "time_to_first_token": 11.42,
+        "total_time": 11.42,
+        "prompt_eval_duration": 11.42,
+        "generation_duration": 0.0,
+        "prompt_tokens_per_second": 2869.27,
+        "generation_tokens_per_second": 5880.9
+      },
+      "prompt_tokens": 32762,
+      "completion_tokens": 1,
+      "cached_tokens": 0,
+      "cached_tokens_reported": true,
+      "cond": "on",
+      "phase": "timed",
+      "sample": 5,
+      "attempt": 0,
+      "length_requested": 32768,
+      "nonce": "prod-control-32768-5",
+      "t": 1791359215.819391,
+      "set_gen": null,
+      "down_state_ack": null,
+      "request_body_sha256": "9f0da6b59f2c3597d4b51a3e0d1a147d4db8ae79e2f921f93265aae748500507",
+      "planned_ids_sha256": "88d7b6dacd182d8d9aaee4213b67a10fed6f477d01cdbaadf7cdd3fca81aab0d",
+      "prompt_ids_sha256": "1d4201c3d771b31b7bc4d7379ae0c09532a101868909f49574ef3f3cf77cb8a6",
+      "prompt_ids_count": 32762,
+      "pp_tokens_per_s": 2854.7833315541684,
+      "power_before": "Now drawing from 'AC Power'",
+      "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+      "coverage": {
+        "counts": {
+          "down_a8_results": 192,
+          "gate_up_a8_results": 192,
+          "down_a8_rows": 15725280
+        },
+        "launch": {
+          "gate_up:G40:mode1": 192,
+          "down:G10:mode2": 192
+        },
+        "mode_query": {
+          "gate_up:G40:mode1": 384,
+          "down:G10:mode2": 384
+        },
+        "down_rows": {
+          "81850": 48,
+          "81920": 144
+        }
+      },
+      "valid": true,
+      "invalid_reasons": []
+    }
+  ],
+  "power": {
+    "batt": "Now drawing from 'AC Power'\n -InternalBattery-0 (id=24641635)\t80%; AC attached; not charging present: true\n",
+    "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded\n"
+  },
+  "started_at": 1791359079.1935308,
+  "server_files": {
+    "omlx_file": "<WORK>/repro/omlx/__init__.py",
+    "a8_file": "<WORK>/repro/omlx/patches/m5_gather_qmm_a8.py",
+    "pid": 24084,
+    "native": {
+      "<WORK>/repro/omlx/custom_kernels/bonsai/_ext.cpython-311-darwin.so": "6a9b4bfd951703bfaaeccd7e487ca3b9af8608521eebee1438bf41621a5aa085",
+      "<WORK>/repro/omlx/custom_kernels/glm_moe_dsa/_ext.cpython-311-darwin.so": "567d67ca25a25a99fa749b6bb4d3354f85ea6940b68d17917c47e49469ece1ed",
+      "<WORK>/repro/omlx/custom_kernels/qwen35_prefill/_ext.cpython-311-darwin.so": "092ecdd2b4d1ac9cf65f1b570143370fb0fc948c77d0c50062b7419e9b24d759"
+    },
+    "has_down_code": true
+  },
+  "power_end": {
+    "batt": "Now drawing from 'AC Power'\n -InternalBattery-0 (id=24641635)\t80%; AC attached; not charging present: true\n",
+    "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded\n"
+  }
+}

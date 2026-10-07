@@ -1,0 +1,60 @@
+final head d392aa1c4dae27f50eb26d171217b1052c22f2b6
+commit 1 1470b71c51951a921e3122be1bb645923dc12a5e
+
+native targeted (4 files), commit 1: 206 passed, 0 skipped, 0 failed
+native targeted (4 files), final head: 219 passed, 0 skipped, 0 failed
+  (the native extension in the test tree was built at the measured candidate; native/build inputs are unchanged since then)
+  omlx/custom_kernels, setup.py, pyproject.toml, measured candidate -> final head: (no change)
+  omlx/custom_kernels, setup.py, pyproject.toml, measured base -> final base: (no change)
+CI-equivalent, final head: 17155 passed, 690 skipped, 0 failed (Node.js on PATH)
+per-test isolation of tests/test_m5_gather_qmm_a8.py, final head: collected 74 / isolated pass 74 / not passing 0
+
+static checks, final head:
+tools: ruff 0.16.10, black, 25.11.0 (compiled: yes)
+base=2238a44477a91123051d0e15ac8b3b4e8a95fa83 head=d392aa1c4dae27f50eb26d171217b1052c22f2b6
+changed python files: omlx/model_settings.py omlx/patches/m5_gather_qmm_a8.py omlx/patches/qwen35_moe_gate_up.py omlx/patches/qwen35_moe_weighted_sum.py tests/test_m5_gather_qmm_a8.py
+ruff findings: base 123 head 123 new 0 []
+black omlx/model_settings.py: 1 pre-existing hunk(s) outside changed lines, 0 touching changed lines
+black omlx/patches/m5_gather_qmm_a8.py: TOUCHING [(723, 12)]
+black omlx/patches/qwen35_moe_gate_up.py: 2 pre-existing hunk(s) outside changed lines, 0 touching changed lines
+black omlx/patches/qwen35_moe_weighted_sum.py: 1 pre-existing hunk(s) outside changed lines, 0 touching changed lines
+black tests/test_m5_gather_qmm_a8.py: 0 pre-existing hunk(s) outside changed lines, 0 touching changed lines
+git diff --check: ok
+note: the one black hunk reported as touching changed lines in m5_gather_qmm_a8.py is context overlap only; the lines black would reformat (the unchanged upstream `return _launch(...)` call) are not changed by this PR.
+
+static checks, commit 1:
+tools: ruff 0.16.10, black, 25.11.0 (compiled: yes)
+base=2238a44477a91123051d0e15ac8b3b4e8a95fa83 head=1470b71c51951a921e3122be1bb645923dc12a5e
+changed python files: omlx/patches/m5_gather_qmm_a8.py tests/test_m5_gather_qmm_a8.py
+ruff findings: base 20 head 20 new 0 []
+black omlx/patches/m5_gather_qmm_a8.py: TOUCHING [(719, 12)]
+black tests/test_m5_gather_qmm_a8.py: 0 pre-existing hunk(s) outside changed lines, 0 touching changed lines
+git diff --check: ok
+
+A8 module, Python AST without docstrings and Metal source without comments, measured candidate vs final head:
+--- measured-2d313a59
++++ final-branch
+@@ -19 +18,0 @@
+-_MIN_TOKEN_ROWS = 16
+@@ -23 +22 @@
+-_A8_HEADER = '\nusing namespace metal;\nusing namespace mlx::steel;\n\nconstant constexpr int kA8FragM = 16;\nconstant constexpr int kA8FragN = 32;\nconstant constexpr int kA8FragK = 16;\nconstant co ...
++_A8_HEADER = '\nusing namespace metal;\nusing namespace mlx::steel;\n\nconstant constexpr int kA8FragM = 16;\nconstant constexpr int kA8FragN = 32;\nconstant constexpr int kA8FragK = 16;\nconstant co ...
+@@ -58,2 +56,0 @@
+-        return False
+-    if int(x.shape[0]) < _MIN_TOKEN_ROWS:
+@@ -118 +115 @@
+-        if not _nax._checked(('a8', x.dtype, groups, 'plain-even'), _self_test_even):
++        if not _nax._checked(('a8', x.dtype, groups, 'plain-g10'), _self_test_g10):
+@@ -156,3 +153,3 @@
+-_CANARY_EVEN_COUNTS = (40, 24)
+-
+-def _self_test_even(key: tuple):
++_CANARY_G10_COUNTS = (40, 24)
++
++def _self_test_g10(key: tuple):
+@@ -164 +161 @@
+-        wf = (mx.random.normal((len(_CANARY_EVEN_COUNTS), n_out, k_dim), key=k_w) * 0.05).astype(dtype)
++        wf = (mx.random.normal((len(_CANARY_G10_COUNTS), n_out, k_dim), key=k_w) * 0.05).astype(dtype)
+@@ -166 +163 @@
+-        idx = mx.array([e for (e, n) in enumerate(_CANARY_EVEN_COUNTS) for _ in range(n)], dtype=mx.uint32)
++        idx = mx.array([e for (e, n) in enumerate(_CANARY_G10_COUNTS) for _ in range(n)], dtype=mx.uint32)
