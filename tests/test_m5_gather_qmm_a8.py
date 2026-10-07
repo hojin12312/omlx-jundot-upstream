@@ -234,8 +234,8 @@ def _restore_call_patch(monkeypatch):
     gate_up._CALL_PATCHED = False
 
 
-def _switch_glu(bits=4, group_size=64):
-    sw = SwitchGLU(H, INTER, E)
+def _switch_glu(bits=4, group_size=64, hidden=H, inter=INTER):
+    sw = SwitchGLU(hidden, inter, E)
     sw.set_dtype(mx.bfloat16)
     nn.quantize(
         sw,
@@ -271,8 +271,8 @@ def _tagged(sw, min_tokens=128):
     return sw
 
 
-def _inputs(batch, length, seed=0):
-    x = mx.random.normal((batch, length, H), key=mx.random.key(seed)).astype(
+def _inputs(batch, length, seed=0, hidden=H):
+    x = mx.random.normal((batch, length, hidden), key=mx.random.key(seed)).astype(
         mx.bfloat16
     )
     ind = mx.random.randint(
@@ -285,20 +285,54 @@ class _Spy:
     """Records every call of the A8 kernel entry point and what it returned."""
 
     def __init__(self, monkeypatch):
-        self.results = []
+        self.calls = []  # (swiglu, result): Gate+Up is swiglu=True, Down False
         real = a8.sorted_gather_qmm_a8
 
         def spy(*args, **kwargs):
             out = real(*args, **kwargs)
-            self.results.append(out)
+            self.calls.append((bool(kwargs.get("swiglu")), out))
             return out
 
         monkeypatch.setattr(a8, "sorted_gather_qmm_a8", spy)
 
     @property
+    def results(self):
+        return [r for _, r in self.calls]
+
+    @property
     def ran(self) -> int:
         """Calls that produced an A8 result (not a decline)."""
         return sum(r is not None for r in self.results)
+
+    @property
+    def gate_up_ran(self) -> int:
+        return sum(r is not None for swiglu, r in self.calls if swiglu)
+
+    @property
+    def down_calls(self) -> int:
+        """Down A8 attempts, declined or not."""
+        return sum(1 for swiglu, _ in self.calls if not swiglu)
+
+    @property
+    def down_ran(self) -> int:
+        return sum(r is not None for swiglu, r in self.calls if not swiglu)
+
+
+class _A16Down:
+    """Counts the calls of one module's A16 Down projection (``__call__`` is
+    patched on the class: Python looks it up on the type)."""
+
+    def __init__(self, monkeypatch, sw):
+        self.n = 0
+        down, cls = sw.down_proj, type(sw.down_proj)
+        real = cls.__call__
+
+        def counting(this, *args, **kwargs):
+            if this is down:
+                self.n += 1
+            return real(this, *args, **kwargs)
+
+        monkeypatch.setattr(cls, "__call__", counting)
 
 
 def _relative_error(a, b):
@@ -718,3 +752,194 @@ def test_canary_verdicts_are_independent(monkeypatch):
     monkeypatch.setitem(nax._verified, ("a8", mx.bfloat16, 2560 // GROUP), False)
     assert _run(gate_up_problem, swiglu=True) is None
     assert _run(_down_problem(8, 128, mx.bfloat16, tokens=60)) is not None
+
+
+# -- routed Down A8 ---------------------------------------------------------
+#
+# Qwen3.8-Flash-Next geometry (Down K = 640, N = 2560). The fixtures above
+# (INTER = 128) are not a measured Down geometry: they keep the A16 Down.
+
+
+def _down_glu(**kwargs):
+    return _tagged(_switch_glu(hidden=DOWN_N, inter=DOWN_K, **kwargs))
+
+
+def _down_inputs(batch, length, seed=0):
+    return _inputs(batch, length, seed, hidden=DOWN_N)
+
+
+def _down_off(monkeypatch, value="0"):
+    monkeypatch.setenv(a8._ENV_DOWN, value)
+
+
+@needs_a8
+def test_eligible_prefill_runs_gate_up_and_down_a8_in_switch_glu_call(monkeypatch):
+    monkeypatch.delenv(a8._ENV_DOWN, raising=False)
+    gate_up._ensure_call_patch()
+    sw = _down_glu()
+    x, ind = _down_inputs(1, 200)
+    spy, a16 = _Spy(monkeypatch), _A16Down(monkeypatch, sw)
+    out = sw(x, ind)
+    mx.eval(out)
+    # Not a silent decline: both A8 kernels ran and the A16 Down did not.
+    assert (spy.gate_up_ran, spy.down_ran, a16.n) == (1, 1, 0)
+    assert spy.calls[1][1].shape[-1] == DOWN_N
+
+    _down_off(monkeypatch)
+    ref = sw(x, ind)
+    mx.eval(ref)
+    assert (spy.gate_up_ran, spy.down_calls, a16.n) == (2, 1, 1)
+    assert not nax._bits_equal(out, ref)
+    assert _relative_error(out, ref) < 0.05
+
+
+@needs_a8
+def test_eligible_prefill_runs_gate_up_and_down_a8_in_weighted_sum_path(monkeypatch):
+    monkeypatch.delenv(a8._ENV_DOWN, raising=False)
+    sw = _down_glu()
+    x, ind = _down_inputs(1, 1200)
+    scores = mx.softmax(mx.random.normal(ind.shape, key=mx.random.key(9)), axis=-1)
+    spy, a16 = _Spy(monkeypatch), _A16Down(monkeypatch, sw)
+    out = weighted_sum_patch._native_switch_weighted_sum(
+        sw, x, ind, scores, _weighted_sum
+    )
+    mx.eval(out)
+    assert (spy.gate_up_ran, spy.down_ran, a16.n) == (1, 1, 0)
+
+    _down_off(monkeypatch)
+    ref = weighted_sum_patch._native_switch_weighted_sum(
+        sw, x, ind, scores, _weighted_sum
+    )
+    mx.eval(ref)
+    assert (spy.gate_up_ran, spy.down_calls, a16.n) == (2, 1, 1)
+    assert not mx.array_equal(out, ref).item()
+    assert _relative_error(out, ref) < 0.05
+
+
+@needs_a8
+def test_unmeasured_down_geometry_keeps_the_a16_down(monkeypatch):
+    """K = 128: the Gate+Up runs on A8, the Down is never attempted."""
+    gate_up._ensure_call_patch()
+    sw = _tagged(_switch_glu())
+    x, ind = _inputs(1, 200)
+    spy, a16 = _Spy(monkeypatch), _A16Down(monkeypatch, sw)
+    mx.eval(sw(x, ind))
+    assert (spy.gate_up_ran, spy.down_calls, a16.n) == (1, 0, 1)
+
+
+@needs_a8
+def test_global_kill_switch_turns_both_projections_off(monkeypatch):
+    gate_up._ensure_call_patch()
+    sw = _down_glu()  # tagged while the module was enabled
+    monkeypatch.setenv("OMLX_M5_GATHER_QMM_A8", "0")
+    x, ind = _down_inputs(1, 200)
+    spy, a16 = _Spy(monkeypatch), _A16Down(monkeypatch, sw)
+    mx.eval(sw(x, ind))
+    assert (spy.gate_up_ran, spy.down_calls, a16.n) == (0, 0, 1)
+
+
+def _routes_for(tokens):
+    x_tok = mx.random.normal((tokens, 1, DOWN_N)).astype(mx.bfloat16)
+    row_map = mx.arange(tokens * TOPK, dtype=mx.uint32) % tokens
+    idx = mx.sort(mx.random.randint(0, E, (tokens * TOPK,)).astype(mx.uint32))
+    return (x_tok, row_map), idx
+
+
+@needs_a8
+def test_down_exception_falls_back_to_the_a16_down_on_the_a8_gate_up(
+    monkeypatch, caplog
+):
+    sw = _down_glu()
+    token_rows, idx = _routes_for(200)
+    reference = a8.try_routed_a8(sw, token_rows, idx)  # A8 Gate+Up, A8 Down
+    _down_off(monkeypatch)
+    expected = a8.try_routed_a8(sw, token_rows, idx)  # A8 Gate+Up, A16 Down
+    monkeypatch.delenv(a8._ENV_DOWN)
+    assert not nax._bits_equal(reference, expected)
+
+    spy, a16 = _Spy(monkeypatch), _A16Down(monkeypatch, sw)
+    real = a8.sorted_gather_qmm_a8
+    attempts = []
+
+    def flaky(*args, **kwargs):
+        if not kwargs.get("swiglu"):
+            attempts.append(1)
+            raise RuntimeError("boom")
+        return real(*args, **kwargs)
+
+    monkeypatch.setattr(a8, "sorted_gather_qmm_a8", flaky)
+    with caplog.at_level(logging.WARNING, logger=a8.logger.name):
+        for _ in range(3):
+            out = a8.try_routed_a8(sw, token_rows, idx)
+            # the Gate+Up A8 result is kept: the A16 Down runs on it
+            assert out is not None and nax._bits_equal(out, expected)
+        assert (len(attempts), a16.n, spy.gate_up_ran) == (3, 3, 3)
+        warnings = [r for r in caplog.records if r.levelno >= logging.WARNING]
+        assert (
+            len(warnings) == 1
+            and "down raised RuntimeError" in warnings[0].getMessage()
+        )
+
+        # a later Gate+Up failure of the same type is not hidden by the Down warning
+        def gate_up_broken(*args, **kwargs):
+            raise RuntimeError("gate/up boom")
+
+        monkeypatch.setattr(a8, "sorted_gather_qmm_a8", gate_up_broken)
+        assert a8.try_routed_a8(sw, token_rows, idx) is None
+        warnings = [r for r in caplog.records if r.levelno >= logging.WARNING]
+        assert len(warnings) == 2 and "gate/up raised" in warnings[1].getMessage()
+
+
+@needs_a8
+def test_failed_down_canary_falls_back_to_the_a16_down(monkeypatch):
+    sw = _down_glu()
+    token_rows, idx = _routes_for(200)
+    _down_off(monkeypatch)
+    expected = a8.try_routed_a8(sw, token_rows, idx)
+    monkeypatch.delenv(a8._ENV_DOWN)
+
+    monkeypatch.setitem(nax._verified, DOWN_KEY, False)
+    spy, a16 = _Spy(monkeypatch), _A16Down(monkeypatch, sw)
+    out = a8.try_routed_a8(sw, token_rows, idx)
+    assert nax._bits_equal(out, expected)
+    assert (spy.gate_up_ran, spy.down_calls, spy.down_ran, a16.n) == (1, 1, 0, 1)
+
+
+class _FakeDown(dict):
+    def __init__(
+        self,
+        bits=4,
+        group_size=64,
+        mode="affine",
+        biases=True,
+        inter=DOWN_K,
+        hidden=DOWN_N,
+    ):
+        super().__init__(
+            weight=mx.zeros((2, hidden, inter // 8), dtype=mx.uint32),
+            scales=mx.zeros((2, hidden, inter // 64), dtype=mx.bfloat16),
+            biases=(
+                mx.zeros((2, hidden, inter // 64), dtype=mx.bfloat16)
+                if biases
+                else None
+            ),
+        )
+        self.bits, self.group_size, self.mode = bits, group_size, mode
+
+
+@pytest.mark.parametrize(
+    "kwargs,expected",
+    [
+        ({}, True),
+        ({"bits": 8}, False),
+        ({"group_size": 32}, False),
+        ({"mode": "mxfp4"}, False),
+        ({"biases": False}, False),  # no affine biases
+        ({"inter": 1024}, False),  # not a measured intermediate size
+        ({"hidden": 2048}, False),  # not a measured hidden size
+    ],
+)
+def test_down_eligibility(kwargs, expected):
+    switch_mlp = {"down_proj": _FakeDown(**kwargs)}
+    h = mx.zeros((8, 1, kwargs.get("inter", DOWN_K)), dtype=mx.bfloat16)
+    assert a8._down_eligible(switch_mlp, h) is expected

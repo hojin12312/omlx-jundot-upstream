@@ -6,8 +6,8 @@ Q4 weight to BF16 in threadgroup memory and multiplies it with BF16 tensor
 ops. This module adds the operand path the dense oQ kernels already use
 (``qwen35_oq_a8``): the packed codes are decoded straight into INT8 fragment
 registers and multiplied through the INT8 x INT8 -> INT32 tensor op, with the
-GS64 affine correction applied per group. Only the Gate+Up projection is
-covered; the Down projection keeps the A16 path.
+GS64 affine correction applied per group. The routed Gate+Up projection is
+covered, and the routed Down projection of Qwen3.8 Flash-Next.
 
     checkpoint Q4 affine weight [E, N, K / 8] (uint32), GS64
     checkpoint scale / bias     [E, N, G], G = K / 64     (read in place)
@@ -22,7 +22,8 @@ covered; the Down projection keeps the A16 path.
             |
     GS64 affine correction;  SwiGLU on the accumulators
             |
-    [M, N / 2] -> the existing A16 sorted down projection
+    [M, N / 2] -> the Down projection: this kernel on the Gate+Up output, or
+                  the existing A16 sorted down projection
 
 Scheduling is deliberately *not* reimplemented: the tile list comes from the
 same pre-pass, a threadgroup still computes one single-expert ``BM x BN``
@@ -65,6 +66,9 @@ from .moe_expert_offload import OffloadSwitchGLU
 logger = logging.getLogger(__name__)
 
 _ENV_ENABLE = "OMLX_M5_GATHER_QMM_A8"
+# Turns off the routed Down projection only; ``OMLX_M5_GATHER_QMM_A8=0`` turns
+# off both.
+_ENV_DOWN = "OMLX_M5_ROUTED_DOWN_A8"
 
 _BN = 64
 _WN = 2
@@ -866,6 +870,10 @@ _TAG = "_omlx_routed_a8_min_tokens"
 # model class module path, as ``qwen35_moe_gate_up`` does).
 _MEASURED_FAMILIES = ("qwen4_exp",)
 
+# Down geometries measured for speed and NLL, as ``(K, N)`` of the weight
+# ``[E, N, K / 8]``. Any other geometry keeps the A16 Down.
+_DOWN_MEASURED_SHAPES = ((640, 2560),)
+
 # Decode and verify windows stay A16. ``qwen35_oq_a8_min_tokens`` can raise
 # this floor but not lower it.
 _MIN_TOKENS_FLOOR = 128
@@ -938,16 +946,39 @@ def _eligible(switch_mlp, activation) -> bool:
     return _swiglu_limit(activation) is None
 
 
-_warned: set[str] = set()
+def _down_enabled() -> bool:
+    """False when ``OMLX_M5_ROUTED_DOWN_A8`` turns the Down projection off."""
+    return os.environ.get(_ENV_DOWN, "1").strip().lower() not in {
+        "0",
+        "false",
+        "off",
+    }
+
+
+def _down_eligible(switch_mlp, h) -> bool:
+    """Affine Q4 / GS64 Down in a measured geometry. ``_eligible`` already
+    checked the module layout, bias and expert offload."""
+    down = switch_mlp.get("down_proj")
+    if any(down.get(k) is None for k in ("weight", "scales", "biases")):
+        return False
+    if (down.bits, down.group_size, down.mode) != (4, _GROUP, "affine"):
+        return False
+    return (int(h.shape[-1]), int(down["weight"].shape[1])) in _DOWN_MEASURED_SHAPES
+
+
+_warned: set[str | tuple[str, str]] = set()
 
 
 def try_routed_a8(switch_mlp, token_rows, idx, seq_len=None):
-    """Sorted rows after the A8 Gate+Up and the A16 Down (``[M, 1, K]``), or
-    None to keep the A16 path.
+    """Sorted rows after the A8 Gate+Up and the Down (``[M, 1, K]``), or None
+    to keep the A16 path.
 
     ``token_rows`` and ``idx`` come from ``moe_routes.sort_routes``.
     ``seq_len`` keeps a batched decode step (many sequences of one token) on
-    A16. Exceptions fall back to A16 with one warning per exception type.
+    A16. The Down runs on INT8 operands when its geometry was measured and
+    ``OMLX_M5_ROUTED_DOWN_A8`` is not off; if it declines or raises, the A16
+    Down runs on the A8 Gate+Up result. Other exceptions fall back to A16 with
+    one warning per exception type.
     """
     min_tokens = getattr(switch_mlp, _TAG, None)
     if min_tokens is None:
@@ -973,6 +1004,9 @@ def try_routed_a8(switch_mlp, token_rows, idx, seq_len=None):
         )
         if h is None:
             return None
+        out = _try_down_a8(switch_mlp, h, idx)
+        if out is not None:
+            return out
         return switch_mlp.down_proj(h, idx, sorted_indices=True)
     except Exception as exc:  # noqa: BLE001
         name = type(exc).__name__
@@ -980,6 +1014,41 @@ def try_routed_a8(switch_mlp, token_rows, idx, seq_len=None):
             _warned.add(name)
             logger.warning(
                 "routed A8 gate/up raised %s and fell back to A16", name, exc_info=True
+            )
+        return None
+
+
+def _try_down_a8(switch_mlp, h, idx):
+    """The Down of the sorted rows ``h`` on INT8 operands (``[M, 1, n] ->
+    [M, 1, K]``), or None to run the A16 Down. Every sorted row is its own
+    activation row, so the row map is the identity. Never raises (one warning
+    per exception type).
+    """
+    if not _down_enabled():
+        return None
+    try:
+        if not _down_eligible(switch_mlp, h):
+            return None
+        down = switch_mlp.get("down_proj")
+        return sorted_gather_qmm_a8(
+            h,
+            down["weight"],
+            down["scales"],
+            down["biases"],
+            idx,
+            mx.arange(int(idx.shape[0]), dtype=mx.uint32),
+            group_size=_GROUP,
+            bits=4,
+            swiglu=False,
+        )
+    except Exception as exc:  # noqa: BLE001
+        key = ("down", type(exc).__name__)
+        if key not in _warned:
+            _warned.add(key)
+            logger.warning(
+                "routed A8 down raised %s and fell back to the A16 Down",
+                key[1],
+                exc_info=True,
             )
         return None
 

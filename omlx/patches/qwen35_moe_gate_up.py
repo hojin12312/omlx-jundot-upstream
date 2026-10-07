@@ -162,7 +162,8 @@ def _make_patched_call(orig_call):
         x_act = None
         if do_sort and not self.training:
             # Routed A8 (opt-in per model, see m5_gather_qmm_a8): the Gate+Up
-            # on INT8 operands and the A16 Down; None keeps the A16 path.
+            # and, in a measured geometry, the Down on INT8 operands; None
+            # keeps the A16 path.
             routed = try_routed_a8(
                 self,
                 token_rows,

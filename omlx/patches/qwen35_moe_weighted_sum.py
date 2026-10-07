@@ -84,8 +84,9 @@ def _native_switch_weighted_sum(
     # computed when the gate/up kernel reads the token rows in place.
     x_tok, row_map, idx, inv_order = sort_routes(mx.expand_dims(x, (-2, -3)), inds)
     if not switch_mlp.training:
-        # Routed A8 (opt-in per model, see m5_gather_qmm_a8): the Gate+Up on
-        # INT8 operands and the A16 Down; None keeps the A16 path below.
+        # Routed A8 (opt-in per model, see m5_gather_qmm_a8): the Gate+Up
+        # and, in a measured geometry, the Down on INT8 operands; None keeps
+        # the A16 path below.
         routed = try_routed_a8(
             switch_mlp, (x_tok, row_map), idx, seq_len=int(x.shape[-2])
         )
