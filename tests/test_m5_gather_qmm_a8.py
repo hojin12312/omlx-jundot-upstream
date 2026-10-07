@@ -95,16 +95,21 @@ def _contract_reference(problem):
     # group into the order its fragment loads expect (the sum is unchanged).
     qa, sa, _ = fast.qwen35_oq_a8_quantize(x, 0)
     qa = qa.reshape(qa.shape[0], -1)  # [T, 1, K] -> [T, K]
-    wd = mx.dequantize(
-        wq, s.astype(mx.float32), b.astype(mx.float32), group_size=GROUP, bits=4
-    )
     qa_f = qa.astype(mx.float32)
     idx_np = np.array(idx)
-    out = np.zeros((idx_np.shape[0], wd.shape[1]), np.float32)
+    out = np.zeros((idx_np.shape[0], wq.shape[1]), np.float32)
     for e in np.unique(idx_np):
+        # one expert at a time: a float32 copy of all 512 experts is 3 GB
+        wd = mx.dequantize(
+            wq[int(e)],
+            s[int(e)].astype(mx.float32),
+            b[int(e)].astype(mx.float32),
+            group_size=GROUP,
+            bits=4,
+        )
         rows = np.nonzero(idx_np == e)[0]
         tok = rmap[mx.array(rows)]
-        y = (qa_f[tok] @ wd[int(e)].T) * sa[tok][:, None]
+        y = (qa_f[tok] @ wd.T) * sa[tok][:, None]
         out[rows] = np.array(y)
     return out
 
@@ -543,3 +548,173 @@ def test_exception_falls_back_and_warns_once(monkeypatch, caplog):
         warnings = [r for r in caplog.records if r.levelno >= logging.WARNING]
         assert len(warnings) == 1
         assert "RuntimeError" in warnings[0].getMessage()
+
+
+# -- routed Down projection: K = 640 (G = 10), plain, STAGED == 2 ------------
+
+DOWN_K = 640
+DOWN_N = 2560
+DOWN_KEY = ("a8", mx.bfloat16, DOWN_K // GROUP, "plain-g10")
+
+
+def _down_problem(
+    experts, n_out, dtype, kind="skewed", tokens=100, topk=10, seed=7, counts=None
+):
+    """The Down call: sorted routes, ``h`` rows ``[M, 1, 640]`` (every route row is
+    its own activation row, identity row map), checkpoint-layout Q4 weights."""
+    if counts is None:
+        _, idx, _ = _routes(kind, tokens, topk, experts, seed)
+    else:
+        idx = mx.array(
+            np.concatenate([np.full(c, e) for e, c in counts]).astype(np.uint32)
+        )
+    rows = int(idx.shape[0])
+    w = (
+        mx.random.normal((experts, n_out, DOWN_K), key=mx.random.key(seed)) * 0.05
+    ).astype(dtype)
+    wq, sc, bi = mx.quantize(w, group_size=GROUP, bits=4, mode="affine")
+    h = (mx.random.normal((rows, 1, DOWN_K), key=mx.random.key(seed + 1)) * 0.6).astype(
+        dtype
+    )
+    rmap = mx.arange(rows, dtype=mx.uint32)
+    mx.eval(wq, sc, bi, h, idx, rmap)
+    return h, wq, sc, bi, idx, rmap
+
+
+def _checkpoint_like_down_problem(experts, n_out, dtype, counts, seed=3):
+    """Random packed words and metadata instead of ``mx.quantize`` of a float
+    tensor, so that E = 512, N = 2560 fits in memory (0.4 GB, not 3 GB)."""
+    idx = mx.array(np.concatenate([np.full(c, e) for e, c in counts]).astype(np.uint32))
+    rows = int(idx.shape[0])
+    k = mx.random.split(mx.random.key(seed), 4)
+    ka, kb = mx.random.split(k[0])
+    shape = (experts, n_out, DOWN_K // 8)
+    wq = (mx.random.randint(0, 1 << 16, shape, dtype=mx.uint32, key=ka) << 16) | (
+        mx.random.randint(0, 1 << 16, shape, dtype=mx.uint32, key=kb)
+    )
+    sc = (
+        mx.random.uniform(shape=(experts, n_out, DOWN_K // GROUP), key=k[1]) * 0.02
+        + 0.004
+    ).astype(dtype)
+    bi = (mx.random.normal((experts, n_out, DOWN_K // GROUP), key=k[2]) * 0.05).astype(
+        dtype
+    )
+    h = (mx.random.normal((rows, 1, DOWN_K), key=k[3]) * 0.6).astype(dtype)
+    rmap = mx.arange(rows, dtype=mx.uint32)
+    mx.eval(wq, sc, bi, h, idx, rmap)
+    return h, wq, sc, bi, idx, rmap
+
+
+def test_stage_mode_selection():
+    assert a8._stage_mode(10, False) == 2
+    assert a8._stage_mode(10, True) == 0
+    assert a8._stage_mode(40, True) == 1 and a8._stage_mode(40, False) == 1
+
+
+@needs_a8
+@pytest.mark.parametrize("dtype", [mx.bfloat16, mx.float16])
+@pytest.mark.parametrize("kind", ["skewed", "empty_experts", "partial_tiles"])
+def test_g10_staged_metadata_is_bitwise_the_scalar_loader(kind, dtype, monkeypatch):
+    """K = 640, plain: the 4-byte staging equals the scalar loads bit for bit
+    and writes every element (a NaN pre-fill leaves no NaN)."""
+    problem = _down_problem(24, 256, dtype, kind=kind, tokens=100)
+    assert a8._stage_mode(DOWN_K // GROUP, False) == 2
+    staged = _run(problem)
+    filled = _run(problem, init_value=float("nan"))
+    assert staged is not None and nax._bits_equal(filled, staged)
+    monkeypatch.setattr(a8, "_stage_mode", lambda groups, swiglu: 0)
+    scalar = _run(problem)
+    assert nax._bits_equal(staged, scalar)
+    _assert_close_to_contract(staged, _contract_reference(problem))
+
+
+@needs_a8
+@pytest.mark.parametrize("dtype", [mx.bfloat16, mx.float16])
+def test_g10_real_down_shape_with_high_experts_and_tail_rows(dtype, monkeypatch):
+    """E = 512, N = 2560, K = 640 (the model's Down). Experts 500+ (a metadata
+    offset past 2^22 elements), empty experts, one-row, 31/32/33-row and long
+    runs: staged equals scalar and matches the A8 contract."""
+    counts = [(0, 133), (3, 1), (255, 31), (500, 32), (505, 33), (511, 400)]
+    problem = _checkpoint_like_down_problem(512, DOWN_N, dtype, counts)
+    out = _run(problem)
+    assert out is not None and out.shape == (problem[4].shape[0], 1, DOWN_N)
+    filled = _run(problem, init_value=float("nan"))
+    assert nax._bits_equal(filled, out)
+    monkeypatch.setattr(a8, "_stage_mode", lambda groups, swiglu: 0)
+    assert nax._bits_equal(out, _run(problem))
+    _assert_close_to_contract(out, _contract_reference(problem))
+
+
+@needs_a8
+def test_g10_launch_template_parameters(monkeypatch):
+    """The plain K = 640 call is launched as STAGED = 2, SG = 10, EPI = 0; the
+    paired call as STAGED = 0 (never 2) and K = 2560 as STAGED = 1."""
+    calls = (
+        (lambda: _down_problem(6, 128, mx.bfloat16, tokens=60), {}),
+        (lambda: _down_problem(6, 128, mx.bfloat16, tokens=60), {"swiglu": True}),
+        (lambda: _problem(6, 128, 2560, mx.bfloat16, tokens=60), {"swiglu": True}),
+    )
+    for make, kw in calls:  # the first call of a process also runs the canaries
+        assert _run(make(), **kw) is not None
+    real = a8._get_kernel()
+    seen = []
+
+    def spy(*, inputs, template, **kwargs):
+        seen.append(dict(template))
+        return real(inputs=inputs, template=template, **kwargs)
+
+    monkeypatch.setattr(a8, "_get_kernel", lambda: spy)
+    for make, kw in calls:
+        assert _run(make(), **kw) is not None
+    plain, paired, gate_up = seen
+    assert (plain["STAGED"], plain["SG"], plain["EPI"]) == (2, 10, 0)
+    assert (paired["STAGED"], paired["SG"], paired["EPI"]) == (0, 0, 1)
+    assert (gate_up["STAGED"], gate_up["SG"], gate_up["EPI"]) == (1, 40, 1)
+
+
+# Down canary --------------------------------------------------------------
+
+
+@needs_a8
+@pytest.mark.parametrize("dtype", [mx.bfloat16, mx.float16])
+def test_down_canary_passes_on_the_production_instantiation(dtype):
+    assert a8._self_test_g10(("a8", dtype, DOWN_K // GROUP, "plain-g10")) is True
+
+
+@needs_a8
+@pytest.mark.parametrize("scale", [None, 1.01])
+def test_down_canary_declines_a_staged_kernel_that_differs(scale, monkeypatch):
+    """Both a gross error and a small one fail: the staged kernel must also
+    equal the scalar-load kernel bit for bit."""
+    real = a8._launch
+
+    def corrupt(*args, **kwargs):
+        out = real(*args, **kwargs)
+        if kwargs.get("mode") == 0:
+            return out
+        return out + 1.0 if scale is None else out * mx.array(scale, dtype=out.dtype)
+
+    monkeypatch.setattr(a8, "_launch", corrupt)
+    assert a8._self_test_g10(DOWN_KEY) is False
+
+
+@needs_a8
+def test_down_canary_declines_on_a_launch_failure(monkeypatch, caplog):
+    def boom(*args, **kwargs):
+        raise RuntimeError("metal compile failed")
+
+    monkeypatch.setattr(a8, "_launch", boom)
+    assert a8._self_test_g10(DOWN_KEY) is False
+    assert any("Down self-test raised" in r.getMessage() for r in caplog.records)
+
+
+@needs_a8
+def test_canary_verdicts_are_independent(monkeypatch):
+    monkeypatch.setitem(nax._verified, DOWN_KEY, False)
+    assert _run(_down_problem(8, 128, mx.bfloat16, tokens=60)) is None
+    gate_up_problem = _problem(6, 128, 2560, mx.bfloat16, tokens=60)
+    assert _run(gate_up_problem, swiglu=True) is not None
+    monkeypatch.setitem(nax._verified, DOWN_KEY, True)
+    monkeypatch.setitem(nax._verified, ("a8", mx.bfloat16, 2560 // GROUP), False)
+    assert _run(gate_up_problem, swiglu=True) is None
+    assert _run(_down_problem(8, 128, mx.bfloat16, tokens=60)) is not None

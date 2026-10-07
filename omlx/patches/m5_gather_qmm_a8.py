@@ -44,8 +44,9 @@ Stage A runs once per token row and the kernel reads those rows through
 The kernel reads the checkpoint's ``[E, N, G]`` scale/bias in place. Each
 threadgroup stages the metadata of its 64 weight rows as ``[group][row]`` in
 threadgroup memory (2 x 64 x G x 2 bytes: 10 KiB for Flash-Next, 16 KiB at
-G = 64). A larger ``G``, or one that is not a multiple of 4, uses scalar loads
-of the same layout with identical bits.
+G = 64). The loads take four groups at a time when G is a multiple of 4, two
+groups for the plain G = 10 Down projection, and are scalar otherwise, with
+identical bits.
 """
 
 from __future__ import annotations
@@ -71,6 +72,9 @@ _GROUP = 64
 # Largest G (= K / 64) whose tile metadata is staged in threadgroup memory:
 # 2 x 64 rows x 64 groups x 2 bytes = 16 KiB (see the module docstring).
 _STAGE_MAX_GROUPS = 64
+# Qwen3.8 Flash-Next Down: K = 640, G = 10. Its 20-byte metadata rows are only
+# 4-byte aligned, which the ``STAGED == 2`` loads rely on.
+_DOWN_STAGE_GROUPS = 10
 
 # Tile height. On M5 Max with Flash-Next routes (10K-328K rows) BM32 was the
 # fastest or tied; the A16 planner's 64-128 rows lose up to 1.5x.
@@ -104,6 +108,8 @@ constant constexpr int kA8Steps = kA8Group / kA8FragK;
 // STAGED selects how the checkpoint's [E, N, G] scale/bias are read:
 //   1  the threadgroup's 64 weight rows are staged once in threadgroup memory
 //      as [group][local row] (G = SG, a multiple of 4, at most 64)
+//   2  the same staging with 4-byte loads of two groups: the plain G = SG = 10
+//      Down projection, whose 20-byte metadata rows are only 4-byte aligned
 //   0  scalar loads straight from the checkpoint layout
 template <typename T, int BITS, int WM, int WN, int EPI, int STAGED, int SG>
 METAL_FUNC void omlx_a8_gather_nax(
@@ -125,6 +131,9 @@ METAL_FUNC void omlx_a8_gather_nax(
     uint3 tid,
     uint simd_gid,
     uint tl) {
+  static_assert(
+      STAGED != 2 || (EPI == 0 && SG == 10),
+      "STAGED == 2 is the plain G = 10 staging");
   constexpr int TM = 2;
   constexpr int BM = TM * kA8FragM * WM;
   constexpr int BN = kA8FragN * WN;
@@ -220,7 +229,7 @@ METAL_FUNC void omlx_a8_gather_nax(
 
   const int n_run0 = col_base + int(coord.x);
 
-  if (STAGED) {
+  if (STAGED == 1) {
     // Stage the 64 weight rows of this tile (rows are contiguous [G] runs in
     // the checkpoint layout) as [group][local row]. Local rows: paired = 32
     // gate rows then 32 up rows; plain = 64 consecutive rows.
@@ -261,6 +270,47 @@ METAL_FUNC void omlx_a8_gather_nax(
             meta_s[(c * 4 + k) * 64 + lr] = a[k];
             meta_b[(c * 4 + k) * 64 + lr] = b[k];
           }
+        }
+      }
+    }
+    threadgroup_barrier(mem_flags::mem_threadgroup);
+  }
+  if (STAGED == 2) {
+    // One 4-byte word (two groups of a row) per load; the 64 rows of a plain
+    // tile are contiguous, so consecutive threads read consecutive words.
+    constexpr int kThreads = WM * WN * 32;
+    constexpr int kU = 4;
+    const int q2 = groups / 2;
+    const int total = 64 * q2;
+    const device uint32_t* s2 = reinterpret_cast<const device uint32_t*>(s_exp);
+    const device uint32_t* b2 = reinterpret_cast<const device uint32_t*>(b_exp);
+    for (int e0 = int(tl); e0 < total; e0 += kThreads * kU) {
+      uint32_t vs[kU];
+      uint32_t vb[kU];
+      STEEL_PRAGMA_UNROLL
+      for (int u = 0; u < kU; ++u) {
+        const int e = e0 + u * kThreads;
+        if (e < total) {
+          const int lr = e / q2;
+          const int c = e - lr * q2;
+          const size_t at =
+              size_t(int(tid.x) * BN + lr) * size_t(q2) + size_t(c);
+          vs[u] = s2[at];
+          vb[u] = b2[at];
+        }
+      }
+      STEEL_PRAGMA_UNROLL
+      for (int u = 0; u < kU; ++u) {
+        const int e = e0 + u * kThreads;
+        if (e < total) {
+          const int lr = e / q2;
+          const int c = e - lr * q2;
+          const vec<T, 2> a = as_type<vec<T, 2>>(vs[u]);
+          const vec<T, 2> b = as_type<vec<T, 2>>(vb[u]);
+          meta_s[(c * 2 + 0) * 64 + lr] = a[0];
+          meta_s[(c * 2 + 1) * 64 + lr] = a[1];
+          meta_b[(c * 2 + 0) * 64 + lr] = b[0];
+          meta_b[(c * 2 + 1) * 64 + lr] = b[1];
         }
       }
     }
@@ -546,10 +596,21 @@ def _staged(groups: int) -> bool:
     return groups % 4 == 0 and groups <= _STAGE_MAX_GROUPS
 
 
+def _stage_mode(groups: int, swiglu: bool) -> int:
+    """The kernel's ``STAGED`` value: 1 four-group loads, 2 two-group loads
+    (plain G = 10 Down projection), 0 scalar loads. Gate+Up never takes 2."""
+    if _staged(groups):
+        return 1
+    if groups == _DOWN_STAGE_GROUPS and not swiglu:
+        return 2
+    return 0
+
+
 def _launch(
-    x, w, scales, biases, indices, row_map, *, bm, swiglu, init_value=None
+    x, w, scales, biases, indices, row_map, *, bm, swiglu, init_value=None, mode=None
 ):
-    """Stage A, the tile scan and the gather kernel; None when unavailable."""
+    """Stage A, the tile scan and the gather kernel; None when unavailable.
+    ``mode`` pins the metadata loader (the Down canary compares two)."""
     from omlx.custom_kernels.qwen35_prefill import fast
 
     if not fast.oq_a8_available():
@@ -582,7 +643,8 @@ def _launch(
     )
 
     groups = K // _GROUP
-    staged = _staged(groups)
+    if mode is None:
+        mode = _stage_mode(groups, swiglu)
     kw = {} if init_value is None else {"init_value": init_value}
     # A 64-row weight tile is 64 output columns, or 32 once gate and up are
     # paired.
@@ -605,8 +667,8 @@ def _launch(
             ("WM", wm),
             ("WN", wn),
             ("EPI", 1 if swiglu else 0),
-            ("STAGED", 1 if staged else 0),
-            ("SG", groups if staged else 0),
+            ("STAGED", mode),
+            ("SG", groups if mode else 0),
         ],
         grid=((N // _BN) * 32, max_tiles * wn, bm // 32),
         threadgroup=(32, wn, bm // 32),
@@ -650,8 +712,13 @@ def sorted_gather_qmm_a8(
         x, w, scales, biases, indices, group_size, bits, mode, row_map
     ):
         return None
-    # One canary verdict per kernel instantiation (dtype and K).
-    if not _nax._checked(("a8", x.dtype, int(x.shape[2]) // _GROUP), _self_test):
+    # One canary verdict per kernel instantiation (dtype and K); the plain
+    # G = 10 Down kernel has its own.
+    groups = int(x.shape[2]) // _GROUP
+    if _stage_mode(groups, swiglu) == 2:
+        if not _nax._checked(("a8", x.dtype, groups, "plain-g10"), _self_test_g10):
+            return None
+    elif not _nax._checked(("a8", x.dtype, groups), _self_test):
         return None
     return _launch(
         x, w, scales, biases, indices, row_map,
@@ -720,6 +787,69 @@ def _self_test(key: tuple):
             K,
             err,
             scale,
+        )
+    return ok
+
+
+# Canary of the plain G = 10 Down kernel: 2 experts, N = 128 (two column
+# tiles), 64 sorted rows that end in partial tiles.
+_CANARY_G10_COUNTS = (40, 24)
+
+
+def _self_test_g10(key: tuple):
+    """Like ``_self_test`` for the plain ``STAGED == 2`` kernel at K = 640:
+    within the A8 error of the A16 reference and bit-identical to scalar
+    loads. None while a transformation is being traced."""
+    _, dtype, groups, _ = key
+    k_dim = groups * _GROUP
+    try:
+        n_out = 2 * _BN
+        k_w, k_x = mx.random.split(mx.random.key(0xA9), 2)
+        wf = (
+            mx.random.normal((len(_CANARY_G10_COUNTS), n_out, k_dim), key=k_w) * 0.05
+        ).astype(dtype)
+        wq, scales, biases = mx.quantize(wf, group_size=_GROUP, bits=4)
+        idx = mx.array(
+            [e for e, n in enumerate(_CANARY_G10_COUNTS) for _ in range(n)],
+            dtype=mx.uint32,
+        )
+        rows = int(idx.shape[0])
+        x = (mx.random.normal((rows, 1, k_dim), key=k_x) * 0.6).astype(dtype)
+        row_map = mx.arange(rows, dtype=mx.uint32)
+        out = _launch(x, wq, scales, biases, idx, row_map, bm=_BM, swiglu=False)
+        scalar = _launch(
+            x, wq, scales, biases, idx, row_map, bm=_BM, swiglu=False, mode=0
+        )
+        if out is None or scalar is None:
+            return False
+        ref = mx.gather_qmm(
+            x,
+            wq,
+            scales,
+            biases,
+            rhs_indices=idx,
+            transpose=True,
+            group_size=_GROUP,
+            bits=4,
+            sorted_indices=True,
+        ).astype(mx.float32)
+        err = mx.abs(out.astype(mx.float32) - ref).max().item()
+        scale = mx.abs(ref).max().item()
+        same = _nax._bits_equal(out, scalar)
+        ok = same and err <= _CANARY_TOLERANCE * scale
+    except Exception as e:  # noqa: BLE001
+        if "transformation" in str(e):
+            return None
+        logger.warning("routed A8 Down self-test raised for K=%d: %s", k_dim, e)
+        return False
+    if not ok:
+        logger.warning(
+            "routed A8 Down disabled for K=%d: canary max error %.3g (reference "
+            "max %.3g), bit-identical to scalar loads: %s",
+            k_dim,
+            err,
+            scale,
+            same,
         )
     return ok
 
