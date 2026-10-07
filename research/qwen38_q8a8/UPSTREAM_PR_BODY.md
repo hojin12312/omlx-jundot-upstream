@@ -102,7 +102,7 @@ Tests cover Q8 GS64 classification, GS128 and Q6 rejection, the edge codes, FP16
 
 ## Reproduction
 
-Evidence commit: https://github.com/hojin12312/omlx/commit/92cef5919b7a06f59138274a78406899b39a2eaa. Under `research/qwen38_q8a8/` it holds the harness, raw summaries, the throughput corpus and a report; the 36-sequence quality corpus (`sha256 2ee326fcd4ed3f2b92b5236a7c88c9eb48c9f3824766397de2ba64585d9c2faf`) is pinned by hash only.
+Evidence commit: https://github.com/hojin12312/omlx-jundot-upstream/commit/92cef5919b7a06f59138274a78406899b39a2eaa. Under `research/qwen38_q8a8/` it holds the harness, raw summaries, the throughput corpus and a report; the 36-sequence quality corpus (`sha256 2ee326fcd4ed3f2b92b5236a7c88c9eb48c9f3824766397de2ba64585d9c2faf`) is pinned by hash only.
 
 ```bash
 OMLX_WITH_CUSTOM_KERNEL=1 python -m pip install -e .
