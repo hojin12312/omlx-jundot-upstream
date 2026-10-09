@@ -117,6 +117,8 @@ std::vector<mx::array> qwen35_oq_a8_quantize(
 // `scales`. `packed` reads Q4 weights and metadata in the PackedLinear tile
 // layout instead of row-major weights and [K/64, N] metadata. Q4/Q5 read Qa in
 // Stage A v8's permuted K order; Q8 reads it in checkpoint order.
+// `native_meta` (Q8, variant 806 only) reads scales/biases in the checkpoint
+// layout [N, K/64], so no group-major copy has to exist.
 mx::array qwen35_oq_a8_qmm_t(
     const mx::array& qa,
     const mx::array& sa,
@@ -128,6 +130,7 @@ mx::array qwen35_oq_a8_qmm_t(
     int act_mode = 0,
     int variant = 800,
     bool packed = false,
+    bool native_meta = false,
     mx::StreamOrDevice s = {});
 
 // Test helper: unpack Q4/Q5/Q8 codes to INT8 [N, group_count * 64] (Q8 is

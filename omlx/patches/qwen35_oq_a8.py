@@ -100,6 +100,9 @@ class OqA8Plan:
     act_mode: int
     variant: int
     packed: bool = False
+    # Q8 only: read scales/biases in the checkpoint layout [N, K/64] instead
+    # of a group-major [K/64, N] copy (saves 1.416 GiB on Qwen3.8-27B).
+    native_meta: bool = False
 
     @property
     def kernel(self) -> str:
@@ -206,6 +209,8 @@ def _plan_for(bits: int, n: int, packed: bool = False) -> OqA8Plan | None:
         act_mode=_act_mode_for_bits(bits),
         variant=_variant_for_bits(bits),
         packed=packed,
+        # Q8 always uses the 806 tile, whose kernel reads the checkpoint layout.
+        native_meta=bits == 8 and not packed,
     )
 
     from omlx.custom_kernels.qwen35_prefill import fast
@@ -249,11 +254,15 @@ def _variant_bn(variant: int) -> int:
     return _variant_tile(variant)[1]
 
 
-def _prepared_weights(linear: Any):
+def _prepared_weights(linear: Any, native_meta: bool = False):
     """Cache transposed metadata while reusing the packed weight array.
 
     A ``PackedLinear`` is read in its own tile layout, so nothing is copied.
+    With ``native_meta`` the layer's own arrays are returned: the kernel reads
+    the checkpoint layout, so no transposed copy is built or cached.
     """
+    if native_meta and not isinstance(linear, PackedLinear):
+        return (linear.weight, linear.scales, linear.biases)
     cached = getattr(linear, _PREPARED_ATTR, None)
     if cached is not None:
         return cached
@@ -326,7 +335,7 @@ def apply_plan(linear: Any, stage: StageA, plan: OqA8Plan) -> mx.array:
         )
     from omlx.custom_kernels.qwen35_prefill import fast
 
-    weight, scales, biases = _prepared_weights(linear)
+    weight, scales, biases = _prepared_weights(linear, plan.native_meta)
     return fast.qwen35_oq_a8_qmm_t(
         stage.qa,
         stage.sa,
@@ -338,6 +347,7 @@ def apply_plan(linear: Any, stage: StageA, plan: OqA8Plan) -> mx.array:
         plan.act_mode,
         plan.variant,
         packed=plan.packed,
+        native_meta=plan.native_meta,
     )
 
 

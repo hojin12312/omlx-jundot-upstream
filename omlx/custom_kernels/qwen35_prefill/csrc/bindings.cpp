@@ -473,6 +473,7 @@ NB_MODULE(_ext, m) {
       "act_mode"_a = 0,
       "variant"_a = 800,
       "packed"_a = false,
+      "native_meta"_a = false,
       "stream"_a = nb::none());
   m.def(
       "qwen35_oq_a8_decode_weights",

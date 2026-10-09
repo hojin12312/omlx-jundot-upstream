@@ -1264,6 +1264,7 @@ def qwen35_oq_a8_qmm_t(
     variant: int = 800,
     *,
     packed: bool = False,
+    native_meta: bool = False,
     stream=None,
 ) -> mx.array:
     if _ext is None or not hasattr(_ext, "qwen35_oq_a8_qmm_t"):
@@ -1279,6 +1280,7 @@ def qwen35_oq_a8_qmm_t(
         act_mode,
         variant,
         packed=packed,
+        **({"native_meta": True} if native_meta else {}),
         **_native_stream_kwargs(stream),
     )
 
