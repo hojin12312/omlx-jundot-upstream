@@ -1,6 +1,6 @@
 # Web UI design rules
 
-These rules cover the admin web UI in `apps/omlx-web/omlx_web` (login and dashboard). The chat page and the top navbar keep their own styles and are not covered here. Use them when you add or change a template, and rebuild the CSS afterwards with `cd omlx/admin && python build_css.py`.
+These rules cover the web UI in `apps/omlx-web/omlx_web`. Colors and type steps apply to every page, including the chat page and the top navbar. The button, choice control, badge and corner rules cover login and the dashboard; the chat page and the navbar keep their own shapes. Use them when you add or change a template, and rebuild the CSS afterwards with `cd apps/omlx-web && python build_css.py`.
 
 ## Colors
 

@@ -218,3 +218,11 @@ def test_regenerate_with_model_switches_the_chat_model():
     )
 
     assert "if (opts.model) await this.selectModel(opts.model);" in regenerate
+
+
+def test_right_panel_dialog_breakpoint_matches_the_stylesheet():
+    source = _template()
+
+    assert "max-width: 1024px" in source
+    assert "drawerOverlay: window.innerWidth <= 1024" in source
+    assert "this.drawerOverlay = window.innerWidth <= 1024" in source
