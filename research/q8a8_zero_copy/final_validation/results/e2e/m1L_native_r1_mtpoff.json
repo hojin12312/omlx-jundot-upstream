@@ -1,0 +1,3008 @@
+{
+ "schema": 1,
+ "cond": "off",
+ "round": 1,
+ "tag": "m1L_native_r1_mtpoff",
+ "argv": [
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/session.py",
+  "--python",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/venv323/bin/python",
+  "--tree",
+  "<HOME>/Projects/omlx-q8a8-measured/prep",
+  "--workdir",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work",
+  "--model-dir",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models",
+  "--checkpoint",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models/Qwen3.8-27B-oQ8e-mtp",
+  "--model",
+  "Qwen3.8-27B-oQ8e-mtp",
+  "--corpus",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/corpus.json",
+  "--ref-main",
+  "models--Jundot--Qwen3.8-27B-oQ8e-mtp",
+  "--arm",
+  "m1L_native",
+  "--cond",
+  "off",
+  "--a8",
+  "on",
+  "--round",
+  "1",
+  "--out",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/final_validation/results/e2e/m1L_native_r1_mtpoff.json",
+  "--lengths",
+  "16384",
+  "32768",
+  "--repeats",
+  "2"
+ ],
+ "tree": "<HOME>/Projects/omlx-q8a8-measured/prep",
+ "tree_git_head": "7a82157d865f3f628926298bdee463a4b680f95f",
+ "tree_git_status": "",
+ "tree_git_branch": "prep/q8a8-zero-copy-pr4350",
+ "model_blob_shard1": "<HOME>/.cache/huggingface/hub/models--Jundot--Qwen3.8-27B-oQ8e-mtp/blobs/9da9254852c5dd0c677c4f60ab791cf6995e7e3bebbe7e5e68a14204f36645e4",
+ "model_ref_main": "c99e5aad8a478f71c10b9a3dde6709158b690da6",
+ "versions": {
+  "omlx_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/__init__.py",
+  "python": "3.11.15",
+  "mlx": "0.32.3",
+  "mlx_lm": "0.31.4.dev132+g94cdcae13",
+  "mlx_vlm": "0.7.4",
+  "tokenizers": "0.23.2"
+ },
+ "settings": {
+  "version": 1.0,
+  "server": {
+   "host": "127.0.0.1",
+   "log_level": "info"
+  },
+  "model": {
+   "model_dir": "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models",
+   "model_fallback": false
+  },
+  "cache": {
+   "enabled": false
+  },
+  "scheduler": {
+   "max_concurrent_requests": 1,
+   "chunked_prefill": true
+  },
+  "sampling": {
+   "temperature": 0.0,
+   "max_tokens": 4096
+  },
+  "auth": {
+   "api_key": null,
+   "skip_api_key_verification": true
+  },
+  "logging": {
+   "log_dir": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/sess_m1L_native_r1_mtpoff/logs",
+   "retention_days": 1
+  },
+  "memory": {
+   "prefill_memory_guard": false
+  },
+  "huggingface": {
+   "hf_cache_enabled": false
+  }
+ },
+ "model_settings": {
+  "qwen35_oq_a8_enabled": true,
+  "qwen35_oq_a8_min_tokens": 128,
+  "mtp_enabled": false
+ },
+ "generation_config": {
+  "bos_token_id": 248044,
+  "do_sample": true,
+  "eos_token_id": [
+   248046,
+   248044
+  ],
+  "pad_token_id": 248044,
+  "temperature": 1.0,
+  "top_k": 20,
+  "top_p": 0.95
+ },
+ "env": {
+  "PYTHONPATH": "<HOME>/Projects/omlx-q8a8-measured/prep:<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/hook",
+  "HOME": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/sess_m1L_native_r1_mtpoff/home",
+  "OMLX_DEC_CTL": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/sess_m1L_native_r1_mtpoff/ctl"
+ },
+ "host": {
+  "chip": "Apple M5 Max",
+  "hw_model": "Mac17,6",
+  "memory_gib": 128.0,
+  "macos": "27.0.1"
+ },
+ "requests": [
+  {
+   "role": "warmup",
+   "length": 16384,
+   "nonce": "dec-warm-1-16384",
+   "max_tokens": 128,
+   "request_body_sha256": "592e0bb3b0c824ca1a16300c2974ebdb48ea0d2cb1fe262b413d7dd968c2318b",
+   "planned_prompt_ids": 16384,
+   "usage": {
+    "prompt_tokens": 16384,
+    "completion_tokens": 128,
+    "total_tokens": 16512,
+    "input_tokens": 16384,
+    "output_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 13.17,
+    "total_time": 20.16,
+    "prompt_eval_duration": 13.17,
+    "generation_duration": 6.98,
+    "prompt_tokens_per_second": 1243.66,
+    "generation_tokens_per_second": 18.33
+   },
+   "prompt_tokens": 16384,
+   "completion_tokens": 128,
+   "cached_tokens": 0,
+   "finish_reason": "length",
+   "client_ttft_s": 13.222564208001131,
+   "client_total_s": 20.201570917008212,
+   "n_events": 44,
+   "events": [
+    {
+     "t": 13.222564208001131,
+     "text": "0"
+    },
+    {
+     "t": 13.385555208020378,
+     "text": ".36"
+    },
+    {
+     "t": 13.549864042026456,
+     "text": ".32"
+    },
+    {
+     "t": 13.71521137500531,
+     "text": ".png\" alt"
+    },
+    {
+     "t": 13.879962167004123,
+     "text": "=\"oML"
+    },
+    {
+     "t": 14.04454658299801,
+     "text": "X \u6b22\u8fce"
+    },
+    {
+     "t": 14.20886695801164,
+     "text": "\u754c\u9762\" width"
+    },
+    {
+     "t": 14.37346129200887,
+     "text": "=\"36"
+    },
+    {
+     "t": 14.5380673330219,
+     "text": "0\">\n"
+    },
+    {
+     "t": 14.702383000025293,
+     "text": "  <img"
+    },
+    {
+     "t": 14.86736762500368,
+     "text": " src=\"docs"
+    },
+    {
+     "t": 15.03336583302007,
+     "text": "/images/Screenshot"
+    },
+    {
+     "t": 15.197261250024894,
+     "text": " 20"
+    },
+    {
+     "t": 15.362035292026121,
+     "text": "26-"
+    },
+    {
+     "t": 15.526645458012354,
+     "text": "02-"
+    },
+    {
+     "t": 15.691373625013512,
+     "text": "10 at"
+    },
+    {
+     "t": 15.856216875021346,
+     "text": " 00"
+    },
+    {
+     "t": 16.020408042008057,
+     "text": ".34"
+    },
+    {
+     "t": 16.18477870800416,
+     "text": ".30"
+    },
+    {
+     "t": 16.34939741701237,
+     "text": ".png\" alt"
+    },
+    {
+     "t": 16.51386950002052,
+     "text": "=\"oML"
+    },
+    {
+     "t": 16.678239458007738,
+     "text": "X \u83dc\u5355\u680f"
+    },
+    {
+     "t": 16.842910667008255,
+     "text": "\" width=\""
+    },
+    {
+     "t": 17.00776425001095,
+     "text": "240"
+    },
+    {
+     "t": 17.172568375011906,
+     "text": "\">\n</"
+    },
+    {
+     "t": 17.33709329200792,
+     "text": "p>\n\n"
+    },
+    {
+     "t": 17.50197495802422,
+     "text": "### CLI\n\n"
+    },
+    {
+     "t": 17.666644542012364,
+     "text": "```bash\n"
+    },
+    {
+     "t": 17.831197083025472,
+     "text": "# \u6258\u7ba1"
+    },
+    {
+     "t": 17.9958284170134,
+     "text": "\u540e\u53f0\u670d\u52a1\u5668\uff08"
+    },
+    {
+     "t": 18.16050208301749,
+     "text": "macOS"
+    },
+    {
+     "t": 18.326900042011403,
+     "text": " \u5e94\u7528\u6216 Home"
+    },
+    {
+     "t": 18.492190125019988,
+     "text": "brew \u5b89\u88c5"
+    },
+    {
+     "t": 18.65799987502396,
+     "text": "\uff09\nom"
+    },
+    {
+     "t": 18.82275841702358,
+     "text": "lx start\n"
+    },
+    {
+     "t": 18.98707375000231,
+     "text": "omlx stop"
+    },
+    {
+     "t": 19.152063167013694,
+     "text": "\nomlx"
+    },
+    {
+     "t": 19.316727500001434,
+     "text": " restart\n\n#"
+    },
+    {
+     "t": 19.48152095801197,
+     "text": " \u524d\u53f0\u670d\u52a1\u5668"
+    },
+    {
+     "t": 19.646537292021094,
+     "text": "\uff0c\u9644\u52a0\u5230"
+    },
+    {
+     "t": 19.811156042007497,
+     "text": "\u5f53\u524d\u7ec8\u7aef\n"
+    },
+    {
+     "t": 19.97599416700541,
+     "text": "omlx serve"
+    },
+    {
+     "t": 20.141152542026248,
+     "text": " --model-dir"
+    },
+    {
+     "t": 20.201316917024087,
+     "text": " ~/"
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "0.36.32.png\" alt=\"oMLX \u6b22\u8fce\u754c\u9762\" width=\"360\">\n  <img src=\"docs/images/Screenshot 2026-02-10 at 00.34.30.png\" alt=\"oMLX \u83dc\u5355\u680f\" width=\"240\">\n</p>\n\n### CLI\n\n```bash\n# \u6258\u7ba1\u540e\u53f0\u670d\u52a1\u5668\uff08macOS \u5e94\u7528\u6216 Homebrew \u5b89\u88c5\uff09\nomlx start\nomlx stop\nomlx restart\n\n# \u524d\u53f0\u670d\u52a1\u5668\uff0c\u9644\u52a0\u5230\u5f53\u524d\u7ec8\u7aef\nomlx serve --model-dir ~/",
+   "output_ids_est": [
+    15,
+    13,
+    18,
+    21,
+    13,
+    18,
+    17,
+    3393,
+    1,
+    4644,
+    420,
+    78,
+    2581,
+    55,
+    220,
+    97565,
+    108756,
+    1,
+    2297,
+    420,
+    18,
+    21,
+    15,
+    731,
+    198,
+    220,
+    361,
+    1827,
+    2212,
+    420,
+    13715,
+    9448,
+    11046,
+    30091,
+    220,
+    17,
+    15,
+    17,
+    21,
+    12,
+    15,
+    17,
+    12,
+    16,
+    15,
+    506,
+    220,
+    15,
+    15,
+    13,
+    18,
+    19,
+    13,
+    18,
+    15,
+    3393,
+    1,
+    4644,
+    420,
+    78,
+    2581,
+    55,
+    220,
+    139743,
+    1,
+    2297,
+    420,
+    17,
+    19,
+    15,
+    731,
+    198,
+    510,
+    79,
+    29,
+    271,
+    13962,
+    37978,
+    271,
+    71093,
+    44675,
+    198,
+    2,
+    220,
+    112301,
+    102295,
+    101755,
+    9616,
+    11609,
+    3026,
+    220,
+    97121,
+    96348,
+    5211,
+    20969,
+    220,
+    98124,
+    7313,
+    198,
+    315,
+    30413,
+    1151,
+    198,
+    315,
+    30413,
+    2842,
+    198,
+    315,
+    30413,
+    16526,
+    271,
+    2,
+    220,
+    114260,
+    101755,
+    3709,
+    102294,
+    95839,
+    99927,
+    108887,
+    198,
+    315,
+    30413,
+    8418,
+    1137,
+    2448,
+    43774,
+    40121
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 126,
+    "distinct": 114,
+    "distinct_ratio": 0.9047619047619048
+   },
+   "mem_before": {
+    "gen": 6,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30877915768,
+    "t": 14.816311583010247
+   },
+   "mem_after": {
+    "gen": 7,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33983527706,
+    "phys_footprint": 30888876664,
+    "t": 36.02833025000291
+   },
+   "mem_settled": {
+    "gen": 9,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33983527706,
+    "phys_footprint": 30885911160,
+    "t": 40.04834916701657
+   },
+   "mem_settled_15s": {
+    "gen": 10,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33983527706,
+    "phys_footprint": 30885911160,
+    "t": 50.06650537499809
+   },
+   "counters_1s": {
+    "clear_cache_calls": 27,
+    "prepare_native": 3200,
+    "a8_qmm_calls": 3200,
+    "a8_q8_native": 3200
+   },
+   "counters_15s": {
+    "clear_cache_calls": 27,
+    "prepare_native": 3200,
+    "a8_qmm_calls": 3200,
+    "a8_q8_native": 3200
+   },
+   "rows_hist": {
+    "2047": 400,
+    "2048": 2800
+   },
+   "clear_events": [
+    {
+     "t": 14.888043792016106,
+     "dt_ms": 0.006332993507385254,
+     "cache_before": 16,
+     "cache_after": 0
+    },
+    {
+     "t": 16.256206874997588,
+     "dt_ms": 4.793875006726012,
+     "cache_before": 3013485416,
+     "cache_after": 0
+    },
+    {
+     "t": 16.264296250010375,
+     "dt_ms": 0.01562500256113708,
+     "cache_before": 104857604,
+     "cache_after": 0
+    },
+    {
+     "t": 16.26570166699821,
+     "dt_ms": 0.011916010407730937,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 16.26695083300001,
+     "dt_ms": 0.009000010322779417,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 16.26818212500075,
+     "dt_ms": 0.00837500556372106,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 16.269423000019742,
+     "dt_ms": 0.00941698090173304,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 16.27067333299783,
+     "dt_ms": 0.008584000170230865,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 16.271900624997215,
+     "dt_ms": 0.007875001756474376,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 16.273144833015976,
+     "dt_ms": 0.00895900302566588,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 16.27438187500229,
+     "dt_ms": 0.009625015081837773,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 16.27562308299821,
+     "dt_ms": 0.007709022611379623,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 16.27686791701126,
+     "dt_ms": 0.008291011909022927,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 16.278101292002248,
+     "dt_ms": 0.007875001756474376,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 16.279334000020754,
+     "dt_ms": 0.008374976459890604,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 16.280564792017685,
+     "dt_ms": 0.00837500556372106,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 16.28178270801436,
+     "dt_ms": 0.007458991603925824,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 16.283041750022676,
+     "dt_ms": 0.007791997632011771,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 17.674830333009595,
+     "dt_ms": 5.459959007566795,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 19.140966292005032,
+     "dt_ms": 4.98458300717175,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 20.708791375014698,
+     "dt_ms": 5.094791995361447,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 22.38771912502125,
+     "dt_ms": 5.633708002278581,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 24.163241208007094,
+     "dt_ms": 4.971749993273988,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 25.998873792006634,
+     "dt_ms": 4.3518329912330955,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 27.922744500014232,
+     "dt_ms": 4.620916995918378,
+     "cache_before": 3020857920,
+     "cache_after": 0
+    },
+    {
+     "t": 27.92743320800946,
+     "dt_ms": 0.009750016033649445,
+     "cache_before": 96468992,
+     "cache_after": 0
+    },
+    {
+     "t": 35.33840712500387,
+     "dt_ms": 15.050874993903562,
+     "cache_before": 2345741202,
+     "cache_after": 0
+    }
+   ],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791522621.723776,
+   "prefill_tps_ttft": 1239.0940019096936,
+   "tg_backend_all": 18.33810888252149,
+   "tg_backend_after_first_event": 18.19484240687679,
+   "tg_stream_after_first_event": 18.198094315019844,
+   "problems": [],
+   "valid": true,
+   "uid": 1,
+   "mtp_log": [],
+   "mtp_activation": null
+  },
+  {
+   "role": "warmup",
+   "length": 32768,
+   "nonce": "dec-warm-1-32768",
+   "max_tokens": 128,
+   "request_body_sha256": "0526777d16cfe93833280fdf04917fe82c83ee3967cb0f30df2c93786399d547",
+   "planned_prompt_ids": 32768,
+   "usage": {
+    "prompt_tokens": 32768,
+    "completion_tokens": 0,
+    "total_tokens": 32768,
+    "input_tokens": 32768,
+    "output_tokens": 0,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 31.63,
+    "total_time": 31.63,
+    "prompt_eval_duration": 31.63,
+    "generation_duration": 31.63,
+    "prompt_tokens_per_second": 1035.97,
+    "generation_tokens_per_second": 0.0
+   },
+   "prompt_tokens": 32768,
+   "completion_tokens": 0,
+   "cached_tokens": 0,
+   "finish_reason": "stop",
+   "client_ttft_s": null,
+   "client_total_s": 31.702036834001774,
+   "n_events": 0,
+   "events": [],
+   "first_event_tokens_est": 0,
+   "text": "",
+   "output_ids_est": [],
+   "ngram3": {
+    "n": 3,
+    "total": 0,
+    "distinct": 0,
+    "distinct_ratio": null
+   },
+   "mem_before": {
+    "gen": 15,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30885976696,
+    "t": 55.26504175001173
+   },
+   "mem_after": {
+    "gen": 16,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35057335066,
+    "phys_footprint": 30901213816,
+    "t": 87.9852990830259
+   },
+   "mem_settled": {
+    "gen": 18,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35057335066,
+    "phys_footprint": 30898330232,
+    "t": 92.0043376670219
+   },
+   "mem_settled_15s": {
+    "gen": 19,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35057335066,
+    "phys_footprint": 30898330232,
+    "t": 102.01770883300924
+   },
+   "counters_1s": {
+    "clear_cache_calls": 35,
+    "prepare_native": 6400,
+    "a8_qmm_calls": 6400,
+    "a8_q8_native": 6400
+   },
+   "counters_15s": {
+    "clear_cache_calls": 35,
+    "prepare_native": 6400,
+    "a8_qmm_calls": 6400,
+    "a8_q8_native": 6400
+   },
+   "rows_hist": {
+    "2047": 400,
+    "2048": 6000
+   },
+   "clear_events": [
+    {
+     "t": 55.37333616701653,
+     "dt_ms": 0.006999995093792677,
+     "cache_before": 16,
+     "cache_after": 0
+    },
+    {
+     "t": 56.736513792013284,
+     "dt_ms": 5.112707993248478,
+     "cache_before": 3013485416,
+     "cache_after": 0
+    },
+    {
+     "t": 56.74639416701393,
+     "dt_ms": 0.01925000105984509,
+     "cache_before": 104857604,
+     "cache_after": 0
+    },
+    {
+     "t": 56.74976050000987,
+     "dt_ms": 0.008167000487446785,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 56.75275162499747,
+     "dt_ms": 0.008125003660097718,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 56.755675167019945,
+     "dt_ms": 0.007875001756474376,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 56.75863133301027,
+     "dt_ms": 0.008584000170230865,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 56.761617667012615,
+     "dt_ms": 0.007666007149964571,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 56.76454675002606,
+     "dt_ms": 0.012832984793931246,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 56.76706050001667,
+     "dt_ms": 0.012999982573091984,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 56.76913208301994,
+     "dt_ms": 0.009541981853544712,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 56.771098417026224,
+     "dt_ms": 0.00654099858365953,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 56.77380066702608,
+     "dt_ms": 0.008499977411702275,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 56.77699641700019,
+     "dt_ms": 0.00662502134218812,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 56.78028633299982,
+     "dt_ms": 0.008167000487446785,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 56.78338629202335,
+     "dt_ms": 0.007665978046134114,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 56.78662366702338,
+     "dt_ms": 0.007415976142510772,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 56.78975100000389,
+     "dt_ms": 0.007708003977313638,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 58.18329508299939,
+     "dt_ms": 4.124667000724003,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 59.6679003330064,
+     "dt_ms": 4.923083994071931,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 61.26271179202013,
+     "dt_ms": 4.981665988452733,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 62.960430583014386,
+     "dt_ms": 4.644458997063339,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 64.73730366700329,
+     "dt_ms": 4.751666012452915,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 66.63456441700691,
+     "dt_ms": 4.333874996518716,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 68.62365625001257,
+     "dt_ms": 5.409707984654233,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 70.68954654200934,
+     "dt_ms": 5.015166010707617,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 72.81946791699738,
+     "dt_ms": 4.6816250251140445,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 75.01182583300397,
+     "dt_ms": 4.348250018665567,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 77.2569827499974,
+     "dt_ms": 5.239833000814542,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 79.56182587501826,
+     "dt_ms": 5.4018749797251076,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 81.92067654200946,
+     "dt_ms": 4.462915996555239,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 84.32516816700809,
+     "dt_ms": 4.785625002114102,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 86.83762566701625,
+     "dt_ms": 4.902040993329138,
+     "cache_before": 3020857920,
+     "cache_after": 0
+    },
+    {
+     "t": 86.84259495799779,
+     "dt_ms": 0.010209012543782592,
+     "cache_before": 96468992,
+     "cache_after": 0
+    },
+    {
+     "t": 87.28828391700517,
+     "dt_ms": 25.14308301033452,
+     "cache_before": 4496205134,
+     "cache_after": 0
+    }
+   ],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791522673.6618502,
+   "problems": [
+    "completion_tokens=0",
+    "finish_reason=stop"
+   ],
+   "valid": false,
+   "uid": 2,
+   "mtp_log": [],
+   "mtp_activation": null
+  },
+  {
+   "role": "primary",
+   "length": 16384,
+   "nonce": "dec-r1-16384-p0",
+   "max_tokens": 128,
+   "request_body_sha256": "2df3ea96bbdfa3d706770ce4070fb627dcfd04fba36fa2fb124b335795c65f5c",
+   "planned_prompt_ids": 16384,
+   "usage": {
+    "prompt_tokens": 16384,
+    "completion_tokens": 128,
+    "total_tokens": 16512,
+    "input_tokens": 16384,
+    "output_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 13.06,
+    "total_time": 20.04,
+    "prompt_eval_duration": 13.06,
+    "generation_duration": 6.97,
+    "prompt_tokens_per_second": 1254.28,
+    "generation_tokens_per_second": 18.35
+   },
+   "prompt_tokens": 16384,
+   "completion_tokens": 128,
+   "cached_tokens": 0,
+   "finish_reason": "length",
+   "client_ttft_s": 13.10414170799777,
+   "client_total_s": 20.075676374981413,
+   "n_events": 44,
+   "events": [
+    {
+     "t": 13.10414170799777,
+     "text": "it"
+    },
+    {
+     "t": 13.268895916000474,
+     "text": "-to-prob"
+    },
+    {
+     "t": 13.433555499999784,
+     "text": "ability example."
+    },
+    {
+     "t": 13.598209874995518,
+     "text": " The Qwen"
+    },
+    {
+     "t": 13.763475624989951,
+     "text": "3.5"
+    },
+    {
+     "t": 13.92852508299984,
+     "text": "-4B"
+    },
+    {
+     "t": 14.093080833001295,
+     "text": " case covers the"
+    },
+    {
+     "t": 14.257671832980122,
+     "text": " prompt, the"
+    },
+    {
+     "t": 14.422365290985908,
+     "text": " 10"
+    },
+    {
+     "t": 14.586921832989901,
+     "text": "24-token"
+    },
+    {
+     "t": 14.751478790974943,
+     "text": " state limit,"
+    },
+    {
+     "t": 14.915707999985898,
+     "text": " and the released"
+    },
+    {
+     "t": 15.080142499995418,
+     "text": " checkpoint's"
+    },
+    {
+     "t": 15.244164749979973,
+     "text": " 163"
+    },
+    {
+     "t": 15.408752707997337,
+     "text": "84-token"
+    },
+    {
+     "t": 15.57283916597953,
+     "text": " context.\n\n"
+    },
+    {
+     "t": 15.73736662499141,
+     "text": "# file:"
+    },
+    {
+     "t": 15.901744582981337,
+     "text": " omlx/api"
+    },
+    {
+     "t": 16.06602716600173,
+     "text": "/anthropic"
+    },
+    {
+     "t": 16.230388790980214,
+     "text": "_models.py\n"
+    },
+    {
+     "t": 16.3945815829793,
+     "text": "# SPDX-License"
+    },
+    {
+     "t": 16.5590051249892,
+     "text": "-Identifier: Apache"
+    },
+    {
+     "t": 16.723241749976296,
+     "text": "-2."
+    },
+    {
+     "t": 16.8877306249924,
+     "text": "0\n\"\"\""
+    },
+    {
+     "t": 17.052258374984376,
+     "text": "\nAnthropic"
+    },
+    {
+     "t": 17.216548832977423,
+     "text": " Messages API models"
+    },
+    {
+     "t": 17.381123999977717,
+     "text": " for oML"
+    },
+    {
+     "t": 17.545466665993445,
+     "text": "X.\n\n"
+    },
+    {
+     "t": 17.710135665984126,
+     "text": "This module defines"
+    },
+    {
+     "t": 17.874631082988344,
+     "text": " Pydantic"
+    },
+    {
+     "t": 18.03915129098459,
+     "text": " models for the"
+    },
+    {
+     "t": 18.2041516249883,
+     "text": " Anthropic Messages"
+    },
+    {
+     "t": 18.3680769999919,
+     "text": " API format,"
+    },
+    {
+     "t": 18.532262957975036,
+     "text": "\nenabling"
+    },
+    {
+     "t": 18.697016249992885,
+     "text": " oMLX"
+    },
+    {
+     "t": 18.861420165980235,
+     "text": " to serve as"
+    },
+    {
+     "t": 19.025644624984125,
+     "text": " a drop-in"
+    },
+    {
+     "t": 19.190052249992732,
+     "text": " replacement for Anth"
+    },
+    {
+     "t": 19.354569791001268,
+     "text": "ropic's API"
+    },
+    {
+     "t": 19.519070165988524,
+     "text": ".\n\nReference"
+    },
+    {
+     "t": 19.683714415994473,
+     "text": ": https://"
+    },
+    {
+     "t": 19.848064999998314,
+     "text": "docs.anth"
+    },
+    {
+     "t": 20.01516429099138,
+     "text": "ropic.com/en"
+    },
+    {
+     "t": 20.07542249999824,
+     "text": "/api"
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "it-to-probability example. The Qwen3.5-4B case covers the prompt, the 1024-token state limit, and the released checkpoint's 16384-token context.\n\n# file: omlx/api/anthropic_models.py\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"\nAnthropic Messages API models for oMLX.\n\nThis module defines Pydantic models for the Anthropic Messages API format,\nenabling oMLX to serve as a drop-in replacement for Anthropic's API.\n\nReference: https://docs.anthropic.com/en/api",
+   "output_ids_est": [
+    275,
+    4534,
+    9546,
+    65,
+    2803,
+    3010,
+    13,
+    561,
+    1167,
+    16451,
+    18,
+    13,
+    20,
+    12,
+    19,
+    33,
+    1105,
+    14103,
+    279,
+    9640,
+    11,
+    279,
+    220,
+    16,
+    15,
+    17,
+    19,
+    33686,
+    1528,
+    3798,
+    11,
+    321,
+    279,
+    5698,
+    28336,
+    579,
+    220,
+    16,
+    21,
+    18,
+    23,
+    19,
+    33686,
+    2193,
+    13,
+    271,
+    2,
+    999,
+    25,
+    296,
+    64643,
+    10195,
+    14,
+    30205,
+    42481,
+    29786,
+    6971,
+    198,
+    2,
+    34313,
+    35274,
+    35555,
+    25,
+    8644,
+    12,
+    17,
+    13,
+    15,
+    198,
+    12237,
+    198,
+    59622,
+    42481,
+    25876,
+    5165,
+    3983,
+    364,
+    296,
+    2581,
+    55,
+    13,
+    271,
+    1919,
+    4536,
+    18091,
+    5187,
+    67,
+    7902,
+    3983,
+    364,
+    279,
+    16092,
+    42481,
+    25876,
+    5165,
+    3443,
+    11,
+    198,
+    268,
+    18203,
+    296,
+    2581,
+    55,
+    310,
+    8418,
+    430,
+    264,
+    5758,
+    3309,
+    13329,
+    364,
+    16092,
+    42481,
+    579,
+    5165,
+    13,
+    271,
+    8589,
+    25,
+    3577,
+    1074,
+    13715,
+    10436,
+    337,
+    42481,
+    877,
+    13213,
+    10195
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 126,
+    "distinct": 124,
+    "distinct_ratio": 0.9841269841269841
+   },
+   "mem_before": {
+    "gen": 25,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30889941624,
+    "t": 164.2181372080231
+   },
+   "mem_after": {
+    "gen": 26,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33983527706,
+    "phys_footprint": 30901787256,
+    "t": 185.31060850000358
+   },
+   "mem_settled": {
+    "gen": 28,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33983527706,
+    "phys_footprint": 30898821752,
+    "t": 189.33656958301435
+   },
+   "mem_settled_15s": {
+    "gen": 29,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33983527706,
+    "phys_footprint": 30898821752,
+    "t": 199.35477766700205
+   },
+   "counters_1s": {
+    "clear_cache_calls": 27,
+    "prepare_native": 3200,
+    "a8_qmm_calls": 3200,
+    "a8_q8_native": 3200
+   },
+   "counters_15s": {
+    "clear_cache_calls": 27,
+    "prepare_native": 3200,
+    "a8_qmm_calls": 3200,
+    "a8_q8_native": 3200
+   },
+   "rows_hist": {
+    "2047": 400,
+    "2048": 2800
+   },
+   "clear_events": [
+    {
+     "t": 164.2812050000066,
+     "dt_ms": 0.00604201341047883,
+     "cache_before": 16,
+     "cache_after": 0
+    },
+    {
+     "t": 165.6460135000234,
+     "dt_ms": 3.987167001469061,
+     "cache_before": 3013485416,
+     "cache_after": 0
+    },
+    {
+     "t": 165.65371075001894,
+     "dt_ms": 0.018416991224512458,
+     "cache_before": 104857604,
+     "cache_after": 0
+    },
+    {
+     "t": 165.655150333012,
+     "dt_ms": 0.009709008736535907,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 165.65640037500998,
+     "dt_ms": 0.00966701190918684,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 165.65763400000287,
+     "dt_ms": 0.0076669966802001,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 165.65885050001089,
+     "dt_ms": 0.009207986295223236,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 165.6600991669984,
+     "dt_ms": 0.007250026101246476,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 165.66135208299966,
+     "dt_ms": 0.008084025466814637,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 165.66259520800668,
+     "dt_ms": 0.008834002073854208,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 165.66382816701662,
+     "dt_ms": 0.00958298915065825,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 165.66507254200405,
+     "dt_ms": 0.009166018571704626,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 165.66630541702034,
+     "dt_ms": 0.008000002708286047,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 165.6675486669992,
+     "dt_ms": 0.007791008101776242,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 165.66878833301598,
+     "dt_ms": 0.00895900302566588,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 165.6700267920096,
+     "dt_ms": 0.009790994226932526,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 165.67125137502444,
+     "dt_ms": 0.006999995093792677,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 165.67247520800447,
+     "dt_ms": 0.009125011274591088,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 167.061286458018,
+     "dt_ms": 4.9573339929338545,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 168.49255741701927,
+     "dt_ms": 3.9151249802671373,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 170.02830812500906,
+     "dt_ms": 4.032625001855195,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 171.71496129201842,
+     "dt_ms": 4.823458002647385,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 173.4812235420104,
+     "dt_ms": 3.9202079933602363,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 175.29845604201546,
+     "dt_ms": 4.883665998931974,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 177.20659137499752,
+     "dt_ms": 4.347708018030971,
+     "cache_before": 3020857920,
+     "cache_after": 0
+    },
+    {
+     "t": 177.21100366700557,
+     "dt_ms": 0.009625015081837773,
+     "cache_before": 96468992,
+     "cache_after": 0
+    },
+    {
+     "t": 184.61546904200804,
+     "dt_ms": 16.70862501487136,
+     "cache_before": 2345741202,
+     "cache_after": 0
+    }
+   ],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791522770.999146,
+   "prefill_tps_ttft": 1250.291729522465,
+   "tg_backend_all": 18.36441893830703,
+   "tg_backend_after_first_event": 18.220946915351508,
+   "tg_stream_after_first_event": 18.217599289033405,
+   "problems": [],
+   "valid": true,
+   "uid": 3,
+   "mtp_log": [],
+   "mtp_activation": null
+  },
+  {
+   "role": "primary",
+   "length": 32768,
+   "nonce": "dec-r1-32768-p0",
+   "max_tokens": 128,
+   "request_body_sha256": "a37eb175c72a378600b342da0bec95844ff7394df50dc7f0a2c33bb0360c2776",
+   "planned_prompt_ids": 32768,
+   "usage": {
+    "prompt_tokens": 32768,
+    "completion_tokens": 41,
+    "total_tokens": 32809,
+    "input_tokens": 32768,
+    "output_tokens": 41,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 30.13,
+    "total_time": 32.48,
+    "prompt_eval_duration": 30.13,
+    "generation_duration": 2.36,
+    "prompt_tokens_per_second": 1087.69,
+    "generation_tokens_per_second": 17.4
+   },
+   "prompt_tokens": 32768,
+   "completion_tokens": 41,
+   "cached_tokens": 0,
+   "finish_reason": "stop",
+   "client_ttft_s": 30.197711417014943,
+   "client_total_s": 32.552340666996315,
+   "n_events": 15,
+   "events": [
+    {
+     "t": 30.197711417014943,
+     "text": "          "
+    },
+    {
+     "t": 30.368180250021396,
+     "text": " payloads[layer_idx"
+    },
+    {
+     "t": 30.540257167012896,
+     "text": "] = ("
+    },
+    {
+     "t": 30.711643042013748,
+     "text": "\n                layer"
+    },
+    {
+     "t": 30.88375583299785,
+     "text": "_state.get(\""
+    },
+    {
+     "t": 31.05514687500545,
+     "text": "meta_state\","
+    },
+    {
+     "t": 31.227389250008855,
+     "text": " ()),\n"
+    },
+    {
+     "t": 31.39938099999563,
+     "text": "                cache_data"
+    },
+    {
+     "t": 31.57160529200337,
+     "text": ",\n           "
+    },
+    {
+     "t": 31.74369954201393,
+     "text": " )\n       "
+    },
+    {
+     "t": 31.91551537500345,
+     "text": " return payloads or"
+    },
+    {
+     "t": 32.08763125000405,
+     "text": " None\n\n   "
+    },
+    {
+     "t": 32.25993012500112,
+     "text": " def _g"
+    },
+    {
+     "t": 32.43194145799498,
+     "text": "dn_checkpoint_load"
+    },
+    {
+     "t": 32.551759249996394,
+     "text": "("
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "           payloads[layer_idx] = (\n                layer_state.get(\"meta_state\", ()),\n                cache_data,\n            )\n        return payloads or None\n\n    def _gdn_checkpoint_load(",
+   "output_ids_est": [
+    1779,
+    86443,
+    73272,
+    7031,
+    60,
+    283,
+    318,
+    198,
+    388,
+    6000,
+    4244,
+    652,
+    437,
+    5317,
+    4244,
+    487,
+    318,
+    5553,
+    198,
+    388,
+    6297,
+    1707,
+    11,
+    198,
+    309,
+    847,
+    198,
+    285,
+    460,
+    86443,
+    466,
+    2168,
+    271,
+    262,
+    687,
+    696,
+    70,
+    16884,
+    53354,
+    12055,
+    7
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 39,
+    "distinct": 39,
+    "distinct_ratio": 1.0
+   },
+   "mem_before": {
+    "gen": 34,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30890433144,
+    "t": 283.54644970802474
+   },
+   "mem_after": {
+    "gen": 35,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35057335066,
+    "phys_footprint": 30905571984,
+    "t": 317.1127295830229
+   },
+   "mem_settled": {
+    "gen": 37,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35057335066,
+    "phys_footprint": 30902655632,
+    "t": 321.1360140000179
+   },
+   "mem_settled_15s": {
+    "gen": 38,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35057335066,
+    "phys_footprint": 30902655632,
+    "t": 331.149804708024
+   },
+   "counters_1s": {
+    "clear_cache_calls": 35,
+    "prepare_native": 6400,
+    "a8_qmm_calls": 6400,
+    "a8_q8_native": 6400
+   },
+   "counters_15s": {
+    "clear_cache_calls": 35,
+    "prepare_native": 6400,
+    "a8_qmm_calls": 6400,
+    "a8_q8_native": 6400
+   },
+   "rows_hist": {
+    "2047": 400,
+    "2048": 6000
+   },
+   "clear_events": [
+    {
+     "t": 283.6477673750196,
+     "dt_ms": 0.006124988431110978,
+     "cache_before": 16,
+     "cache_after": 0
+    },
+    {
+     "t": 285.0102097080089,
+     "dt_ms": 4.778167000040412,
+     "cache_before": 3013485416,
+     "cache_after": 0
+    },
+    {
+     "t": 285.01938337500906,
+     "dt_ms": 0.023917004000395536,
+     "cache_before": 104857604,
+     "cache_after": 0
+    },
+    {
+     "t": 285.02261758301756,
+     "dt_ms": 0.013334007235243917,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 285.0257705420081,
+     "dt_ms": 0.013125012628734112,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 285.02871554202284,
+     "dt_ms": 0.010124989785254002,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 285.0318591670075,
+     "dt_ms": 0.010207993909716606,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 285.03485212501255,
+     "dt_ms": 0.007916998583823442,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 285.03786983300233,
+     "dt_ms": 0.008750008419156075,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 285.0409189170168,
+     "dt_ms": 0.010082992957904935,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 285.0439484580129,
+     "dt_ms": 0.00925001222640276,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 285.0470868750126,
+     "dt_ms": 0.008542003342881799,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 285.0502874170197,
+     "dt_ms": 0.0081659818533808,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 285.0534737080161,
+     "dt_ms": 0.009292009053751826,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 285.05666129200836,
+     "dt_ms": 0.0077500008046627045,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 285.05987654201454,
+     "dt_ms": 0.007333001121878624,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 285.06304283300415,
+     "dt_ms": 0.008625007467344403,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 285.0661870420154,
+     "dt_ms": 0.008707982487976551,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 286.45523079202394,
+     "dt_ms": 4.734374990221113,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 287.88627320801606,
+     "dt_ms": 4.695124982390553,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 289.3761414170149,
+     "dt_ms": 4.254541010595858,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 291.03224525001133,
+     "dt_ms": 4.86104199080728,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 292.80680933300755,
+     "dt_ms": 5.093874991871417,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 294.63490529201226,
+     "dt_ms": 5.021666001994163,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 296.51283358302317,
+     "dt_ms": 4.300374974263832,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 298.4442394170037,
+     "dt_ms": 4.543125018244609,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 300.4285810420115,
+     "dt_ms": 4.315375001169741,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 302.4688597920176,
+     "dt_ms": 4.505916003836319,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 304.55927495801006,
+     "dt_ms": 4.023584013339132,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 306.69920891700895,
+     "dt_ms": 4.993415990611538,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 308.9044517080183,
+     "dt_ms": 4.9870419898070395,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 311.19808783300687,
+     "dt_ms": 4.18625000747852,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 313.61647779200575,
+     "dt_ms": 4.766291007399559,
+     "cache_before": 3020857920,
+     "cache_after": 0
+    },
+    {
+     "t": 313.6213135420112,
+     "dt_ms": 0.012790987966582179,
+     "cache_before": 96468992,
+     "cache_after": 0
+    },
+    {
+     "t": 316.4179228330031,
+     "dt_ms": 26.90825000172481,
+     "cache_before": 4502566414,
+     "cache_after": 0
+    }
+   ],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791522902.793319,
+   "prefill_tps_ttft": 1085.1153435931183,
+   "tg_backend_all": 17.372881355932204,
+   "tg_backend_after_first_event": 16.949152542372882,
+   "tg_stream_after_first_event": 16.992008165500685,
+   "problems": [
+    "completion_tokens=41",
+    "finish_reason=stop"
+   ],
+   "valid": false,
+   "uid": 4,
+   "mtp_log": [],
+   "mtp_activation": null
+  },
+  {
+   "role": "primary",
+   "length": 16384,
+   "nonce": "dec-r1-16384-p1",
+   "max_tokens": 128,
+   "request_body_sha256": "5bb28d66beaf0f81d745744e99f10f30c86f78b776529b4233c85a16fafab4cf",
+   "planned_prompt_ids": 16384,
+   "usage": {
+    "prompt_tokens": 16384,
+    "completion_tokens": 128,
+    "total_tokens": 16512,
+    "input_tokens": 16384,
+    "output_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 13.1,
+    "total_time": 20.07,
+    "prompt_eval_duration": 13.1,
+    "generation_duration": 6.97,
+    "prompt_tokens_per_second": 1251.11,
+    "generation_tokens_per_second": 18.36
+   },
+   "prompt_tokens": 16384,
+   "completion_tokens": 128,
+   "cached_tokens": 0,
+   "finish_reason": "length",
+   "client_ttft_s": 13.141894542000955,
+   "client_total_s": 20.109812457987573,
+   "n_events": 44,
+   "events": [
+    {
+     "t": 13.141894542000955,
+     "text": "sthrough"
+    },
+    {
+     "t": 13.305965916981222,
+     "text": " reasoning string\n"
+    },
+    {
+     "t": 13.470958791993326,
+     "text": "    for the"
+    },
+    {
+     "t": 13.635434625000926,
+     "text": " next flush cycle"
+    },
+    {
+     "t": 13.800304916978348,
+     "text": ".\n   "
+    },
+    {
+     "t": 13.964446541998768,
+     "text": " \"\"\"\n   "
+    },
+    {
+     "t": 14.128871416993206,
+     "text": " if not pending"
+    },
+    {
+     "t": 14.29352716699941,
+     "text": ":\n       "
+    },
+    {
+     "t": 14.457866832992295,
+     "text": " return pending_reason"
+    },
+    {
+     "t": 14.622555957990699,
+     "text": "ing\n   "
+    },
+    {
+     "t": 14.787125542003196,
+     "text": " last = messages"
+    },
+    {
+     "t": 14.951721958001144,
+     "text": "[-1]"
+    },
+    {
+     "t": 15.116128333000233,
+     "text": " if messages else"
+    },
+    {
+     "t": 15.280726333003258,
+     "text": " None\n   "
+    },
+    {
+     "t": 15.44486395799322,
+     "text": " tool_calls ="
+    },
+    {
+     "t": 15.609296249982435,
+     "text": " [\n       "
+    },
+    {
+     "t": 15.773704916995484,
+     "text": " {\n           "
+    },
+    {
+     "t": 15.937799749983242,
+     "text": " openai_models"
+    },
+    {
+     "t": 16.102305332984542,
+     "text": ".Message(\n"
+    },
+    {
+     "t": 16.266750041977502,
+     "text": "                role=\""
+    },
+    {
+     "t": 16.431186999980127,
+     "text": "assistant\",\n"
+    },
+    {
+     "t": 16.595473749999655,
+     "text": "                content=None"
+    },
+    {
+     "t": 16.75980004199664,
+     "text": ",\n               "
+    },
+    {
+     "t": 16.924509082979057,
+     "text": " tool_calls=["
+    },
+    {
+     "t": 17.08882083298522,
+     "text": "\n                    {"
+    },
+    {
+     "t": 17.25346383298165,
+     "text": "\n                        \""
+    },
+    {
+     "t": 17.417942041996866,
+     "text": "id\": tc"
+    },
+    {
+     "t": 17.58254183299141,
+     "text": "[\"id\"],"
+    },
+    {
+     "t": 17.747191332979128,
+     "text": "\n                        \""
+    },
+    {
+     "t": 17.911398832977284,
+     "text": "\n\n[..."
+    },
+    {
+     "t": 18.076130207977258,
+     "text": " 10"
+    },
+    {
+     "t": 18.240488374984125,
+     "text": "000"
+    },
+    {
+     "t": 18.404951374977827,
+     "text": " characters truncated ..."
+    },
+    {
+     "t": 18.569214832998114,
+     "text": "]\n\n["
+    },
+    {
+     "t": 18.733551249984885,
+     "text": "... _utils"
+    },
+    {
+     "t": 18.897629249986494,
+     "text": ".py]\n"
+    },
+    {
+     "t": 19.062025708000874,
+     "text": "    \"\"\"\n"
+    },
+    {
+     "t": 19.22691191697959,
+     "text": "    if not"
+    },
+    {
+     "t": 19.39146712498041,
+     "text": " pending:\n"
+    },
+    {
+     "t": 19.55569862498669,
+     "text": "        responses_utils"
+    },
+    {
+     "t": 19.720246374985436,
+     "text": ".py:1"
+    },
+    {
+     "t": 19.884727374999784,
+     "text": "000"
+    },
+    {
+     "t": 20.04940191700007,
+     "text": "0 characters truncated"
+    },
+    {
+     "t": 20.109564082988072,
+     "text": " ..."
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "sthrough reasoning string\n    for the next flush cycle.\n    \"\"\"\n    if not pending:\n        return pending_reasoning\n    last = messages[-1] if messages else None\n    tool_calls = [\n        {\n            openai_models.Message(\n                role=\"assistant\",\n                content=None,\n                tool_calls=[\n                    {\n                        \"id\": tc[\"id\"],\n                        \"\n\n[... 10000 characters truncated ...]\n\n[... _utils.py]\n    \"\"\"\n    if not pending:\n        responses_utils.py:10000 characters truncated ...",
+   "output_ids_est": [
+    83902,
+    31626,
+    886,
+    198,
+    262,
+    364,
+    279,
+    1727,
+    17657,
+    10458,
+    13,
+    198,
+    262,
+    4071,
+    198,
+    262,
+    413,
+    524,
+    14836,
+    25,
+    198,
+    285,
+    460,
+    14836,
+    36962,
+    286,
+    198,
+    262,
+    1483,
+    283,
+    6397,
+    7368,
+    16,
+    60,
+    413,
+    6397,
+    745,
+    2168,
+    198,
+    262,
+    5224,
+    44116,
+    283,
+    498,
+    198,
+    285,
+    313,
+    198,
+    309,
+    1724,
+    2075,
+    29786,
+    8212,
+    7,
+    198,
+    388,
+    3364,
+    420,
+    74455,
+    487,
+    198,
+    388,
+    2144,
+    5675,
+    11,
+    198,
+    388,
+    5224,
+    44116,
+    5637,
+    198,
+    493,
+    313,
+    198,
+    646,
+    328,
+    306,
+    763,
+    16626,
+    1143,
+    306,
+    7664,
+    198,
+    646,
+    328,
+    271,
+    58,
+    1076,
+    220,
+    16,
+    15,
+    15,
+    15,
+    15,
+    5587,
+    57739,
+    2423,
+    60,
+    271,
+    58,
+    1076,
+    696,
+    5842,
+    6971,
+    60,
+    198,
+    262,
+    4071,
+    198,
+    262,
+    413,
+    524,
+    14836,
+    25,
+    198,
+    285,
+    14090,
+    16799,
+    6971,
+    25,
+    16,
+    15,
+    15,
+    15,
+    15,
+    5587,
+    57739,
+    2423
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 126,
+    "distinct": 108,
+    "distinct_ratio": 0.8571428571428571
+   },
+   "mem_before": {
+    "gen": 43,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30902655632,
+    "t": 383.3142415830225
+   },
+   "mem_after": {
+    "gen": 44,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33983527706,
+    "phys_footprint": 30908373648,
+    "t": 404.4398177920084
+   },
+   "mem_settled": {
+    "gen": 46,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33983527706,
+    "phys_footprint": 30905408144,
+    "t": 408.4656572920212
+   },
+   "mem_settled_15s": {
+    "gen": 47,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33983527706,
+    "phys_footprint": 30905408144,
+    "t": 418.47432991702226
+   },
+   "counters_1s": {
+    "clear_cache_calls": 27,
+    "prepare_native": 3200,
+    "a8_qmm_calls": 3200,
+    "a8_q8_native": 3200
+   },
+   "counters_15s": {
+    "clear_cache_calls": 27,
+    "prepare_native": 3200,
+    "a8_qmm_calls": 3200,
+    "a8_q8_native": 3200
+   },
+   "rows_hist": {
+    "2047": 400,
+    "2048": 2800
+   },
+   "clear_events": [
+    {
+     "t": 383.38226658300846,
+     "dt_ms": 0.0058340083342045546,
+     "cache_before": 16,
+     "cache_after": 0
+    },
+    {
+     "t": 384.746850000025,
+     "dt_ms": 4.079499980434775,
+     "cache_before": 3013485416,
+     "cache_after": 0
+    },
+    {
+     "t": 384.75463045801735,
+     "dt_ms": 0.015541998436674476,
+     "cache_before": 104857604,
+     "cache_after": 0
+    },
+    {
+     "t": 384.75606045802124,
+     "dt_ms": 0.008125003660097718,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 384.75730620801914,
+     "dt_ms": 0.010791991371661425,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 384.75855291701737,
+     "dt_ms": 0.008500006515532732,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 384.7598050420056,
+     "dt_ms": 0.009833020158112049,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 384.76105625001946,
+     "dt_ms": 0.00795800588093698,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 384.7622979170119,
+     "dt_ms": 0.00854101381264627,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 384.7635384169989,
+     "dt_ms": 0.00937501317821443,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 384.7647751250188,
+     "dt_ms": 0.009124982170760632,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 384.76603220801917,
+     "dt_ms": 0.007916998583823442,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 384.76725512501434,
+     "dt_ms": 0.00958298915065825,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 384.76849575000233,
+     "dt_ms": 0.007333001121878624,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 384.7697352920077,
+     "dt_ms": 0.008458009688183665,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 384.7709446250228,
+     "dt_ms": 0.007499998901039362,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 384.7721700000111,
+     "dt_ms": 0.007875001756474376,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 384.7734101670212,
+     "dt_ms": 0.007708003977313638,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 386.162517083023,
+     "dt_ms": 4.286583978682756,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 387.59420987500926,
+     "dt_ms": 4.554667015327141,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 389.1405745000229,
+     "dt_ms": 4.391041991766542,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 390.8657004170236,
+     "dt_ms": 5.03654099884443,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 392.6112577500171,
+     "dt_ms": 4.742041986901313,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 394.42545579202124,
+     "dt_ms": 4.254165978636593,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 396.3393175000092,
+     "dt_ms": 4.803332994924858,
+     "cache_before": 3020857920,
+     "cache_after": 0
+    },
+    {
+     "t": 396.3441845830239,
+     "dt_ms": 0.013749988283962011,
+     "cache_before": 96468992,
+     "cache_after": 0
+    },
+    {
+     "t": 403.7424390829983,
+     "dt_ms": 16.893750027520582,
+     "cache_before": 2345751442,
+     "cache_after": 0
+    }
+   ],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791522990.1194549,
+   "prefill_tps_ttft": 1246.7000056679353,
+   "tg_backend_all": 18.36441893830703,
+   "tg_backend_after_first_event": 18.220946915351508,
+   "tg_stream_after_first_event": 18.227041229915702,
+   "problems": [],
+   "valid": true,
+   "uid": 5,
+   "mtp_log": [],
+   "mtp_activation": null
+  },
+  {
+   "role": "primary",
+   "length": 32768,
+   "nonce": "dec-r1-32768-p1",
+   "max_tokens": 128,
+   "request_body_sha256": "da17d41dc14319602d455ff911941c8c2facece63138ab6925899ea3b9e2dd82",
+   "planned_prompt_ids": 32768,
+   "usage": {
+    "prompt_tokens": 32768,
+    "completion_tokens": 4,
+    "total_tokens": 32772,
+    "input_tokens": 32768,
+    "output_tokens": 4,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 30.06,
+    "total_time": 30.29,
+    "prompt_eval_duration": 30.06,
+    "generation_duration": 0.23,
+    "prompt_tokens_per_second": 1090.18,
+    "generation_tokens_per_second": 17.04
+   },
+   "prompt_tokens": 32768,
+   "completion_tokens": 4,
+   "cached_tokens": 0,
+   "finish_reason": "stop",
+   "client_ttft_s": 30.12374454201199,
+   "client_total_s": 30.35605920900707,
+   "n_events": 2,
+   "events": [
+    {
+     "t": 30.12374454201199,
+     "text": "_config"
+    },
+    {
+     "t": 30.29400062499917,
+     "text": "\", None)"
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "_config\", None)",
+   "output_ids_est": [
+    5164,
+    487,
+    2168,
+    8
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 2,
+    "distinct": 2,
+    "distinct_ratio": 1.0
+   },
+   "mem_before": {
+    "gen": 52,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30897019536,
+    "t": 502.6551370829984
+   },
+   "mem_after": {
+    "gen": 53,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35057335066,
+    "phys_footprint": 30910257808,
+    "t": 534.0251454170211
+   },
+   "mem_settled": {
+    "gen": 55,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35057335066,
+    "phys_footprint": 30907357840,
+    "t": 538.0419879170076
+   },
+   "mem_settled_15s": {
+    "gen": 56,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35057335066,
+    "phys_footprint": 30907357840,
+    "t": 548.0601092500146
+   },
+   "counters_1s": {
+    "clear_cache_calls": 35,
+    "prepare_native": 6400,
+    "a8_qmm_calls": 6400,
+    "a8_q8_native": 6400
+   },
+   "counters_15s": {
+    "clear_cache_calls": 35,
+    "prepare_native": 6400,
+    "a8_qmm_calls": 6400,
+    "a8_q8_native": 6400
+   },
+   "rows_hist": {
+    "2047": 400,
+    "2048": 6000
+   },
+   "clear_events": [
+    {
+     "t": 502.75174204201903,
+     "dt_ms": 0.006165995728224516,
+     "cache_before": 16,
+     "cache_after": 0
+    },
+    {
+     "t": 504.1160547500185,
+     "dt_ms": 4.53504198230803,
+     "cache_before": 3013485416,
+     "cache_after": 0
+    },
+    {
+     "t": 504.1251672920189,
+     "dt_ms": 0.0191659783013165,
+     "cache_before": 104857604,
+     "cache_after": 0
+    },
+    {
+     "t": 504.12856266699964,
+     "dt_ms": 0.013541022781282663,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 504.13153450001846,
+     "dt_ms": 0.010041985660791397,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 504.13447454202105,
+     "dt_ms": 0.010332994861528277,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 504.13763300000574,
+     "dt_ms": 0.008750008419156075,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 504.1406030000071,
+     "dt_ms": 0.014332996215671301,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 504.1435723750037,
+     "dt_ms": 0.00866700429469347,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 504.1464622080093,
+     "dt_ms": 0.009874987881630659,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 504.14968479200616,
+     "dt_ms": 0.008416012860834599,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 504.1528412080079,
+     "dt_ms": 0.007833994459360838,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 504.15598287500325,
+     "dt_ms": 0.00895801349543035,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 504.1590619170165,
+     "dt_ms": 0.008500006515532732,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 504.16220937500475,
+     "dt_ms": 0.008417002391070127,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 504.16532429200015,
+     "dt_ms": 0.008000002708286047,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 504.16851929199765,
+     "dt_ms": 0.008333008736371994,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 504.17175466701156,
+     "dt_ms": 0.009332987247034907,
+     "cache_before": 8388612,
+     "cache_after": 0
+    },
+    {
+     "t": 505.56091100000776,
+     "dt_ms": 4.505249991780147,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 506.9884704580181,
+     "dt_ms": 4.5357089838944376,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 508.4833967080049,
+     "dt_ms": 4.5592499955091625,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 510.1451968330075,
+     "dt_ms": 4.147375002503395,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 511.9325477500097,
+     "dt_ms": 3.996250015916303,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 513.7444694580045,
+     "dt_ms": 4.357792000519112,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 515.6176177080197,
+     "dt_ms": 5.019125004764646,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 517.5456697920163,
+     "dt_ms": 5.66233298741281,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 519.5300891250081,
+     "dt_ms": 4.637833015294746,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 521.5661061250139,
+     "dt_ms": 4.015666985651478,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 523.6531400420063,
+     "dt_ms": 5.181125015951693,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 525.791386833007,
+     "dt_ms": 5.010958993807435,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 528.0082362079993,
+     "dt_ms": 5.308000021614134,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 530.2679836250027,
+     "dt_ms": 4.756625014124438,
+     "cache_before": 3021873732,
+     "cache_after": 0
+    },
+    {
+     "t": 532.6528735000174,
+     "dt_ms": 4.517875000601634,
+     "cache_before": 3020857920,
+     "cache_after": 0
+    },
+    {
+     "t": 532.657464125019,
+     "dt_ms": 0.01320798764936626,
+     "cache_before": 96468992,
+     "cache_after": 0
+    },
+    {
+     "t": 533.3310654580127,
+     "dt_ms": 24.13729199906811,
+     "cache_before": 4502566414,
+     "cache_after": 0
+    }
+   ],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791523119.703737,
+   "prefill_tps_ttft": 1087.7797730059822,
+   "tg_backend_all": 17.391304347826086,
+   "tg_backend_after_first_event": 13.043478260869565,
+   "tg_stream_after_first_event": 17.6205157981104,
+   "problems": [
+    "completion_tokens=4",
+    "finish_reason=stop"
+   ],
+   "valid": false,
+   "uid": 6,
+   "mtp_log": [],
+   "mtp_activation": null
+  }
+ ],
+ "power_start": {
+  "batt": "Now drawing from 'AC Power'\n -InternalBattery-0 (id=24641635)\t80%; AC attached; not charging present: true\n",
+  "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded\n"
+ },
+ "flags": {
+  "gen": 1,
+  "op": "flags",
+  "pid": 46272,
+  "oq_a8_module_loaded": true,
+  "mlp_patched": true,
+  "gdn_registered": true,
+  "omlx_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/__init__.py",
+  "ext_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/custom_kernels/qwen35_prefill/_ext.cpython-311-darwin.so",
+  "oq_a8_available": true
+ },
+ "mem_after_load": {
+  "gen": 3,
+  "op": "mem",
+  "active": 30002535174,
+  "cache": 194260104,
+  "peak": 0,
+  "phys_footprint": 31075261048,
+  "t": 4.668914292007685
+ },
+ "mem_after_load_5s": {
+  "gen": 4,
+  "op": "mem",
+  "active": 30002535166,
+  "cache": 16,
+  "peak": 30002535182,
+  "phys_footprint": 30877915768,
+  "t": 9.686909333016956
+ },
+ "mem_after_warmup": {
+  "gen": 23,
+  "op": "mem",
+  "active": 30002535166,
+  "cache": 16,
+  "peak": 0,
+  "phys_footprint": 30898330232,
+  "t": 112.09228654199978
+ },
+ "power_end": {
+  "batt": "Now drawing from 'AC Power'\n -InternalBattery-0 (id=24641635)\t80%; AC attached; not charging present: true\n",
+  "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded\n"
+ },
+ "mtp_summary_lines_total": 0,
+ "mtp_activation_lines_total": 0,
+ "log_suspect_lines": [
+  "2026-10-09 14:09:32,317 - omlx.scheduler - INFO - ChunkedKVCache patch: methods already present upstream, skipped: size",
+  "2026-10-09 14:09:32,395 - omlx.server - INFO - ModelScope SDK not installed, MS downloader disabled",
+  "2026-10-09 14:09:34,779 - omlx.engine.vlm - INFO - Vision feature cache enabled (SSD: disabled)",
+  "2026-10-09 14:09:35,682 - omlx.memory_monitor - INFO - MemoryMonitor initialized (estimator-only, eviction disabled)",
+  "2026-10-09 14:09:35,692 - omlx.scheduler - INFO - oMLX cache disabled (mlx-lm BatchGenerator manages KV internally)",
+  "2026-10-09 14:09:35,694 - omlx.patches.qwen35_fa256_attention - INFO - Qwen FA-256 steel patch skipped: NAX GPU, MLX native fused SDPA is faster",
+  "2026-10-09 14:09:35,707 - omlx.patches.qwen35_ragged_decode - INFO - qwen3_5 ragged decode threadgroup fallback patch applied"
+ ],
+ "log_lines_penalty_or_depth": [
+  "2026-10-09 14:09:35,706 - omlx.patches.qwen35_oq_a8 - INFO - oQ A8 prefill kernels enabled (mlp=True, gdn=True, modules=1255, min_tokens=128)"
+ ]
+}

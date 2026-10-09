@@ -1,0 +1,511 @@
+{
+ "schema": 1,
+ "mode": "cache",
+ "arm": "transposed_mtp",
+ "argv": [
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/scenarios.py",
+  "--python",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/venv323/bin/python",
+  "--tree",
+  "<HOME>/Projects/omlx-q8a8-measured/prep",
+  "--workdir",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work",
+  "--model-dir",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models",
+  "--checkpoint",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models/Qwen3.8-27B-oQ8e-mtp",
+  "--model",
+  "Qwen3.8-27B-oQ8e-mtp",
+  "--corpus",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/corpus.json",
+  "--mode",
+  "cache",
+  "--arm",
+  "transposed_mtp",
+  "--a8",
+  "on",
+  "--mtp",
+  "on",
+  "--out",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/final_validation/results/scn/m1_cache_transposed_mtp.json",
+  "--lengths",
+  "4096",
+  "--env",
+  "OMLX_OQ_A8_Q8_NATIVE_META=0"
+ ],
+ "tree": "<HOME>/Projects/omlx-q8a8-measured/prep",
+ "tree_git_head": "7a82157d865f3f628926298bdee463a4b680f95f",
+ "model_settings": {
+  "qwen35_oq_a8_enabled": true,
+  "qwen35_oq_a8_min_tokens": 128,
+  "mtp_enabled": true
+ },
+ "env": {
+  "PYTHONPATH": "<HOME>/Projects/omlx-q8a8-measured/prep:<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/hook",
+  "HOME": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/scn_cache_transposed_mtp/home",
+  "OMLX_DEC_CTL": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/scn_cache_transposed_mtp/ctl",
+  "OMLX_OQ_A8_Q8_NATIVE_META": "0"
+ },
+ "requests": [
+  {
+   "label": "L4096.miss",
+   "planned_prompt_ids": 4096,
+   "prompt_sha256": "256678936aaa3a7a",
+   "prompt_tokens": 4096,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 3.563059499982046,
+   "total_s": 4.747568999999203,
+   "finish": "length",
+   "text": "(_OPEN_MARKER):\n                    self._append_text(\n                        stream_parts, visible_parts, source[pos:idx]\n                    )\n                    self._buffer = suffix\n                    break\n\n            self._append_text(stream_parts, visible_parts, source[pos:idx])\n\n            if marker == _OPEN_MARKER:\n",
+   "text_sha256": "74dc1e04d5c21512",
+   "counts": {
+    "clear_cache_calls": 21,
+    "prepare_calls": 800,
+    "prepare_builds": 400,
+    "a8_qmm_calls": 800,
+    "a8_q8_transposed": 800
+   },
+   "rows_hist": {
+    "2047": 400,
+    "2048": 400
+   },
+   "mem_before": {
+    "gen": 5,
+    "op": "mem",
+    "active": 34306441982,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 35339901752,
+    "t": 13.111677790991962
+   },
+   "mem_after": {
+    "gen": 6,
+    "op": "mem",
+    "active": 35844713218,
+    "cache": 16,
+    "peak": 39030950686,
+    "phys_footprint": 36833877416,
+    "t": 18.870886040996993
+   },
+   "mem_settled": {
+    "gen": 8,
+    "op": "mem",
+    "active": 35844713218,
+    "cache": 16,
+    "peak": 39030950686,
+    "phys_footprint": 36824620456,
+    "t": 26.896735832997365
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L4096.hit_identical",
+   "planned_prompt_ids": 4096,
+   "prompt_sha256": "256678936aaa3a7a",
+   "prompt_tokens": 4096,
+   "completion_tokens": 64,
+   "cached_tokens": 4095,
+   "ttft_s": 0.17286150000290945,
+   "total_s": 1.347883250011364,
+   "finish": "length",
+   "text": "(_OPEN_MARKER):\n                    self._append_text(\n                        stream_parts, visible_parts, source[pos:idx]\n                    )\n                    self._buffer = suffix\n                    break\n\n            self._append_text(stream_parts, visible_parts, source[pos:idx])\n\n            if marker == _OPEN_MARKER:\n",
+   "text_sha256": "74dc1e04d5c21512",
+   "counts": {
+    "clear_cache_calls": 1
+   },
+   "rows_hist": {},
+   "mem_before": {
+    "gen": 11,
+    "op": "mem",
+    "active": 35844713218,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 36825046440,
+    "t": 34.98225870801252
+   },
+   "mem_after": {
+    "gen": 12,
+    "op": "mem",
+    "active": 35844713222,
+    "cache": 16,
+    "peak": 36806900068,
+    "phys_footprint": 36834532776,
+    "t": 37.34632654101006
+   },
+   "mem_settled": {
+    "gen": 14,
+    "op": "mem",
+    "active": 35844713222,
+    "cache": 16,
+    "peak": 36806900068,
+    "phys_footprint": 36825275816,
+    "t": 45.372155457996996
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L4096.partial_half",
+   "planned_prompt_ids": 4096,
+   "prompt_sha256": "b784c32454773100",
+   "prompt_tokens": 4096,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 3.3921228749968577,
+   "total_s": 4.193693916982738,
+   "finish": "length",
+   "text": "       )\n\n    return processed\n\n\nasync def preprocess_markitdown_file_parts_async(\n    messages: list[Message],\n    *,\n    global_settings: Any | None = None,\n    engine_pool: Any | None = None,\n    settings_manager: Any | None = None,\n    get",
+   "text_sha256": "8435e3ae1236ee56",
+   "counts": {
+    "clear_cache_calls": 21,
+    "prepare_calls": 800,
+    "a8_qmm_calls": 800,
+    "a8_q8_transposed": 800
+   },
+   "rows_hist": {
+    "2047": 400,
+    "2048": 400
+   },
+   "mem_before": {
+    "gen": 17,
+    "op": "mem",
+    "active": 35844713222,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 36825324968,
+    "t": 53.43900133299758
+   },
+   "mem_after": {
+    "gen": 18,
+    "op": "mem",
+    "active": 35862549258,
+    "cache": 16,
+    "peak": 39048786726,
+    "phys_footprint": 36855684568,
+    "t": 58.64111491601216
+   },
+   "mem_settled": {
+    "gen": 20,
+    "op": "mem",
+    "active": 35862549258,
+    "cache": 16,
+    "peak": 39048786726,
+    "phys_footprint": 36847394264,
+    "t": 66.66699324999354
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L4096.hit_prefix+suffix",
+   "planned_prompt_ids": 5117,
+   "prompt_sha256": "dbbdf9c40013e722",
+   "prompt_tokens": 5117,
+   "completion_tokens": 64,
+   "cached_tokens": 2048,
+   "ttft_s": 2.666250791022321,
+   "total_s": 3.9882005830004346,
+   "finish": "length",
+   "text": "(\n            \"MarkItDown is disabled. Enable it in Settings > Integrations to use file parts.\"\n        )\n\n    for msg in messages:\n        if not isinstance(msg.content, list):\n            yield _content_text(msg.content)\n            continue\n\n        for part in msg.content:\n           ",
+   "text_sha256": "befd846049f3ebc8",
+   "counts": {
+    "clear_cache_calls": 21,
+    "prepare_calls": 800,
+    "a8_qmm_calls": 800,
+    "a8_q8_transposed": 800
+   },
+   "rows_hist": {
+    "1020": 400,
+    "2048": 400
+   },
+   "mem_before": {
+    "gen": 23,
+    "op": "mem",
+    "active": 35862549258,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 36847508952,
+    "t": 74.73029224999482
+   },
+   "mem_after": {
+    "gen": 24,
+    "op": "mem",
+    "active": 35862549262,
+    "cache": 16,
+    "peak": 39105291050,
+    "phys_footprint": 36920319520,
+    "t": 79.73666212501121
+   },
+   "mem_settled": {
+    "gen": 26,
+    "op": "mem",
+    "active": 35862549262,
+    "cache": 16,
+    "peak": 39105291050,
+    "phys_footprint": 36911062560,
+    "t": 87.75623904098757
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L4096.hit_suffix100",
+   "planned_prompt_ids": 4193,
+   "prompt_sha256": "9022ef378da0ae0c",
+   "prompt_tokens": 4193,
+   "completion_tokens": 64,
+   "cached_tokens": 4096,
+   "ttft_s": 0.3805119169992395,
+   "total_s": 1.4820370830129832,
+   "finish": "length",
+   "text": "\"markitdown_enabled\", True))\n\n\ndef markitdown_model_id(global_settings: Any | None) -> str:\n    if global_settings is None:\n        return MARKITDOWN_MODEL_ID\n    integrations = getattr(global_settings, \"integrations\", None)\n    if integrations is None:",
+   "text_sha256": "668b6b61b065ace9",
+   "counts": {
+    "clear_cache_calls": 20
+   },
+   "rows_hist": {},
+   "mem_before": {
+    "gen": 29,
+    "op": "mem",
+    "active": 35862549262,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 36911062560,
+    "t": 95.82497537499876
+   },
+   "mem_after": {
+    "gen": 30,
+    "op": "mem",
+    "active": 35862549266,
+    "cache": 16,
+    "peak": 36808662908,
+    "phys_footprint": 36920663584,
+    "t": 98.31935079098912
+   },
+   "mem_settled": {
+    "gen": 32,
+    "op": "mem",
+    "active": 35862549266,
+    "cache": 16,
+    "peak": 36808662908,
+    "phys_footprint": 36911210016,
+    "t": 106.33558454099693
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L4096.hit_suffix130",
+   "planned_prompt_ids": 4223,
+   "prompt_sha256": "62286b3f8d3befa8",
+   "prompt_tokens": 4223,
+   "completion_tokens": 64,
+   "cached_tokens": 4192,
+   "ttft_s": 0.3251077909953892,
+   "total_s": 1.7783571660111193,
+   "finish": "length",
+   "text": "itdown_enabled(global_settings):\n        return False\n    return bool(getattr(global_settings, \"markitdown_model\", None))\n\n\ndef markitdown_model_id(global_settings: Any | None) -> str | None:\n    if not markitdown_model_visible(global_settings):\n        return None\n   ",
+   "text_sha256": "b78dc80b55838ff0",
+   "counts": {
+    "clear_cache_calls": 20
+   },
+   "rows_hist": {},
+   "mem_before": {
+    "gen": 35,
+    "op": "mem",
+    "active": 35862549266,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 36911210016,
+    "t": 114.3989478329895
+   },
+   "mem_after": {
+    "gen": 36,
+    "op": "mem",
+    "active": 35862549270,
+    "cache": 16,
+    "peak": 36808895224,
+    "phys_footprint": 36920696352,
+    "t": 117.18712320798659
+   },
+   "mem_settled": {
+    "gen": 38,
+    "op": "mem",
+    "active": 35862549270,
+    "cache": 16,
+    "peak": 36808895224,
+    "phys_footprint": 36911439392,
+    "t": 125.21305420799763
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L4096.after_wipe_reload",
+   "planned_prompt_ids": 4096,
+   "prompt_sha256": "256678936aaa3a7a",
+   "prompt_tokens": 4096,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 3.7945488749828655,
+   "total_s": 4.966649791982491,
+   "finish": "length",
+   "text": "(_OPEN_MARKER):\n                    self._append_text(\n                        stream_parts, visible_parts, source[pos:idx]\n                    )\n                    self._buffer = suffix\n                    break\n\n            self._append_text(stream_parts, visible_parts, source[pos:idx])\n\n            if marker == _OPEN_MARKER:\n",
+   "text_sha256": "74dc1e04d5c21512",
+   "counts": {
+    "clear_cache_calls": 21,
+    "prepare_calls": 800,
+    "prepare_builds": 400,
+    "a8_qmm_calls": 800,
+    "a8_q8_transposed": 800
+   },
+   "rows_hist": {
+    "2047": 400,
+    "2048": 400
+   },
+   "mem_before": {
+    "gen": 44,
+    "op": "mem",
+    "active": 30002027256,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30827977912,
+    "t": 142.0336749579874
+   },
+   "mem_after": {
+    "gen": 45,
+    "op": "mem",
+    "active": 35843654398,
+    "cache": 16,
+    "peak": 36805890412,
+    "phys_footprint": 36814511960,
+    "t": 148.01862133300165
+   },
+   "mem_settled": {
+    "gen": 47,
+    "op": "mem",
+    "active": 35843654398,
+    "cache": 16,
+    "peak": 36805890412,
+    "phys_footprint": 36805107544,
+    "t": 156.04420695800218
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L4096.hit_after_reload",
+   "planned_prompt_ids": 4096,
+   "prompt_sha256": "256678936aaa3a7a",
+   "prompt_tokens": 4096,
+   "completion_tokens": 64,
+   "cached_tokens": 4095,
+   "ttft_s": 0.172757874999661,
+   "total_s": 1.346383625001181,
+   "finish": "length",
+   "text": "(_OPEN_MARKER):\n                    self._append_text(\n                        stream_parts, visible_parts, source[pos:idx]\n                    )\n                    self._buffer = suffix\n                    break\n\n            self._append_text(stream_parts, visible_parts, source[pos:idx])\n\n            if marker == _OPEN_MARKER:\n",
+   "text_sha256": "74dc1e04d5c21512",
+   "counts": {
+    "clear_cache_calls": 1
+   },
+   "rows_hist": {},
+   "mem_before": {
+    "gen": 50,
+    "op": "mem",
+    "active": 35843654398,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 36805107544,
+    "t": 164.11846029100707
+   },
+   "mem_after": {
+    "gen": 51,
+    "op": "mem",
+    "active": 35843654402,
+    "cache": 16,
+    "peak": 36806540352,
+    "phys_footprint": 36814364504,
+    "t": 166.4739169999957
+   },
+   "mem_settled": {
+    "gen": 53,
+    "op": "mem",
+    "active": 35843654402,
+    "cache": 16,
+    "peak": 36806540352,
+    "phys_footprint": 36805107544,
+    "t": 174.4980587910104
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  }
+ ],
+ "events": [
+  {
+   "unloaded": {
+    "gen": 40,
+    "op": "mem",
+    "active": 1048,
+    "cache": 0,
+    "peak": 36808895224,
+    "phys_footprint": 382748952,
+    "t": 129.05418850001297
+   }
+  }
+ ],
+ "flags": {
+  "gen": 1,
+  "op": "flags",
+  "pid": 35716,
+  "oq_a8_module_loaded": true,
+  "mlp_patched": true,
+  "gdn_registered": true,
+  "omlx_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/__init__.py",
+  "ext_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/custom_kernels/qwen35_prefill/_ext.cpython-311-darwin.so",
+  "oq_a8_available": true
+ },
+ "mem_after_load": {
+  "gen": 3,
+  "op": "mem",
+  "active": 34633729150,
+  "cache": 9372168,
+  "peak": 0,
+  "phys_footprint": 35680082840,
+  "t": 4.72574633298791
+ },
+ "flags_after_reload": {
+  "gen": 41,
+  "op": "flags",
+  "pid": 35716,
+  "oq_a8_module_loaded": true,
+  "mlp_patched": true,
+  "gdn_registered": true,
+  "omlx_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/__init__.py",
+  "ext_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/custom_kernels/qwen35_prefill/_ext.cpython-311-darwin.so",
+  "oq_a8_available": true
+ },
+ "log_suspect_lines": [
+  "2026-10-09 10:26:54,449 - omlx.patches.qwen35_oq_a8 - INFO - oQ A8 prefill kernels enabled (mlp=True, gdn=True, modules=1255, min_tokens=128)",
+  "2026-10-09 10:26:54,450 - omlx.patches.qwen35_ragged_decode - INFO - qwen3_5 ragged decode threadgroup fallback patch applied",
+  "2026-10-09 10:27:03,524 - omlx.patches.qwen35_oq_a8 - INFO - oq_a8: Q8 projections use the group-major kernel (variant 806, OMLX_OQ_A8_Q8_NATIVE_META=0); it keeps transposed scale/bias copies in memory",
+  "2026-10-09 10:29:01,324 - omlx.patches.qwen35_oq_a8 - INFO - oQ A8 prefill kernels enabled (mlp=True, gdn=True, modules=1255, min_tokens=128)"
+ ]
+}

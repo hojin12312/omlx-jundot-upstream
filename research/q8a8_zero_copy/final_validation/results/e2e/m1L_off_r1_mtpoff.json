@@ -1,0 +1,1806 @@
+{
+ "schema": 1,
+ "cond": "off",
+ "round": 1,
+ "tag": "m1L_off_r1_mtpoff",
+ "argv": [
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/session.py",
+  "--python",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/venv323/bin/python",
+  "--tree",
+  "<HOME>/Projects/omlx-q8a8-measured/prep",
+  "--workdir",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work",
+  "--model-dir",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models",
+  "--checkpoint",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models/Qwen3.8-27B-oQ8e-mtp",
+  "--model",
+  "Qwen3.8-27B-oQ8e-mtp",
+  "--corpus",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/corpus.json",
+  "--ref-main",
+  "models--Jundot--Qwen3.8-27B-oQ8e-mtp",
+  "--arm",
+  "m1L_off",
+  "--cond",
+  "off",
+  "--a8",
+  "off",
+  "--round",
+  "1",
+  "--out",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/final_validation/results/e2e/m1L_off_r1_mtpoff.json",
+  "--lengths",
+  "16384",
+  "32768",
+  "--repeats",
+  "2"
+ ],
+ "tree": "<HOME>/Projects/omlx-q8a8-measured/prep",
+ "tree_git_head": "7a82157d865f3f628926298bdee463a4b680f95f",
+ "tree_git_status": "",
+ "tree_git_branch": "prep/q8a8-zero-copy-pr4350",
+ "model_blob_shard1": "<HOME>/.cache/huggingface/hub/models--Jundot--Qwen3.8-27B-oQ8e-mtp/blobs/9da9254852c5dd0c677c4f60ab791cf6995e7e3bebbe7e5e68a14204f36645e4",
+ "model_ref_main": "c99e5aad8a478f71c10b9a3dde6709158b690da6",
+ "versions": {
+  "omlx_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/__init__.py",
+  "python": "3.11.15",
+  "mlx": "0.32.3",
+  "mlx_lm": "0.31.4.dev132+g94cdcae13",
+  "mlx_vlm": "0.7.4",
+  "tokenizers": "0.23.2"
+ },
+ "settings": {
+  "version": 1.0,
+  "server": {
+   "host": "127.0.0.1",
+   "log_level": "info"
+  },
+  "model": {
+   "model_dir": "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models",
+   "model_fallback": false
+  },
+  "cache": {
+   "enabled": false
+  },
+  "scheduler": {
+   "max_concurrent_requests": 1,
+   "chunked_prefill": true
+  },
+  "sampling": {
+   "temperature": 0.0,
+   "max_tokens": 4096
+  },
+  "auth": {
+   "api_key": null,
+   "skip_api_key_verification": true
+  },
+  "logging": {
+   "log_dir": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/sess_m1L_off_r1_mtpoff/logs",
+   "retention_days": 1
+  },
+  "memory": {
+   "prefill_memory_guard": false
+  },
+  "huggingface": {
+   "hf_cache_enabled": false
+  }
+ },
+ "model_settings": {
+  "qwen35_oq_a8_enabled": false,
+  "qwen35_oq_a8_min_tokens": 128,
+  "mtp_enabled": false
+ },
+ "generation_config": {
+  "bos_token_id": 248044,
+  "do_sample": true,
+  "eos_token_id": [
+   248046,
+   248044
+  ],
+  "pad_token_id": 248044,
+  "temperature": 1.0,
+  "top_k": 20,
+  "top_p": 0.95
+ },
+ "env": {
+  "PYTHONPATH": "<HOME>/Projects/omlx-q8a8-measured/prep:<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/hook",
+  "HOME": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/sess_m1L_off_r1_mtpoff/home",
+  "OMLX_DEC_CTL": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/sess_m1L_off_r1_mtpoff/ctl"
+ },
+ "host": {
+  "chip": "Apple M5 Max",
+  "hw_model": "Mac17,6",
+  "memory_gib": 128.0,
+  "macos": "27.0.1"
+ },
+ "requests": [
+  {
+   "role": "warmup",
+   "length": 16384,
+   "nonce": "dec-warm-1-16384",
+   "max_tokens": 128,
+   "request_body_sha256": "592e0bb3b0c824ca1a16300c2974ebdb48ea0d2cb1fe262b413d7dd968c2318b",
+   "planned_prompt_ids": 16384,
+   "usage": {
+    "prompt_tokens": 16384,
+    "completion_tokens": 128,
+    "total_tokens": 16512,
+    "input_tokens": 16384,
+    "output_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 19.54,
+    "total_time": 26.54,
+    "prompt_eval_duration": 19.54,
+    "generation_duration": 7.01,
+    "prompt_tokens_per_second": 838.68,
+    "generation_tokens_per_second": 18.26
+   },
+   "prompt_tokens": 16384,
+   "completion_tokens": 128,
+   "cached_tokens": 0,
+   "finish_reason": "length",
+   "client_ttft_s": 19.58302858300158,
+   "client_total_s": 26.588931958016474,
+   "n_events": 44,
+   "events": [
+    {
+     "t": 19.58302858300158,
+     "text": "0"
+    },
+    {
+     "t": 19.74457820801763,
+     "text": ".36"
+    },
+    {
+     "t": 19.909333249990596,
+     "text": ".32"
+    },
+    {
+     "t": 20.074623249995057,
+     "text": ".png\" alt"
+    },
+    {
+     "t": 20.239831915998366,
+     "text": "=\"oML"
+    },
+    {
+     "t": 20.40457741598948,
+     "text": "X \u6b22\u8fce"
+    },
+    {
+     "t": 20.569426416011993,
+     "text": "\u754c\u9762\" width"
+    },
+    {
+     "t": 20.73387729100068,
+     "text": "=\"36"
+    },
+    {
+     "t": 20.899076458008494,
+     "text": "0\">\n"
+    },
+    {
+     "t": 21.06438395800069,
+     "text": "  <img"
+    },
+    {
+     "t": 21.229173791012727,
+     "text": " src=\"docs"
+    },
+    {
+     "t": 21.39427312501357,
+     "text": "/images/Screenshot"
+    },
+    {
+     "t": 21.55955479099066,
+     "text": " 20"
+    },
+    {
+     "t": 21.724826874997234,
+     "text": "26-"
+    },
+    {
+     "t": 21.889748832996702,
+     "text": "02-"
+    },
+    {
+     "t": 22.054975041013677,
+     "text": "10 at"
+    },
+    {
+     "t": 22.22060029100976,
+     "text": " 00"
+    },
+    {
+     "t": 22.385891665995587,
+     "text": ".34"
+    },
+    {
+     "t": 22.55103054101346,
+     "text": ".30"
+    },
+    {
+     "t": 22.71617916598916,
+     "text": ".png\" alt"
+    },
+    {
+     "t": 22.88143899998977,
+     "text": "=\"oML"
+    },
+    {
+     "t": 23.046724665997317,
+     "text": "X \u83dc\u5355\u680f"
+    },
+    {
+     "t": 23.211846165999305,
+     "text": "\" width=\""
+    },
+    {
+     "t": 23.377367540990235,
+     "text": "240"
+    },
+    {
+     "t": 23.542817458015634,
+     "text": "\">\n</"
+    },
+    {
+     "t": 23.708552041003713,
+     "text": "p>\n\n"
+    },
+    {
+     "t": 23.874356874992372,
+     "text": "### CLI\n\n"
+    },
+    {
+     "t": 24.0398446249892,
+     "text": "```bash\n"
+    },
+    {
+     "t": 24.205413124989718,
+     "text": "# \u6258\u7ba1"
+    },
+    {
+     "t": 24.371476500004064,
+     "text": "\u540e\u53f0\u670d\u52a1\u5668\uff08"
+    },
+    {
+     "t": 24.537506041000597,
+     "text": "macOS"
+    },
+    {
+     "t": 24.70364779100055,
+     "text": " \u5e94\u7528\u6216 Home"
+    },
+    {
+     "t": 24.869382833014242,
+     "text": "brew \u5b89\u88c5"
+    },
+    {
+     "t": 25.03506079100771,
+     "text": "\uff09\nom"
+    },
+    {
+     "t": 25.20091595800477,
+     "text": "lx start\n"
+    },
+    {
+     "t": 25.366974083008245,
+     "text": "omlx stop"
+    },
+    {
+     "t": 25.53304520799429,
+     "text": "\nomlx"
+    },
+    {
+     "t": 25.699038249993464,
+     "text": " restart\n\n#"
+    },
+    {
+     "t": 25.864989624998998,
+     "text": " \u524d\u53f0\u670d\u52a1\u5668"
+    },
+    {
+     "t": 26.03050691599492,
+     "text": "\uff0c\u9644\u52a0\u5230"
+    },
+    {
+     "t": 26.196374874998583,
+     "text": "\u5f53\u524d\u7ec8\u7aef\n"
+    },
+    {
+     "t": 26.361960041016573,
+     "text": "omlx serve"
+    },
+    {
+     "t": 26.528041915997164,
+     "text": " --model-dir"
+    },
+    {
+     "t": 26.58867533301236,
+     "text": " ~/"
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "0.36.32.png\" alt=\"oMLX \u6b22\u8fce\u754c\u9762\" width=\"360\">\n  <img src=\"docs/images/Screenshot 2026-02-10 at 00.34.30.png\" alt=\"oMLX \u83dc\u5355\u680f\" width=\"240\">\n</p>\n\n### CLI\n\n```bash\n# \u6258\u7ba1\u540e\u53f0\u670d\u52a1\u5668\uff08macOS \u5e94\u7528\u6216 Homebrew \u5b89\u88c5\uff09\nomlx start\nomlx stop\nomlx restart\n\n# \u524d\u53f0\u670d\u52a1\u5668\uff0c\u9644\u52a0\u5230\u5f53\u524d\u7ec8\u7aef\nomlx serve --model-dir ~/",
+   "output_ids_est": [
+    15,
+    13,
+    18,
+    21,
+    13,
+    18,
+    17,
+    3393,
+    1,
+    4644,
+    420,
+    78,
+    2581,
+    55,
+    220,
+    97565,
+    108756,
+    1,
+    2297,
+    420,
+    18,
+    21,
+    15,
+    731,
+    198,
+    220,
+    361,
+    1827,
+    2212,
+    420,
+    13715,
+    9448,
+    11046,
+    30091,
+    220,
+    17,
+    15,
+    17,
+    21,
+    12,
+    15,
+    17,
+    12,
+    16,
+    15,
+    506,
+    220,
+    15,
+    15,
+    13,
+    18,
+    19,
+    13,
+    18,
+    15,
+    3393,
+    1,
+    4644,
+    420,
+    78,
+    2581,
+    55,
+    220,
+    139743,
+    1,
+    2297,
+    420,
+    17,
+    19,
+    15,
+    731,
+    198,
+    510,
+    79,
+    29,
+    271,
+    13962,
+    37978,
+    271,
+    71093,
+    44675,
+    198,
+    2,
+    220,
+    112301,
+    102295,
+    101755,
+    9616,
+    11609,
+    3026,
+    220,
+    97121,
+    96348,
+    5211,
+    20969,
+    220,
+    98124,
+    7313,
+    198,
+    315,
+    30413,
+    1151,
+    198,
+    315,
+    30413,
+    2842,
+    198,
+    315,
+    30413,
+    16526,
+    271,
+    2,
+    220,
+    114260,
+    101755,
+    3709,
+    102294,
+    95839,
+    99927,
+    108887,
+    198,
+    315,
+    30413,
+    8418,
+    1137,
+    2448,
+    43774,
+    40121
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 126,
+    "distinct": 114,
+    "distinct_ratio": 0.9047619047619048
+   },
+   "mem_before": {
+    "gen": 6,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30883256856,
+    "t": 14.810255041986238
+   },
+   "mem_after": {
+    "gen": 7,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30893660696,
+    "t": 42.41744629200548
+   },
+   "mem_settled": {
+    "gen": 9,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30890711576,
+    "t": 46.44098408400896
+   },
+   "mem_settled_15s": {
+    "gen": 10,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30890711576,
+    "t": 56.450030999985756
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791521450.2816262,
+   "prefill_tps_ttft": 836.6428068343631,
+   "tg_backend_all": 18.25962910128388,
+   "tg_backend_after_first_event": 18.116975748930102,
+   "tg_stream_after_first_event": 18.12823348533874,
+   "problems": [],
+   "valid": true,
+   "uid": 1,
+   "mtp_log": [],
+   "mtp_activation": null
+  },
+  {
+   "role": "warmup",
+   "length": 32768,
+   "nonce": "dec-warm-1-32768",
+   "max_tokens": 128,
+   "request_body_sha256": "0526777d16cfe93833280fdf04917fe82c83ee3967cb0f30df2c93786399d547",
+   "planned_prompt_ids": 32768,
+   "usage": {
+    "prompt_tokens": 32768,
+    "completion_tokens": 0,
+    "total_tokens": 32768,
+    "input_tokens": 32768,
+    "output_tokens": 0,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 59.54,
+    "total_time": 59.54,
+    "prompt_eval_duration": 59.54,
+    "generation_duration": 59.54,
+    "prompt_tokens_per_second": 550.37,
+    "generation_tokens_per_second": 0.0
+   },
+   "prompt_tokens": 32768,
+   "completion_tokens": 0,
+   "cached_tokens": 0,
+   "finish_reason": "stop",
+   "client_ttft_s": null,
+   "client_total_s": 59.61032500001602,
+   "n_events": 0,
+   "events": [],
+   "first_event_tokens_est": 0,
+   "text": "",
+   "output_ids_est": [],
+   "ngram3": {
+    "n": 3,
+    "total": 0,
+    "distinct": 0,
+    "distinct_ratio": null
+   },
+   "mem_before": {
+    "gen": 15,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30890744344,
+    "t": 61.64392445900012
+   },
+   "mem_after": {
+    "gen": 16,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30907030064,
+    "t": 122.26265150000108
+   },
+   "mem_settled": {
+    "gen": 18,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30904146480,
+    "t": 126.28679633399588
+   },
+   "mem_settled_15s": {
+    "gen": 19,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30904146480,
+    "t": 136.30334899999434
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791521530.119526,
+   "problems": [
+    "completion_tokens=0",
+    "finish_reason=stop"
+   ],
+   "valid": false,
+   "uid": 2,
+   "mtp_log": [],
+   "mtp_activation": null
+  },
+  {
+   "role": "primary",
+   "length": 16384,
+   "nonce": "dec-r1-16384-p0",
+   "max_tokens": 128,
+   "request_body_sha256": "2df3ea96bbdfa3d706770ce4070fb627dcfd04fba36fa2fb124b335795c65f5c",
+   "planned_prompt_ids": 16384,
+   "usage": {
+    "prompt_tokens": 16384,
+    "completion_tokens": 128,
+    "total_tokens": 16512,
+    "input_tokens": 16384,
+    "output_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 18.95,
+    "total_time": 25.91,
+    "prompt_eval_duration": 18.95,
+    "generation_duration": 6.97,
+    "prompt_tokens_per_second": 864.81,
+    "generation_tokens_per_second": 18.37
+   },
+   "prompt_tokens": 16384,
+   "completion_tokens": 128,
+   "cached_tokens": 0,
+   "finish_reason": "length",
+   "client_ttft_s": 18.985501040995587,
+   "client_total_s": 25.952501874999143,
+   "n_events": 44,
+   "events": [
+    {
+     "t": 18.985501040995587,
+     "text": "it"
+    },
+    {
+     "t": 19.148679582984187,
+     "text": "-to-prob"
+    },
+    {
+     "t": 19.31289270799607,
+     "text": "ability example."
+    },
+    {
+     "t": 19.477365208003903,
+     "text": " The Qwen"
+    },
+    {
+     "t": 19.641494290990522,
+     "text": "3.5"
+    },
+    {
+     "t": 19.80603620799957,
+     "text": "-4B"
+    },
+    {
+     "t": 19.97018841598765,
+     "text": " case covers the"
+    },
+    {
+     "t": 20.134505458001513,
+     "text": " prompt, the"
+    },
+    {
+     "t": 20.299720082985004,
+     "text": " 10"
+    },
+    {
+     "t": 20.46388566598762,
+     "text": "24-token"
+    },
+    {
+     "t": 20.62802154099336,
+     "text": " state limit,"
+    },
+    {
+     "t": 20.792379833001178,
+     "text": " and the released"
+    },
+    {
+     "t": 20.956981790979626,
+     "text": " checkpoint's"
+    },
+    {
+     "t": 21.121651915978873,
+     "text": " 163"
+    },
+    {
+     "t": 21.286465790995862,
+     "text": "84-token"
+    },
+    {
+     "t": 21.451313124998705,
+     "text": " context.\n\n"
+    },
+    {
+     "t": 21.61538699999801,
+     "text": "# file:"
+    },
+    {
+     "t": 21.779754040995613,
+     "text": " omlx/api"
+    },
+    {
+     "t": 21.944228165986715,
+     "text": "/adapters/s"
+    },
+    {
+     "t": 22.10884808297851,
+     "text": "se_formatter.py"
+    },
+    {
+     "t": 22.272986333002336,
+     "text": "\n# SPDX"
+    },
+    {
+     "t": 22.437359375006054,
+     "text": "-License-Identifier:"
+    },
+    {
+     "t": 22.601701124978717,
+     "text": " Apache-2"
+    },
+    {
+     "t": 22.766247249994194,
+     "text": ".0\n"
+    },
+    {
+     "t": 22.930740915995557,
+     "text": "\"\"\"\nS"
+    },
+    {
+     "t": 23.095070790994214,
+     "text": "SE (Server"
+    },
+    {
+     "t": 23.259020957979374,
+     "text": "-Sent Events"
+    },
+    {
+     "t": 23.42334683300578,
+     "text": ") formatters"
+    },
+    {
+     "t": 23.587886791006895,
+     "text": " for streaming responses"
+    },
+    {
+     "t": 23.752405707986327,
+     "text": ".\n\nThis"
+    },
+    {
+     "t": 23.916493500000797,
+     "text": " module provides form"
+    },
+    {
+     "t": 24.080944832996465,
+     "text": "atters for different"
+    },
+    {
+     "t": 24.245400665997295,
+     "text": " SSE formats:"
+    },
+    {
+     "t": 24.410039915994275,
+     "text": "\n- Open"
+    },
+    {
+     "t": 24.57476562500233,
+     "text": "AI: `"
+    },
+    {
+     "t": 24.73897058298462,
+     "text": "data: {..."
+    },
+    {
+     "t": 24.903246790985577,
+     "text": "}\\n\\n"
+    },
+    {
+     "t": 25.06764695799211,
+     "text": "` with `"
+    },
+    {
+     "t": 25.23210058300174,
+     "text": "data: ["
+    },
+    {
+     "t": 25.396565582981566,
+     "text": "DONE]\\n"
+    },
+    {
+     "t": 25.561040125001455,
+     "text": "\\n` terminator"
+    },
+    {
+     "t": 25.725139749993104,
+     "text": "\n- Anth"
+    },
+    {
+     "t": 25.892206791002536,
+     "text": "ropic: `"
+    },
+    {
+     "t": 25.952239249978447,
+     "text": "event"
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "it-to-probability example. The Qwen3.5-4B case covers the prompt, the 1024-token state limit, and the released checkpoint's 16384-token context.\n\n# file: omlx/api/adapters/sse_formatter.py\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"\nSSE (Server-Sent Events) formatters for streaming responses.\n\nThis module provides formatters for different SSE formats:\n- OpenAI: `data: {...}\\n\\n` with `data: [DONE]\\n\\n` terminator\n- Anthropic: `event",
+   "output_ids_est": [
+    275,
+    4534,
+    9546,
+    65,
+    2803,
+    3010,
+    13,
+    561,
+    1167,
+    16451,
+    18,
+    13,
+    20,
+    12,
+    19,
+    33,
+    1105,
+    14103,
+    279,
+    9640,
+    11,
+    279,
+    220,
+    16,
+    15,
+    17,
+    19,
+    33686,
+    1528,
+    3798,
+    11,
+    321,
+    279,
+    5698,
+    28336,
+    579,
+    220,
+    16,
+    21,
+    18,
+    23,
+    19,
+    33686,
+    2193,
+    13,
+    271,
+    2,
+    999,
+    25,
+    296,
+    64643,
+    10195,
+    42983,
+    16910,
+    2600,
+    323,
+    71448,
+    6971,
+    198,
+    2,
+    34313,
+    35274,
+    35555,
+    25,
+    8644,
+    12,
+    17,
+    13,
+    15,
+    198,
+    12237,
+    198,
+    50,
+    896,
+    318,
+    5302,
+    6027,
+    305,
+    17101,
+    8,
+    1304,
+    9872,
+    364,
+    16350,
+    14090,
+    13,
+    271,
+    1919,
+    4536,
+    5529,
+    1304,
+    9872,
+    364,
+    2086,
+    70975,
+    19251,
+    25,
+    198,
+    12,
+    5097,
+    15015,
+    25,
+    1510,
+    673,
+    25,
+    14485,
+    10713,
+    77,
+    1639,
+    63,
+    440,
+    1510,
+    673,
+    25,
+    498,
+    68015,
+    17424,
+    77,
+    1639,
+    63,
+    77267,
+    198,
+    12,
+    16092,
+    42481,
+    25,
+    1510,
+    2987
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 126,
+    "distinct": 123,
+    "distinct_ratio": 0.9761904761904762
+   },
+   "mem_before": {
+    "gen": 25,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30895757872,
+    "t": 198.49647016698145
+   },
+   "mem_after": {
+    "gen": 26,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30907095600,
+    "t": 225.4573603339959
+   },
+   "mem_settled": {
+    "gen": 28,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30904130096,
+    "t": 229.48117979199742
+   },
+   "mem_settled_15s": {
+    "gen": 29,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30904130096,
+    "t": 239.48838679198525
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791521633.3078558,
+   "prefill_tps_ttft": 862.9743278632395,
+   "tg_backend_all": 18.36441893830703,
+   "tg_backend_after_first_event": 18.220946915351508,
+   "tg_stream_after_first_event": 18.229477869033047,
+   "problems": [],
+   "valid": true,
+   "uid": 3,
+   "mtp_log": [],
+   "mtp_activation": null
+  },
+  {
+   "role": "primary",
+   "length": 32768,
+   "nonce": "dec-r1-32768-p0",
+   "max_tokens": 128,
+   "request_body_sha256": "a37eb175c72a378600b342da0bec95844ff7394df50dc7f0a2c33bb0360c2776",
+   "planned_prompt_ids": 32768,
+   "usage": {
+    "prompt_tokens": 32768,
+    "completion_tokens": 41,
+    "total_tokens": 32809,
+    "input_tokens": 32768,
+    "output_tokens": 41,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 43.7,
+    "total_time": 46.06,
+    "prompt_eval_duration": 43.7,
+    "generation_duration": 2.36,
+    "prompt_tokens_per_second": 749.88,
+    "generation_tokens_per_second": 17.34
+   },
+   "prompt_tokens": 32768,
+   "completion_tokens": 41,
+   "cached_tokens": 0,
+   "finish_reason": "stop",
+   "client_ttft_s": 43.766833333997056,
+   "client_total_s": 46.12924137499067,
+   "n_events": 15,
+   "events": [
+    {
+     "t": 43.766833333997056,
+     "text": "          "
+    },
+    {
+     "t": 43.93728420897969,
+     "text": " payloads[layer_idx"
+    },
+    {
+     "t": 44.10875724998186,
+     "text": "] = ("
+    },
+    {
+     "t": 44.28104204198462,
+     "text": "\n                layer"
+    },
+    {
+     "t": 44.453563791990746,
+     "text": "_state.get(\""
+    },
+    {
+     "t": 44.62582170899259,
+     "text": "meta_state\","
+    },
+    {
+     "t": 44.7985797089932,
+     "text": " ()),\n"
+    },
+    {
+     "t": 44.97102729199105,
+     "text": "                cache_data"
+    },
+    {
+     "t": 45.14368433400523,
+     "text": ",\n           "
+    },
+    {
+     "t": 45.31618774999515,
+     "text": " )\n       "
+    },
+    {
+     "t": 45.48888358398108,
+     "text": " return payloads or"
+    },
+    {
+     "t": 45.661793833976844,
+     "text": " None\n\n   "
+    },
+    {
+     "t": 45.83499029200175,
+     "text": " def _g"
+    },
+    {
+     "t": 46.008288124983665,
+     "text": "dn_checkpoint_load"
+    },
+    {
+     "t": 46.12866629200289,
+     "text": "("
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "           payloads[layer_idx] = (\n                layer_state.get(\"meta_state\", ()),\n                cache_data,\n            )\n        return payloads or None\n\n    def _gdn_checkpoint_load(",
+   "output_ids_est": [
+    1779,
+    86443,
+    73272,
+    7031,
+    60,
+    283,
+    318,
+    198,
+    388,
+    6000,
+    4244,
+    652,
+    437,
+    5317,
+    4244,
+    487,
+    318,
+    5553,
+    198,
+    388,
+    6297,
+    1707,
+    11,
+    198,
+    309,
+    847,
+    198,
+    285,
+    460,
+    86443,
+    466,
+    2168,
+    271,
+    262,
+    687,
+    696,
+    70,
+    16884,
+    53354,
+    12055,
+    7
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 39,
+    "distinct": 39,
+    "distinct_ratio": 1.0
+   },
+   "mem_before": {
+    "gen": 34,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30895741488,
+    "t": 323.6719635420013
+   },
+   "mem_after": {
+    "gen": 35,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30910863920,
+    "t": 370.81940574999317
+   },
+   "mem_settled": {
+    "gen": 37,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30907980336,
+    "t": 374.8452285419917
+   },
+   "mem_settled_15s": {
+    "gen": 38,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30907980336,
+    "t": 384.85544516699156
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791521778.674499,
+   "prefill_tps_ttft": 748.6947878988216,
+   "tg_backend_all": 17.372881355932204,
+   "tg_backend_after_first_event": 16.949152542372882,
+   "tg_stream_after_first_event": 16.93599873962856,
+   "problems": [
+    "completion_tokens=41",
+    "finish_reason=stop"
+   ],
+   "valid": false,
+   "uid": 4,
+   "mtp_log": [],
+   "mtp_activation": null
+  },
+  {
+   "role": "primary",
+   "length": 16384,
+   "nonce": "dec-r1-16384-p1",
+   "max_tokens": 128,
+   "request_body_sha256": "5bb28d66beaf0f81d745744e99f10f30c86f78b776529b4233c85a16fafab4cf",
+   "planned_prompt_ids": 16384,
+   "usage": {
+    "prompt_tokens": 16384,
+    "completion_tokens": 128,
+    "total_tokens": 16512,
+    "input_tokens": 16384,
+    "output_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 20.96,
+    "total_time": 27.93,
+    "prompt_eval_duration": 20.96,
+    "generation_duration": 6.97,
+    "prompt_tokens_per_second": 781.59,
+    "generation_tokens_per_second": 18.36
+   },
+   "prompt_tokens": 16384,
+   "completion_tokens": 128,
+   "cached_tokens": 0,
+   "finish_reason": "length",
+   "client_ttft_s": 21.007986249984242,
+   "client_total_s": 27.976114916993538,
+   "n_events": 44,
+   "events": [
+    {
+     "t": 21.007986249984242,
+     "text": "sthrough"
+    },
+    {
+     "t": 21.172073041991098,
+     "text": " reasoning string\n"
+    },
+    {
+     "t": 21.336618833011016,
+     "text": "    for the"
+    },
+    {
+     "t": 21.501176457997644,
+     "text": " next flush cycle"
+    },
+    {
+     "t": 21.665051166986814,
+     "text": ".\n   "
+    },
+    {
+     "t": 21.82923220799421,
+     "text": " \"\"\"\n   "
+    },
+    {
+     "t": 21.99346295799478,
+     "text": " if not pending"
+    },
+    {
+     "t": 22.157913625007495,
+     "text": ":\n       "
+    },
+    {
+     "t": 22.32225137500791,
+     "text": " return pending_reason"
+    },
+    {
+     "t": 22.486790541996015,
+     "text": "ing\n   "
+    },
+    {
+     "t": 22.651255083008436,
+     "text": " last = messages"
+    },
+    {
+     "t": 22.816062416997738,
+     "text": "[-1]"
+    },
+    {
+     "t": 22.980659916996956,
+     "text": " if messages else"
+    },
+    {
+     "t": 23.14602412498789,
+     "text": " None\n   "
+    },
+    {
+     "t": 23.310579999990296,
+     "text": " tool_calls ="
+    },
+    {
+     "t": 23.47532170798513,
+     "text": " [\n       "
+    },
+    {
+     "t": 23.639368583011674,
+     "text": " {\n           "
+    },
+    {
+     "t": 23.80379754200112,
+     "text": " openai_models"
+    },
+    {
+     "t": 23.96811941699707,
+     "text": ".Message(\n"
+    },
+    {
+     "t": 24.13286012498429,
+     "text": "                role=\""
+    },
+    {
+     "t": 24.297085541998968,
+     "text": "assistant\",\n"
+    },
+    {
+     "t": 24.46142241699272,
+     "text": "                content=None"
+    },
+    {
+     "t": 24.625771666993387,
+     "text": ",\n               "
+    },
+    {
+     "t": 24.790207707992522,
+     "text": " tool_calls=["
+    },
+    {
+     "t": 24.95458104199497,
+     "text": "\n                    {"
+    },
+    {
+     "t": 25.11923612499959,
+     "text": "\n                        \""
+    },
+    {
+     "t": 25.28356216699467,
+     "text": "id\": tc"
+    },
+    {
+     "t": 25.448122292000335,
+     "text": "[\"id\"],"
+    },
+    {
+     "t": 25.61255441699177,
+     "text": "\n                        \""
+    },
+    {
+     "t": 25.7769715829927,
+     "text": "\n\n[..."
+    },
+    {
+     "t": 25.94168470799923,
+     "text": " 10"
+    },
+    {
+     "t": 26.105955292005092,
+     "text": "000"
+    },
+    {
+     "t": 26.270468250004342,
+     "text": " characters truncated ..."
+    },
+    {
+     "t": 26.434806500008563,
+     "text": "]\n\n["
+    },
+    {
+     "t": 26.599429583002347,
+     "text": "... 1"
+    },
+    {
+     "t": 26.76369641700876,
+     "text": "0 omlx"
+    },
+    {
+     "t": 26.928363082988653,
+     "text": "/api/ files"
+    },
+    {
+     "t": 27.09294862500974,
+     "text": " truncated ...]"
+    },
+    {
+     "t": 27.257321791985305,
+     "text": "\n\n[..."
+    },
+    {
+     "t": 27.422161499998765,
+     "text": " 10"
+    },
+    {
+     "t": 27.586561832984444,
+     "text": "000"
+    },
+    {
+     "t": 27.75118916700012,
+     "text": " characters truncated ..."
+    },
+    {
+     "t": 27.915826874988852,
+     "text": "]\n\n["
+    },
+    {
+     "t": 27.975869541987777,
+     "text": "..."
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "sthrough reasoning string\n    for the next flush cycle.\n    \"\"\"\n    if not pending:\n        return pending_reasoning\n    last = messages[-1] if messages else None\n    tool_calls = [\n        {\n            openai_models.Message(\n                role=\"assistant\",\n                content=None,\n                tool_calls=[\n                    {\n                        \"id\": tc[\"id\"],\n                        \"\n\n[... 10000 characters truncated ...]\n\n[... 10 omlx/api/ files truncated ...]\n\n[... 10000 characters truncated ...]\n\n[...",
+   "output_ids_est": [
+    83902,
+    31626,
+    886,
+    198,
+    262,
+    364,
+    279,
+    1727,
+    17657,
+    10458,
+    13,
+    198,
+    262,
+    4071,
+    198,
+    262,
+    413,
+    524,
+    14836,
+    25,
+    198,
+    285,
+    460,
+    14836,
+    36962,
+    286,
+    198,
+    262,
+    1483,
+    283,
+    6397,
+    7368,
+    16,
+    60,
+    413,
+    6397,
+    745,
+    2168,
+    198,
+    262,
+    5224,
+    44116,
+    283,
+    498,
+    198,
+    285,
+    313,
+    198,
+    309,
+    1724,
+    2075,
+    29786,
+    8212,
+    7,
+    198,
+    388,
+    3364,
+    420,
+    74455,
+    487,
+    198,
+    388,
+    2144,
+    5675,
+    11,
+    198,
+    388,
+    5224,
+    44116,
+    5637,
+    198,
+    493,
+    313,
+    198,
+    646,
+    328,
+    306,
+    763,
+    16626,
+    1143,
+    306,
+    7664,
+    198,
+    646,
+    328,
+    271,
+    58,
+    1076,
+    220,
+    16,
+    15,
+    15,
+    15,
+    15,
+    5587,
+    57739,
+    2423,
+    60,
+    271,
+    58,
+    1076,
+    220,
+    16,
+    15,
+    296,
+    64643,
+    10195,
+    14,
+    3425,
+    57739,
+    2423,
+    60,
+    271,
+    58,
+    1076,
+    220,
+    16,
+    15,
+    15,
+    15,
+    15,
+    5587,
+    57739,
+    2423,
+    60,
+    271,
+    58,
+    1076
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 126,
+    "distinct": 103,
+    "distinct_ratio": 0.8174603174603174
+   },
+   "mem_before": {
+    "gen": 43,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30907980336,
+    "t": 437.0176779589965
+   },
+   "mem_after": {
+    "gen": 44,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30912928304,
+    "t": 466.01194858399685
+   },
+   "mem_settled": {
+    "gen": 46,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30909979184,
+    "t": 470.0377222090028
+   },
+   "mem_settled_15s": {
+    "gen": 47,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30909979184,
+    "t": 480.0557203750068
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791521873.876132,
+   "prefill_tps_ttft": 779.8938844037128,
+   "tg_backend_all": 18.36441893830703,
+   "tg_backend_after_first_event": 18.220946915351508,
+   "tg_stream_after_first_event": 18.22648208613761,
+   "problems": [],
+   "valid": true,
+   "uid": 5,
+   "mtp_log": [],
+   "mtp_activation": null
+  },
+  {
+   "role": "primary",
+   "length": 32768,
+   "nonce": "dec-r1-32768-p1",
+   "max_tokens": 128,
+   "request_body_sha256": "da17d41dc14319602d455ff911941c8c2facece63138ab6925899ea3b9e2dd82",
+   "planned_prompt_ids": 32768,
+   "usage": {
+    "prompt_tokens": 32768,
+    "completion_tokens": 4,
+    "total_tokens": 32772,
+    "input_tokens": 32768,
+    "output_tokens": 4,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 43.11,
+    "total_time": 43.34,
+    "prompt_eval_duration": 43.11,
+    "generation_duration": 0.23,
+    "prompt_tokens_per_second": 760.14,
+    "generation_tokens_per_second": 17.03
+   },
+   "prompt_tokens": 32768,
+   "completion_tokens": 4,
+   "cached_tokens": 0,
+   "finish_reason": "stop",
+   "client_ttft_s": 43.17674591700779,
+   "client_total_s": 43.40923516699695,
+   "n_events": 2,
+   "events": [
+    {
+     "t": 43.17674591700779,
+     "text": "_config"
+    },
+    {
+     "t": 43.347002333001,
+     "text": "\", None)"
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "_config\", None)",
+   "output_ids_est": [
+    5164,
+    487,
+    2168,
+    8
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 2,
+    "distinct": 2,
+    "distinct_ratio": 1.0
+   },
+   "mem_before": {
+    "gen": 52,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30901590576,
+    "t": 564.2429196249868
+   },
+   "mem_after": {
+    "gen": 53,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30915516976,
+    "t": 608.6602366250008
+   },
+   "mem_settled": {
+    "gen": 55,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30912633392,
+    "t": 612.6861409590056
+   },
+   "mem_settled_15s": {
+    "gen": 56,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30912633392,
+    "t": 622.6974394999852
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791522016.5199108,
+   "prefill_tps_ttft": 758.927040564498,
+   "tg_backend_all": 17.391304347826086,
+   "tg_backend_after_first_event": 13.043478260869565,
+   "tg_stream_after_first_event": 17.62048133398789,
+   "problems": [
+    "completion_tokens=4",
+    "finish_reason=stop"
+   ],
+   "valid": false,
+   "uid": 6,
+   "mtp_log": [],
+   "mtp_activation": null
+  }
+ ],
+ "power_start": {
+  "batt": "Now drawing from 'AC Power'\n -InternalBattery-0 (id=24641635)\t80%; AC attached; not charging present: true\n",
+  "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded\n"
+ },
+ "flags": {
+  "gen": 1,
+  "op": "flags",
+  "pid": 46082,
+  "oq_a8_module_loaded": false,
+  "mlp_patched": false,
+  "gdn_registered": false,
+  "omlx_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/__init__.py",
+  "ext_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/custom_kernels/qwen35_prefill/_ext.cpython-311-darwin.so",
+  "oq_a8_available": true
+ },
+ "mem_after_load": {
+  "gen": 3,
+  "op": "mem",
+  "active": 30002535166,
+  "cache": 194280592,
+  "peak": 0,
+  "phys_footprint": 31080585752,
+  "t": 4.672201584005961
+ },
+ "mem_after_load_5s": {
+  "gen": 4,
+  "op": "mem",
+  "active": 30002535166,
+  "cache": 16,
+  "peak": 30002535182,
+  "phys_footprint": 30883273240,
+  "t": 9.685555500007467
+ },
+ "mem_after_warmup": {
+  "gen": 23,
+  "op": "mem",
+  "active": 30002535166,
+  "cache": 16,
+  "peak": 0,
+  "phys_footprint": 30904146480,
+  "t": 146.37439849998918
+ },
+ "power_end": {
+  "batt": "Now drawing from 'AC Power'\n -InternalBattery-0 (id=24641635)\t80%; AC attached; not charging present: true\n",
+  "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded\n"
+ },
+ "mtp_summary_lines_total": 0,
+ "mtp_activation_lines_total": 0,
+ "log_suspect_lines": [
+  "2026-10-09 13:49:54,488 - omlx.scheduler - INFO - ChunkedKVCache patch: methods already present upstream, skipped: size",
+  "2026-10-09 13:49:54,566 - omlx.server - INFO - ModelScope SDK not installed, MS downloader disabled",
+  "2026-10-09 13:49:56,963 - omlx.engine.vlm - INFO - Vision feature cache enabled (SSD: disabled)",
+  "2026-10-09 13:49:57,869 - omlx.memory_monitor - INFO - MemoryMonitor initialized (estimator-only, eviction disabled)",
+  "2026-10-09 13:49:57,879 - omlx.scheduler - INFO - oMLX cache disabled (mlx-lm BatchGenerator manages KV internally)",
+  "2026-10-09 13:49:57,880 - omlx.patches.qwen35_fa256_attention - INFO - Qwen FA-256 steel patch skipped: NAX GPU, MLX native fused SDPA is faster",
+  "2026-10-09 13:49:57,891 - omlx.patches.qwen35_ragged_decode - INFO - qwen3_5 ragged decode threadgroup fallback patch applied"
+ ],
+ "log_lines_penalty_or_depth": []
+}

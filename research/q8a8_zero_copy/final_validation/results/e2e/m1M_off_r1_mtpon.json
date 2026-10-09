@@ -1,0 +1,3040 @@
+{
+ "schema": 1,
+ "cond": "on",
+ "round": 1,
+ "tag": "m1M_off_r1_mtpon",
+ "argv": [
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/session.py",
+  "--python",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/venv323/bin/python",
+  "--tree",
+  "<HOME>/Projects/omlx-q8a8-measured/prep",
+  "--workdir",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work",
+  "--model-dir",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models",
+  "--checkpoint",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models/Qwen3.8-27B-oQ8e-mtp",
+  "--model",
+  "Qwen3.8-27B-oQ8e-mtp",
+  "--corpus",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/corpus.json",
+  "--ref-main",
+  "models--Jundot--Qwen3.8-27B-oQ8e-mtp",
+  "--arm",
+  "m1M_off",
+  "--cond",
+  "on",
+  "--a8",
+  "off",
+  "--round",
+  "1",
+  "--out",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/final_validation/results/e2e/m1M_off_r1_mtpon.json",
+  "--lengths",
+  "1024",
+  "4096",
+  "8192",
+  "--repeats",
+  "2"
+ ],
+ "tree": "<HOME>/Projects/omlx-q8a8-measured/prep",
+ "tree_git_head": "7a82157d865f3f628926298bdee463a4b680f95f",
+ "tree_git_status": "",
+ "tree_git_branch": "prep/q8a8-zero-copy-pr4350",
+ "model_blob_shard1": "<HOME>/.cache/huggingface/hub/models--Jundot--Qwen3.8-27B-oQ8e-mtp/blobs/9da9254852c5dd0c677c4f60ab791cf6995e7e3bebbe7e5e68a14204f36645e4",
+ "model_ref_main": "c99e5aad8a478f71c10b9a3dde6709158b690da6",
+ "versions": {
+  "omlx_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/__init__.py",
+  "python": "3.11.15",
+  "mlx": "0.32.3",
+  "mlx_lm": "0.31.4.dev132+g94cdcae13",
+  "mlx_vlm": "0.7.4",
+  "tokenizers": "0.23.2"
+ },
+ "settings": {
+  "version": 1.0,
+  "server": {
+   "host": "127.0.0.1",
+   "log_level": "info"
+  },
+  "model": {
+   "model_dir": "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models",
+   "model_fallback": false
+  },
+  "cache": {
+   "enabled": false
+  },
+  "scheduler": {
+   "max_concurrent_requests": 1,
+   "chunked_prefill": true
+  },
+  "sampling": {
+   "temperature": 0.0,
+   "max_tokens": 4096
+  },
+  "auth": {
+   "api_key": null,
+   "skip_api_key_verification": true
+  },
+  "logging": {
+   "log_dir": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/sess_m1M_off_r1_mtpon/logs",
+   "retention_days": 1
+  },
+  "memory": {
+   "prefill_memory_guard": false
+  },
+  "huggingface": {
+   "hf_cache_enabled": false
+  }
+ },
+ "model_settings": {
+  "qwen35_oq_a8_enabled": false,
+  "qwen35_oq_a8_min_tokens": 128,
+  "mtp_enabled": true
+ },
+ "generation_config": {
+  "bos_token_id": 248044,
+  "do_sample": true,
+  "eos_token_id": [
+   248046,
+   248044
+  ],
+  "pad_token_id": 248044,
+  "temperature": 1.0,
+  "top_k": 20,
+  "top_p": 0.95
+ },
+ "env": {
+  "PYTHONPATH": "<HOME>/Projects/omlx-q8a8-measured/prep:<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/hook",
+  "HOME": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/sess_m1M_off_r1_mtpon/home",
+  "OMLX_DEC_CTL": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/sess_m1M_off_r1_mtpon/ctl"
+ },
+ "host": {
+  "chip": "Apple M5 Max",
+  "hw_model": "Mac17,6",
+  "memory_gib": 128.0,
+  "macos": "27.0.1"
+ },
+ "requests": [
+  {
+   "role": "warmup",
+   "length": 1024,
+   "nonce": "dec-warm-1-1024",
+   "max_tokens": 128,
+   "request_body_sha256": "2f0c4698565998d87ab9cbf9b05517fff36cea860aa2581c3512e8fdab85d50b",
+   "planned_prompt_ids": 1024,
+   "usage": {
+    "prompt_tokens": 1024,
+    "completion_tokens": 128,
+    "total_tokens": 1152,
+    "input_tokens": 1024,
+    "output_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 1.23,
+    "total_time": 3.49,
+    "prompt_eval_duration": 1.23,
+    "generation_duration": 2.26,
+    "prompt_tokens_per_second": 833.12,
+    "generation_tokens_per_second": 56.71
+   },
+   "prompt_tokens": 1024,
+   "completion_tokens": 128,
+   "cached_tokens": 0,
+   "finish_reason": "length",
+   "client_ttft_s": 1.2378802909806836,
+   "client_total_s": 3.4945530830009375,
+   "n_events": 17,
+   "events": [
+    {
+     "t": 1.2378802909806836,
+     "text": "Constant"
+    },
+    {
+     "t": 1.373400665994268,
+     "text": "-time comparison of API keys"
+    },
+    {
+     "t": 1.504905832989607,
+     "text": " to prevent timing attacks.\n\n    Args:"
+    },
+    {
+     "t": 1.6209598330024164,
+     "text": "\n        provided_key: The API"
+    },
+    {
+     "t": 1.7848127909819596,
+     "text": " key provided by"
+    },
+    {
+     "t": 1.9875616659992374,
+     "text": " the client.\n        expected_key:"
+    },
+    {
+     "t": 2.122907707991544,
+     "text": " The expected API key from settings.\n\n    Returns"
+    },
+    {
+     "t": 2.2580052499833982,
+     "text": ":\n        True if the keys match, False"
+    },
+    {
+     "t": 2.3933093329833355,
+     "text": " otherwise.\n\n    Example:\n        >>> compare"
+    },
+    {
+     "t": 2.5287871249893215,
+     "text": "_keys(\"abc123\", \"abc"
+    },
+    {
+     "t": 2.664042749995133,
+     "text": "123\")\n        True\n        >>>"
+    },
+    {
+     "t": 2.8069447499874514,
+     "text": " compare_keys(\"abc123\", \"xyz"
+    },
+    {
+     "t": 3.009194165992085,
+     "text": "789\")\n        False"
+    },
+    {
+     "t": 3.1444909579877276,
+     "text": "\n    \"\"\"\n    if not provided"
+    },
+    {
+     "t": 3.2796941659762524,
+     "text": "_key or not expected_key:\n        return"
+    },
+    {
+     "t": 3.414795791002689,
+     "text": " False\n    return secrets.compare_digest(provided_key"
+    },
+    {
+     "t": 3.494316540978616,
+     "text": ".encode(),"
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "Constant-time comparison of API keys to prevent timing attacks.\n\n    Args:\n        provided_key: The API key provided by the client.\n        expected_key: The expected API key from settings.\n\n    Returns:\n        True if the keys match, False otherwise.\n\n    Example:\n        >>> compare_keys(\"abc123\", \"abc123\")\n        True\n        >>> compare_keys(\"abc123\", \"xyz789\")\n        False\n    \"\"\"\n    if not provided_key or not expected_key:\n        return False\n    return secrets.compare_digest(provided_key.encode(),",
+   "output_ids_est": [
+    15018,
+    7019,
+    11960,
+    314,
+    5165,
+    6679,
+    310,
+    5190,
+    17856,
+    8511,
+    13,
+    271,
+    262,
+    17167,
+    25,
+    198,
+    285,
+    3766,
+    2997,
+    25,
+    561,
+    5165,
+    1328,
+    3766,
+    539,
+    279,
+    2849,
+    13,
+    198,
+    285,
+    3481,
+    2997,
+    25,
+    561,
+    3481,
+    5165,
+    1328,
+    494,
+    4842,
+    13,
+    271,
+    262,
+    5019,
+    25,
+    198,
+    285,
+    2912,
+    413,
+    279,
+    6679,
+    2353,
+    11,
+    3439,
+    5752,
+    13,
+    271,
+    262,
+    12996,
+    25,
+    198,
+    285,
+    11765,
+    9150,
+    12268,
+    437,
+    13290,
+    16,
+    17,
+    18,
+    487,
+    328,
+    13290,
+    16,
+    17,
+    18,
+    871,
+    198,
+    285,
+    2912,
+    198,
+    285,
+    11765,
+    9150,
+    12268,
+    437,
+    13290,
+    16,
+    17,
+    18,
+    487,
+    328,
+    27912,
+    22,
+    23,
+    24,
+    871,
+    198,
+    285,
+    3439,
+    198,
+    262,
+    4071,
+    198,
+    262,
+    413,
+    524,
+    3766,
+    2997,
+    466,
+    524,
+    3481,
+    2997,
+    25,
+    198,
+    285,
+    460,
+    3439,
+    198,
+    262,
+    460,
+    22857,
+    19989,
+    51215,
+    10034,
+    41538,
+    2997,
+    16803,
+    1453
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 126,
+    "distinct": 104,
+    "distinct_ratio": 0.8253968253968254
+   },
+   "mem_before": {
+    "gen": 6,
+    "op": "mem",
+    "active": 34305383166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 35184941736,
+    "t": 14.850519166997401
+   },
+   "mem_after": {
+    "gen": 7,
+    "op": "mem",
+    "active": 34305383170,
+    "cache": 16,
+    "peak": 36196203282,
+    "phys_footprint": 35201194904,
+    "t": 19.362603417015634
+   },
+   "mem_settled": {
+    "gen": 9,
+    "op": "mem",
+    "active": 34305383170,
+    "cache": 16,
+    "peak": 36196203282,
+    "phys_footprint": 35191937944,
+    "t": 23.383552792016417
+   },
+   "mem_settled_15s": {
+    "gen": 10,
+    "op": "mem",
+    "active": 34305383170,
+    "cache": 16,
+    "peak": 36196203282,
+    "phys_footprint": 35191937944,
+    "t": 33.393545917002484
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791524877.575615,
+   "prefill_tps_ttft": 827.2205377700604,
+   "tg_backend_all": 56.63716814159292,
+   "tg_backend_after_first_event": 56.194690265486734,
+   "tg_stream_after_first_event": 56.283442530280375,
+   "problems": [],
+   "valid": true,
+   "uid": 1,
+   "mtp_log": [
+    {
+     "raw": "MTP[1] finish=length tokens=128 cycles=34 tok/cycle=3.76 accept=92/102 (90.2%) depth[d1=27/30,d2=25/27,d3=22/24,d4=18/21] d0=3 copy=0/7 in 1 emits[init=2,draft=92,bonus=23,verify=11] timing[backbone=2190.7ms mtp=20.2ms sample=1.3ms cache=19.0ms]",
+     "finish": "length",
+     "tokens": 128,
+     "cycles": 34,
+     "tok_per_cycle": 3.76,
+     "accepted": 92,
+     "proposed": 102,
+     "depth": {
+      "d1": [
+       27,
+       30
+      ],
+      "d2": [
+       25,
+       27
+      ],
+      "d3": [
+       22,
+       24
+      ],
+      "d4": [
+       18,
+       21
+      ]
+     },
+     "d0": 3,
+     "copy": [
+      0,
+      7,
+      1
+     ],
+     "emits": {
+      "init": 2,
+      "draft": 92,
+      "bonus": 23,
+      "verify": 11
+     },
+     "timing_ms": {
+      "backbone": 2190.7,
+      "mtp": 20.2,
+      "sample": 1.3,
+      "cache": 19.0
+     }
+    }
+   ],
+   "mtp_activation": {
+    "primed": 1024,
+    "raw": "MTP path activated for uid=1 (model has mtp_forward, batch=1, primed=1024)"
+   },
+   "mtp_log_gen_s": 2.2312
+  },
+  {
+   "role": "warmup",
+   "length": 4096,
+   "nonce": "dec-warm-1-4096",
+   "max_tokens": 128,
+   "request_body_sha256": "d6671fc7a1c22aa43f149375713d6f4d34734d13d6a192b6c303b3e97a99ce66",
+   "planned_prompt_ids": 4096,
+   "usage": {
+    "prompt_tokens": 4096,
+    "completion_tokens": 128,
+    "total_tokens": 4224,
+    "input_tokens": 4096,
+    "output_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 4.34,
+    "total_time": 6.75,
+    "prompt_eval_duration": 4.34,
+    "generation_duration": 2.41,
+    "prompt_tokens_per_second": 943.95,
+    "generation_tokens_per_second": 53.08
+   },
+   "prompt_tokens": 4096,
+   "completion_tokens": 128,
+   "cached_tokens": 0,
+   "finish_reason": "length",
+   "client_ttft_s": 4.359788708010456,
+   "client_total_s": 6.770263500016881,
+   "n_events": 18,
+   "events": [
+    {
+     "t": 4.359788708010456,
+     "text": "empty"
+    },
+    {
+     "t": 4.492979000002379,
+     "text": ":\n                raise ExternalEndpointError"
+    },
+    {
+     "t": 4.625763167015975,
+     "text": "(\n                    \"External API preflight returned reasoning"
+    },
+    {
+     "t": 4.797865833010292,
+     "text": " but no final \""
+    },
+    {
+     "t": 4.974994542018976,
+     "text": "\n                    \""
+    },
+    {
+     "t": 5.110995958006242,
+     "text": "content; final-answer"
+    },
+    {
+     "t": 5.247326292010257,
+     "text": " evaluation is not supported"
+    },
+    {
+     "t": 5.383624333015177,
+     "text": "\",\n                    status=\"empty_content"
+    },
+    {
+     "t": 5.52010516700102,
+     "text": "\",\n                )\n            raise ExternalEndpointError"
+    },
+    {
+     "t": 5.656728041998576,
+     "text": "(\n                \"External API preflight returned empty"
+    },
+    {
+     "t": 5.793738000007579,
+     "text": " content\",\n                status=\"empty_content\",\n"
+    },
+    {
+     "t": 5.9301634580187965,
+     "text": "            )\n\n    async def"
+    },
+    {
+     "t": 6.066950208012713,
+     "text": " chat(\n        self,\n       "
+    },
+    {
+     "t": 6.210198000015225,
+     "text": " messages: list[dict],\n        max_tokens"
+    },
+    {
+     "t": 6.346556292002788,
+     "text": ": int = 102"
+    },
+    {
+     "t": 6.4829559580248315,
+     "text": "4,\n        temperature: float ="
+    },
+    {
+     "t": 6.6194417500228155,
+     "text": " 0.0,\n        top_p"
+    },
+    {
+     "t": 6.7700036670139525,
+     "text": ": float = 1.0,\n       "
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "empty:\n                raise ExternalEndpointError(\n                    \"External API preflight returned reasoning but no final \"\n                    \"content; final-answer evaluation is not supported\",\n                    status=\"empty_content\",\n                )\n            raise ExternalEndpointError(\n                \"External API preflight returned empty content\",\n                status=\"empty_content\",\n            )\n\n    async def chat(\n        self,\n        messages: list[dict],\n        max_tokens: int = 1024,\n        temperature: float = 0.0,\n        top_p: float = 1.0,\n       ",
+   "output_ids_est": [
+    3092,
+    25,
+    198,
+    388,
+    4673,
+    29921,
+    26493,
+    1401,
+    7,
+    198,
+    493,
+    328,
+    25083,
+    5165,
+    829,
+    37116,
+    5743,
+    31626,
+    694,
+    874,
+    1534,
+    328,
+    198,
+    493,
+    328,
+    1733,
+    26,
+    1534,
+    92464,
+    15977,
+    369,
+    524,
+    7021,
+    487,
+    198,
+    493,
+    2552,
+    420,
+    3092,
+    7260,
+    487,
+    198,
+    388,
+    847,
+    198,
+    309,
+    4673,
+    29921,
+    26493,
+    1401,
+    7,
+    198,
+    388,
+    328,
+    25083,
+    5165,
+    829,
+    37116,
+    5743,
+    4147,
+    2144,
+    487,
+    198,
+    388,
+    2552,
+    420,
+    3092,
+    7260,
+    487,
+    198,
+    309,
+    847,
+    271,
+    262,
+    3203,
+    687,
+    6040,
+    7,
+    198,
+    285,
+    638,
+    11,
+    198,
+    285,
+    6397,
+    25,
+    1103,
+    58,
+    8217,
+    1089,
+    198,
+    285,
+    1866,
+    27896,
+    25,
+    514,
+    283,
+    220,
+    16,
+    15,
+    17,
+    19,
+    11,
+    198,
+    285,
+    9039,
+    25,
+    2153,
+    283,
+    220,
+    15,
+    13,
+    15,
+    11,
+    198,
+    285,
+    1844,
+    605,
+    25,
+    2153,
+    283,
+    220,
+    16,
+    13,
+    15,
+    11,
+    198,
+    285
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 126,
+    "distinct": 104,
+    "distinct_ratio": 0.8253968253968254
+   },
+   "mem_before": {
+    "gen": 15,
+    "op": "mem",
+    "active": 34305383170,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 35193068440,
+    "t": 38.53744887499488
+   },
+   "mem_after": {
+    "gen": 16,
+    "op": "mem",
+    "active": 34305383174,
+    "cache": 16,
+    "peak": 37482920726,
+    "phys_footprint": 35205028760,
+    "t": 46.317986917012604
+   },
+   "mem_settled": {
+    "gen": 18,
+    "op": "mem",
+    "active": 34305383174,
+    "cache": 16,
+    "peak": 37482920726,
+    "phys_footprint": 35195771800,
+    "t": 50.34376187500311
+   },
+   "mem_settled_15s": {
+    "gen": 19,
+    "op": "mem",
+    "active": 34305383174,
+    "cache": 16,
+    "peak": 37482920726,
+    "phys_footprint": 35195788184,
+    "t": 60.361849042004906
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791524904.528842,
+   "prefill_tps_ttft": 939.4950705923469,
+   "tg_backend_all": 53.11203319502074,
+   "tg_backend_after_first_event": 52.697095435684645,
+   "tg_stream_after_first_event": 52.692395558157244,
+   "problems": [],
+   "valid": true,
+   "uid": 2,
+   "mtp_log": [
+    {
+     "raw": "MTP[2] finish=length tokens=128 cycles=36 tok/cycle=3.56 accept=87/101 (86.1%) depth[d1=28/32,d2=23/27,d3=19/23,d4=17/19] d0=3 copy=3/7 in 1 emits[init=2,draft=90,bonus=21,verify=15] timing[backbone=2329.7ms mtp=20.3ms sample=1.2ms cache=19.7ms]",
+     "finish": "length",
+     "tokens": 128,
+     "cycles": 36,
+     "tok_per_cycle": 3.56,
+     "accepted": 87,
+     "proposed": 101,
+     "depth": {
+      "d1": [
+       28,
+       32
+      ],
+      "d2": [
+       23,
+       27
+      ],
+      "d3": [
+       19,
+       23
+      ],
+      "d4": [
+       17,
+       19
+      ]
+     },
+     "d0": 3,
+     "copy": [
+      3,
+      7,
+      1
+     ],
+     "emits": {
+      "init": 2,
+      "draft": 90,
+      "bonus": 21,
+      "verify": 15
+     },
+     "timing_ms": {
+      "backbone": 2329.7,
+      "mtp": 20.3,
+      "sample": 1.2,
+      "cache": 19.7
+     }
+    }
+   ],
+   "mtp_activation": {
+    "primed": 4096,
+    "raw": "MTP path activated for uid=2 (model has mtp_forward, batch=1, primed=4096)"
+   },
+   "mtp_log_gen_s": 2.3709
+  },
+  {
+   "role": "warmup",
+   "length": 8192,
+   "nonce": "dec-warm-1-8192",
+   "max_tokens": 128,
+   "request_body_sha256": "3f2ad935214b1a30447ee918187fb331c6bfaee591fc379585bbfeafa5911c55",
+   "planned_prompt_ids": 8192,
+   "usage": {
+    "prompt_tokens": 8192,
+    "completion_tokens": 128,
+    "total_tokens": 8320,
+    "input_tokens": 8192,
+    "output_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 8.93,
+    "total_time": 11.51,
+    "prompt_eval_duration": 8.93,
+    "generation_duration": 2.58,
+    "prompt_tokens_per_second": 917.34,
+    "generation_tokens_per_second": 49.67
+   },
+   "prompt_tokens": 8192,
+   "completion_tokens": 128,
+   "cached_tokens": 0,
+   "finish_reason": "length",
+   "client_ttft_s": 8.959466291009448,
+   "client_total_s": 11.535451166011626,
+   "n_events": 18,
+   "events": [
+    {
+     "t": 8.959466291009448,
+     "text": "      "
+    },
+    {
+     "t": 9.094793875003234,
+     "text": " text=True,\n        timeout="
+    },
+    {
+     "t": 9.22896262499853,
+     "text": "30,\n    ).strip"
+    },
+    {
+     "t": 9.347464958002092,
+     "text": "()\n    return Path(site"
+    },
+    {
+     "t": 9.459142166015226,
+     "text": "_packages) /"
+    },
+    {
+     "t": 9.652084583009128,
+     "text": " \"omlx\"\n\n\ndef _"
+    },
+    {
+     "t": 9.789588416024344,
+     "text": "write_worker_config("
+    },
+    {
+     "t": 9.92757233302109,
+     "text": "\n    *,\n    controller_ip"
+    },
+    {
+     "t": 10.065437875018688,
+     "text": ": str,\n    controller_port"
+    },
+    {
+     "t": 10.203176583017921,
+     "text": ": int,\n    local_ip"
+    },
+    {
+     "t": 10.41079045800143,
+     "text": ": str,\n    worker_id: str,\n"
+    },
+    {
+     "t": 10.555431708024116,
+     "text": "    worker_token: str,\n    ssh"
+    },
+    {
+     "t": 10.761770291021094,
+     "text": "_user: str,\n    ssh_port: int,"
+    },
+    {
+     "t": 10.899668833008036,
+     "text": "\n    ssh_fingerprint: str,\n   "
+    },
+    {
+     "t": 11.037639333022526,
+     "text": " source_digest: str,\n)"
+    },
+    {
+     "t": 11.247144250024576,
+     "text": " -> Path:\n    config = INSTALL"
+    },
+    {
+     "t": 11.388796208018903,
+     "text": "_ROOT / \"worker.json\"\n    payload ="
+    },
+    {
+     "t": 11.535209374997066,
+     "text": " {\n        \"schema\":"
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "       text=True,\n        timeout=30,\n    ).strip()\n    return Path(site_packages) / \"omlx\"\n\n\ndef _write_worker_config(\n    *,\n    controller_ip: str,\n    controller_port: int,\n    local_ip: str,\n    worker_id: str,\n    worker_token: str,\n    ssh_user: str,\n    ssh_port: int,\n    ssh_fingerprint: str,\n    source_digest: str,\n) -> Path:\n    config = INSTALL_ROOT / \"worker.json\"\n    payload = {\n        \"schema\":",
+   "output_ids_est": [
+    950,
+    1414,
+    3497,
+    11,
+    198,
+    285,
+    9345,
+    28,
+    18,
+    15,
+    11,
+    198,
+    262,
+    7222,
+    12726,
+    363,
+    198,
+    262,
+    460,
+    7683,
+    45910,
+    40493,
+    8,
+    593,
+    328,
+    315,
+    30413,
+    1,
+    1358,
+    727,
+    696,
+    4775,
+    39048,
+    5164,
+    7,
+    198,
+    262,
+    11439,
+    198,
+    262,
+    6259,
+    10076,
+    25,
+    592,
+    11,
+    198,
+    262,
+    6259,
+    8451,
+    25,
+    514,
+    11,
+    198,
+    262,
+    2136,
+    10076,
+    25,
+    592,
+    11,
+    198,
+    262,
+    11525,
+    816,
+    25,
+    592,
+    11,
+    198,
+    262,
+    11525,
+    6256,
+    25,
+    592,
+    11,
+    198,
+    262,
+    28274,
+    3208,
+    25,
+    592,
+    11,
+    198,
+    262,
+    28274,
+    8451,
+    25,
+    514,
+    11,
+    198,
+    262,
+    28274,
+    736,
+    46318,
+    25,
+    592,
+    11,
+    198,
+    262,
+    2450,
+    51215,
+    25,
+    592,
+    11,
+    198,
+    8,
+    1411,
+    7683,
+    25,
+    198,
+    262,
+    2124,
+    283,
+    76627,
+    15720,
+    593,
+    328,
+    20804,
+    4182,
+    1,
+    198,
+    262,
+    7484,
+    283,
+    313,
+    198,
+    285,
+    328,
+    16838,
+    763
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 126,
+    "distinct": 98,
+    "distinct_ratio": 0.7777777777777778
+   },
+   "mem_before": {
+    "gen": 24,
+    "op": "mem",
+    "active": 34305383174,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 35195870104,
+    "t": 65.50402433401905
+   },
+   "mem_after": {
+    "gen": 25,
+    "op": "mem",
+    "active": 34305383178,
+    "cache": 16,
+    "peak": 37768149790,
+    "phys_footprint": 35207388056,
+    "t": 78.0560384170094
+   },
+   "mem_settled": {
+    "gen": 27,
+    "op": "mem",
+    "active": 34305383178,
+    "cache": 16,
+    "peak": 37768149790,
+    "phys_footprint": 35198131096,
+    "t": 82.07774316699943
+   },
+   "mem_settled_15s": {
+    "gen": 28,
+    "op": "mem",
+    "active": 34305383178,
+    "cache": 16,
+    "peak": 37768149790,
+    "phys_footprint": 35198131096,
+    "t": 92.0932053750148
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791524936.266937,
+   "prefill_tps_ttft": 914.3401776309402,
+   "tg_backend_all": 49.61240310077519,
+   "tg_backend_after_first_event": 49.224806201550386,
+   "tg_stream_after_first_event": 49.306159760074316,
+   "problems": [],
+   "valid": true,
+   "uid": 3,
+   "mtp_log": [
+    {
+     "raw": "MTP[3] finish=length tokens=128 cycles=38 tok/cycle=3.37 accept=88/104 (84.6%) depth[d1=30/35,d2=21/29,d3=20/21,d4=17/19] d0=3 emits[init=2,draft=88,bonus=22,verify=16] timing[backbone=2505.2ms mtp=23.5ms sample=1.3ms cache=22.5ms]",
+     "finish": "length",
+     "tokens": 128,
+     "cycles": 38,
+     "tok_per_cycle": 3.37,
+     "accepted": 88,
+     "proposed": 104,
+     "depth": {
+      "d1": [
+       30,
+       35
+      ],
+      "d2": [
+       21,
+       29
+      ],
+      "d3": [
+       20,
+       21
+      ],
+      "d4": [
+       17,
+       19
+      ]
+     },
+     "d0": 3,
+     "copy": null,
+     "emits": {
+      "init": 2,
+      "draft": 88,
+      "bonus": 22,
+      "verify": 16
+     },
+     "timing_ms": {
+      "backbone": 2505.2,
+      "mtp": 23.5,
+      "sample": 1.3,
+      "cache": 22.5
+     }
+    }
+   ],
+   "mtp_activation": {
+    "primed": 8192,
+    "raw": "MTP path activated for uid=3 (model has mtp_forward, batch=1, primed=8192)"
+   },
+   "mtp_log_gen_s": 2.5525
+  },
+  {
+   "role": "primary",
+   "length": 1024,
+   "nonce": "dec-r1-1024-p0",
+   "max_tokens": 128,
+   "request_body_sha256": "9d88da7e8f4b1ce014163482f7dd05396e86157fdd3bf0e00fa92a01c80c7726",
+   "planned_prompt_ids": 1024,
+   "usage": {
+    "prompt_tokens": 1024,
+    "completion_tokens": 128,
+    "total_tokens": 1152,
+    "input_tokens": 1024,
+    "output_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 1.23,
+    "total_time": 3.27,
+    "prompt_eval_duration": 1.23,
+    "generation_duration": 2.04,
+    "prompt_tokens_per_second": 833.55,
+    "generation_tokens_per_second": 62.7
+   },
+   "prompt_tokens": 1024,
+   "completion_tokens": 128,
+   "cached_tokens": 0,
+   "finish_reason": "length",
+   "client_ttft_s": 1.2367167500196956,
+   "client_total_s": 3.2772424170107115,
+   "n_events": 16,
+   "events": [
+    {
+     "t": 1.2367167500196956,
+     "text": "\n"
+    },
+    {
+     "t": 1.3686573340091854,
+     "text": "_CONTROL_AUTH_DOMAIN"
+    },
+    {
+     "t": 1.4997152090072632,
+     "text": " = b\"omlx-rank-control-control-v"
+    },
+    {
+     "t": 1.6155365000013262,
+     "text": "1\"\n_CONTROL_AUTH_DOMAIN_V"
+    },
+    {
+     "t": 1.7784263750072569,
+     "text": "2 = b"
+    },
+    {
+     "t": 1.9801336670061573,
+     "text": "\"omlx-rank-control-control-v2\""
+    },
+    {
+     "t": 2.1150911250151694,
+     "text": "\n_CONTROL_AUTH_DOMAIN_V3 = b\"om"
+    },
+    {
+     "t": 2.249840750009753,
+     "text": "lx-rank-control-control-v3\"\n_CONTROL"
+    },
+    {
+     "t": 2.3848178340122104,
+     "text": "_AUTH_DOMAIN_V4 = b\"omlx-r"
+    },
+    {
+     "t": 2.5196294170164037,
+     "text": "ank-control-control-v4\"\n_CONTROL_AUTH_DOMAIN"
+    },
+    {
+     "t": 2.6545906249957625,
+     "text": "_V5 = b\"omlx-rank-control"
+    },
+    {
+     "t": 2.7892697089992,
+     "text": "-control-v5\"\n_CONTROL_AUTH_DOMAIN_V"
+    },
+    {
+     "t": 2.9244281249993946,
+     "text": "6 = b\"omlx-rank-control-control"
+    },
+    {
+     "t": 3.059345667017624,
+     "text": "-v6\"\n_CONTROL_AUTH_DOMAIN_V7 ="
+    },
+    {
+     "t": 3.2027647500217427,
+     "text": " b\"omlx-rank-control-control-v7"
+    },
+    {
+     "t": 3.2769998340227176,
+     "text": "\"\n_CONTROL_AUTH_DOMAIN"
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "\n_CONTROL_AUTH_DOMAIN = b\"omlx-rank-control-control-v1\"\n_CONTROL_AUTH_DOMAIN_V2 = b\"omlx-rank-control-control-v2\"\n_CONTROL_AUTH_DOMAIN_V3 = b\"omlx-rank-control-control-v3\"\n_CONTROL_AUTH_DOMAIN_V4 = b\"omlx-rank-control-control-v4\"\n_CONTROL_AUTH_DOMAIN_V5 = b\"omlx-rank-control-control-v5\"\n_CONTROL_AUTH_DOMAIN_V6 = b\"omlx-rank-control-control-v6\"\n_CONTROL_AUTH_DOMAIN_V7 = b\"omlx-rank-control-control-v7\"\n_CONTROL_AUTH_DOMAIN",
+   "output_ids_est": [
+    198,
+    22939,
+    21971,
+    32612,
+    283,
+    292,
+    1,
+    315,
+    30413,
+    3667,
+    1140,
+    4317,
+    4317,
+    8015,
+    16,
+    1,
+    198,
+    22939,
+    21971,
+    32612,
+    2258,
+    17,
+    283,
+    292,
+    1,
+    315,
+    30413,
+    3667,
+    1140,
+    4317,
+    4317,
+    8015,
+    17,
+    1,
+    198,
+    22939,
+    21971,
+    32612,
+    2258,
+    18,
+    283,
+    292,
+    1,
+    315,
+    30413,
+    3667,
+    1140,
+    4317,
+    4317,
+    8015,
+    18,
+    1,
+    198,
+    22939,
+    21971,
+    32612,
+    2258,
+    19,
+    283,
+    292,
+    1,
+    315,
+    30413,
+    3667,
+    1140,
+    4317,
+    4317,
+    8015,
+    19,
+    1,
+    198,
+    22939,
+    21971,
+    32612,
+    2258,
+    20,
+    283,
+    292,
+    1,
+    315,
+    30413,
+    3667,
+    1140,
+    4317,
+    4317,
+    8015,
+    20,
+    1,
+    198,
+    22939,
+    21971,
+    32612,
+    2258,
+    21,
+    283,
+    292,
+    1,
+    315,
+    30413,
+    3667,
+    1140,
+    4317,
+    4317,
+    8015,
+    21,
+    1,
+    198,
+    22939,
+    21971,
+    32612,
+    2258,
+    22,
+    283,
+    292,
+    1,
+    315,
+    30413,
+    3667,
+    1140,
+    4317,
+    4317,
+    8015,
+    22,
+    1,
+    198,
+    22939,
+    21971,
+    32612
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 126,
+    "distinct": 53,
+    "distinct_ratio": 0.42063492063492064
+   },
+   "mem_before": {
+    "gen": 34,
+    "op": "mem",
+    "active": 34305383178,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 35198131096,
+    "t": 124.24453162500868
+   },
+   "mem_after": {
+    "gen": 35,
+    "op": "mem",
+    "active": 34305383182,
+    "cache": 16,
+    "peak": 36196203294,
+    "phys_footprint": 35207470000,
+    "t": 128.53110375002143
+   },
+   "mem_settled": {
+    "gen": 37,
+    "op": "mem",
+    "active": 34305383182,
+    "cache": 16,
+    "peak": 36196203294,
+    "phys_footprint": 35198213040,
+    "t": 132.55688425002154
+   },
+   "mem_settled_15s": {
+    "gen": 38,
+    "op": "mem",
+    "active": 34305383182,
+    "cache": 16,
+    "peak": 36196203294,
+    "phys_footprint": 35198213040,
+    "t": 142.57496729202103
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791524986.7414742,
+   "prefill_tps_ttft": 827.9988121642988,
+   "tg_backend_all": 62.745098039215684,
+   "tg_backend_after_first_event": 62.25490196078431,
+   "tg_stream_after_first_event": 62.24626425408911,
+   "problems": [],
+   "valid": true,
+   "uid": 4,
+   "mtp_log": [
+    {
+     "raw": "MTP[4] finish=length tokens=128 cycles=31 tok/cycle=4.13 accept=95/100 (95.0%) depth[d1=25/28,d2=25/25,d3=24/24,d4=21/23] d0=3 emits[init=2,draft=95,bonus=26,verify=5] timing[backbone=1966.2ms mtp=17.6ms sample=1.2ms cache=17.2ms]",
+     "finish": "length",
+     "tokens": 128,
+     "cycles": 31,
+     "tok_per_cycle": 4.13,
+     "accepted": 95,
+     "proposed": 100,
+     "depth": {
+      "d1": [
+       25,
+       28
+      ],
+      "d2": [
+       25,
+       25
+      ],
+      "d3": [
+       24,
+       24
+      ],
+      "d4": [
+       21,
+       23
+      ]
+     },
+     "d0": 3,
+     "copy": null,
+     "emits": {
+      "init": 2,
+      "draft": 95,
+      "bonus": 26,
+      "verify": 5
+     },
+     "timing_ms": {
+      "backbone": 1966.2,
+      "mtp": 17.6,
+      "sample": 1.2,
+      "cache": 17.2
+     }
+    }
+   ],
+   "mtp_activation": {
+    "primed": 1024,
+    "raw": "MTP path activated for uid=4 (model has mtp_forward, batch=1, primed=1024)"
+   },
+   "mtp_log_gen_s": 2.0022
+  },
+  {
+   "role": "primary",
+   "length": 4096,
+   "nonce": "dec-r1-4096-p0",
+   "max_tokens": 128,
+   "request_body_sha256": "2609165b2e7b7c5c61fb5f99027c97784a1148c1696f897d56f25503dfee3993",
+   "planned_prompt_ids": 4096,
+   "usage": {
+    "prompt_tokens": 4096,
+    "completion_tokens": 5,
+    "total_tokens": 4101,
+    "input_tokens": 4096,
+    "output_tokens": 5,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 4.34,
+    "total_time": 4.41,
+    "prompt_eval_duration": 4.34,
+    "generation_duration": 0.08,
+    "prompt_tokens_per_second": 944.49,
+    "generation_tokens_per_second": 63.93
+   },
+   "prompt_tokens": 4096,
+   "completion_tokens": 5,
+   "cached_tokens": 0,
+   "finish_reason": "stop",
+   "client_ttft_s": 4.355397750012344,
+   "client_total_s": 4.432678500015754,
+   "n_events": 2,
+   "events": [
+    {
+     "t": 4.355397750012344,
+     "text": "MCP"
+    },
+    {
+     "t": 4.432450958003756,
+     "text": " support\n```\n\n"
+    }
+   ],
+   "first_event_tokens_est": 2,
+   "text": "MCP support\n```\n\n",
+   "output_ids_est": [
+    44,
+    6901,
+    1761,
+    198,
+    71093,
+    271
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 4,
+    "distinct": 4,
+    "distinct_ratio": 1.0
+   },
+   "mem_before": {
+    "gen": 43,
+    "op": "mem",
+    "active": 34305383182,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 35198213040,
+    "t": 170.704020959005
+   },
+   "mem_after": {
+    "gen": 44,
+    "op": "mem",
+    "active": 34305383186,
+    "cache": 16,
+    "peak": 37482920738,
+    "phys_footprint": 35205798832,
+    "t": 176.15485516699846
+   },
+   "mem_settled": {
+    "gen": 46,
+    "op": "mem",
+    "active": 34305383186,
+    "cache": 16,
+    "peak": 37482920738,
+    "phys_footprint": 35198393264,
+    "t": 180.17409450002015
+   },
+   "mem_settled_15s": {
+    "gen": 47,
+    "op": "mem",
+    "active": 34305383186,
+    "cache": 16,
+    "peak": 37482920738,
+    "phys_footprint": 35198393264,
+    "t": 190.189486999996
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791525034.35299,
+   "prefill_tps_ttft": 940.4422363005517,
+   "tg_backend_all": 62.5,
+   "tg_backend_after_first_event": 37.5,
+   "tg_stream_after_first_event": 38.93413497247733,
+   "problems": [
+    "completion_tokens=5",
+    "finish_reason=stop",
+    "MTP summary tokens=6 != completion_tokens"
+   ],
+   "valid": false,
+   "uid": 5,
+   "mtp_log": [
+    {
+     "raw": "MTP[5] finish=stop tokens=6 cycles=1 tok/cycle=6.00 accept=3/4 (75.0%) depth[d1=1/1,d2=1/1,d3=1/1,d4=0/1] emits[init=2,draft=3,bonus=0,verify=1] timing[backbone=62.9ms mtp=1.0ms sample=0.0ms cache=0.6ms]",
+     "finish": "stop",
+     "tokens": 6,
+     "cycles": 1,
+     "tok_per_cycle": 6.0,
+     "accepted": 3,
+     "proposed": 4,
+     "depth": {
+      "d1": [
+       1,
+       1
+      ],
+      "d2": [
+       1,
+       1
+      ],
+      "d3": [
+       1,
+       1
+      ],
+      "d4": [
+       0,
+       1
+      ]
+     },
+     "d0": null,
+     "copy": null,
+     "emits": {
+      "init": 2,
+      "draft": 3,
+      "bonus": 0,
+      "verify": 1
+     },
+     "timing_ms": {
+      "backbone": 62.9,
+      "mtp": 1.0,
+      "sample": 0.0,
+      "cache": 0.6
+     }
+    }
+   ],
+   "mtp_activation": {
+    "primed": 4096,
+    "raw": "MTP path activated for uid=5 (model has mtp_forward, batch=1, primed=4096)"
+   },
+   "mtp_log_gen_s": 0.0645
+  },
+  {
+   "role": "primary",
+   "length": 8192,
+   "nonce": "dec-r1-8192-p0",
+   "max_tokens": 128,
+   "request_body_sha256": "e772985b56bf19de95ab77c58f1bfe0a79e9a727a16cf1edb758e7c42a26ea3a",
+   "planned_prompt_ids": 8192,
+   "usage": {
+    "prompt_tokens": 8192,
+    "completion_tokens": 128,
+    "total_tokens": 8320,
+    "input_tokens": 8192,
+    "output_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 8.88,
+    "total_time": 11.18,
+    "prompt_eval_duration": 8.88,
+    "generation_duration": 2.3,
+    "prompt_tokens_per_second": 922.46,
+    "generation_tokens_per_second": 55.66
+   },
+   "prompt_tokens": 8192,
+   "completion_tokens": 128,
+   "cached_tokens": 0,
+   "finish_reason": "length",
+   "client_ttft_s": 8.909965875005582,
+   "client_total_s": 11.20883237500675,
+   "n_events": 18,
+   "events": [
+    {
+     "t": 8.909965875005582,
+     "text": "its"
+    },
+    {
+     "t": 9.04559816699475,
+     "text": " config.json does not declare a"
+    },
+    {
+     "t": 9.180203625001013,
+     "text": " layer count\"\n            )\n"
+    },
+    {
+     "t": 9.299266499991063,
+     "text": "        candidates = (1,)\n"
+    },
+    {
+     "t": 9.410990333999507,
+     "text": "    elif strategy"
+    },
+    {
+     "t": 9.604685958998743,
+     "text": " == \"tensor\":\n        #"
+    },
+    {
+     "t": 9.743293625011574,
+     "text": " Explicit request for tensor parallelism.\n        if"
+    },
+    {
+     "t": 9.881621750013437,
+     "text": " len(nodes) > 1 and not _"
+    },
+    {
+     "t": 10.020058791997144,
+     "text": "divides_heads(model, len(nodes)):\n           "
+    },
+    {
+     "t": 10.158315667009447,
+     "text": " raise PlanningError(\n                \"tensor parallelism"
+    },
+    {
+     "t": 10.296866084012436,
+     "text": " is not possible for this model: \"\n               "
+    },
+    {
+     "t": 10.435111333994428,
+     "text": " \"its attention heads do not divide evenly by the"
+    },
+    {
+     "t": 10.573664166993694,
+     "text": " number of Macs\"\n            )\n       "
+    },
+    {
+     "t": 10.711680250009522,
+     "text": " candidates = (len(nodes),)\n\n   "
+    },
+    {
+     "t": 10.84954349999316,
+     "text": " # Largest first for speed"
+    },
+    {
+     "t": 10.987511959014228,
+     "text": ", smallest first for capacity.\n"
+    },
+    {
+     "t": 11.126282625016756,
+     "text": "    ordered = candidates if"
+    },
+    {
+     "t": 11.208577999990666,
+     "text": " prefer =="
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "its config.json does not declare a layer count\"\n            )\n        candidates = (1,)\n    elif strategy == \"tensor\":\n        # Explicit request for tensor parallelism.\n        if len(nodes) > 1 and not _divides_heads(model, len(nodes)):\n            raise PlanningError(\n                \"tensor parallelism is not possible for this model: \"\n                \"its attention heads do not divide evenly by the number of Macs\"\n            )\n        candidates = (len(nodes),)\n\n    # Largest first for speed, smallest first for capacity.\n    ordered = candidates if prefer ==",
+   "output_ids_est": [
+    1159,
+    2124,
+    4182,
+    1503,
+    524,
+    15444,
+    264,
+    6000,
+    1698,
+    1,
+    198,
+    309,
+    847,
+    198,
+    285,
+    10853,
+    283,
+    318,
+    16,
+    44484,
+    198,
+    262,
+    4265,
+    8024,
+    606,
+    328,
+    44572,
+    763,
+    198,
+    285,
+    653,
+    30299,
+    1622,
+    364,
+    15167,
+    14835,
+    2074,
+    13,
+    198,
+    285,
+    413,
+    2343,
+    37423,
+    8,
+    835,
+    220,
+    16,
+    321,
+    524,
+    696,
+    596,
+    3232,
+    73709,
+    7392,
+    11,
+    2343,
+    37423,
+    35497,
+    198,
+    309,
+    4673,
+    26783,
+    1401,
+    7,
+    198,
+    388,
+    328,
+    44572,
+    14835,
+    2074,
+    369,
+    524,
+    3102,
+    364,
+    411,
+    1558,
+    25,
+    328,
+    198,
+    388,
+    328,
+    1159,
+    6326,
+    14208,
+    635,
+    524,
+    21078,
+    39691,
+    539,
+    279,
+    1324,
+    314,
+    7166,
+    82,
+    1,
+    198,
+    309,
+    847,
+    198,
+    285,
+    10853,
+    283,
+    318,
+    2798,
+    37423,
+    681,
+    8,
+    271,
+    262,
+    653,
+    80445,
+    1118,
+    364,
+    4478,
+    11,
+    23856,
+    1118,
+    364,
+    8390,
+    13,
+    198,
+    262,
+    11128,
+    283,
+    10853,
+    413,
+    10386,
+    606
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 126,
+    "distinct": 118,
+    "distinct_ratio": 0.9365079365079365
+   },
+   "mem_before": {
+    "gen": 52,
+    "op": "mem",
+    "active": 34305383186,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 35198393264,
+    "t": 226.3325282090227
+   },
+   "mem_after": {
+    "gen": 53,
+    "op": "mem",
+    "active": 34305383190,
+    "cache": 16,
+    "peak": 37768149802,
+    "phys_footprint": 35208321968,
+    "t": 238.55515995901078
+   },
+   "mem_settled": {
+    "gen": 55,
+    "op": "mem",
+    "active": 34305383190,
+    "cache": 16,
+    "peak": 37768149802,
+    "phys_footprint": 35199065008,
+    "t": 242.57767337499536
+   },
+   "mem_settled_15s": {
+    "gen": 56,
+    "op": "mem",
+    "active": 34305383190,
+    "cache": 16,
+    "peak": 37768149802,
+    "phys_footprint": 35199065008,
+    "t": 252.59166929201456
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791525096.764992,
+   "prefill_tps_ttft": 919.4199074297653,
+   "tg_backend_all": 55.652173913043484,
+   "tg_backend_after_first_event": 55.21739130434783,
+   "tg_stream_after_first_event": 55.25073091695456,
+   "problems": [],
+   "valid": true,
+   "uid": 6,
+   "mtp_log": [
+    {
+     "raw": "MTP[6] finish=length tokens=128 cycles=34 tok/cycle=3.76 accept=92/104 (88.5%) depth[d1=30/31,d2=25/29,d3=21/24,d4=16/20] d0=3 emits[init=2,draft=92,bonus=22,verify=12] timing[backbone=2231.2ms mtp=20.4ms sample=1.2ms cache=19.5ms]",
+     "finish": "length",
+     "tokens": 128,
+     "cycles": 34,
+     "tok_per_cycle": 3.76,
+     "accepted": 92,
+     "proposed": 104,
+     "depth": {
+      "d1": [
+       30,
+       31
+      ],
+      "d2": [
+       25,
+       29
+      ],
+      "d3": [
+       21,
+       24
+      ],
+      "d4": [
+       16,
+       20
+      ]
+     },
+     "d0": 3,
+     "copy": null,
+     "emits": {
+      "init": 2,
+      "draft": 92,
+      "bonus": 22,
+      "verify": 12
+     },
+     "timing_ms": {
+      "backbone": 2231.2,
+      "mtp": 20.4,
+      "sample": 1.2,
+      "cache": 19.5
+     }
+    }
+   ],
+   "mtp_activation": {
+    "primed": 8192,
+    "raw": "MTP path activated for uid=6 (model has mtp_forward, batch=1, primed=8192)"
+   },
+   "mtp_log_gen_s": 2.2722999999999995
+  },
+  {
+   "role": "primary",
+   "length": 1024,
+   "nonce": "dec-r1-1024-p1",
+   "max_tokens": 128,
+   "request_body_sha256": "b3c2a6b85456ba28c169b0d2080fe5bd67871875812f6383edce95793366a658",
+   "planned_prompt_ids": 1024,
+   "usage": {
+    "prompt_tokens": 1024,
+    "completion_tokens": 128,
+    "total_tokens": 1152,
+    "input_tokens": 1024,
+    "output_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 1.23,
+    "total_time": 3.69,
+    "prompt_eval_duration": 1.23,
+    "generation_duration": 2.46,
+    "prompt_tokens_per_second": 832.14,
+    "generation_tokens_per_second": 52.01
+   },
+   "prompt_tokens": 1024,
+   "completion_tokens": 128,
+   "cached_tokens": 0,
+   "finish_reason": "length",
+   "client_ttft_s": 1.2389291250146925,
+   "client_total_s": 3.6992575830081478,
+   "n_events": 18,
+   "events": [
+    {
+     "t": 1.2389291250146925,
+     "text": ","
+    },
+    {
+     "t": 1.3709713330026716,
+     "text": " head\n        return \"\", \"\"\n\n"
+    },
+    {
+     "t": 1.5014372919977177,
+     "text": "    def _finalize_header(self"
+    },
+    {
+     "t": 1.6173425420129206,
+     "text": ") -> str:"
+    },
+    {
+     "t": 1.7264995420118794,
+     "text": "\n        head"
+    },
+    {
+     "t": 1.915268125012517,
+     "text": ", self._head = self._"
+    },
+    {
+     "t": 2.057749250001507,
+     "text": "head, \"\"\n        m"
+    },
+    {
+     "t": 2.2600744999945164,
+     "text": " = _RECIPIENT_RE.search"
+    },
+    {
+     "t": 2.3951275419967715,
+     "text": "(head)\n        recipient = m.group(1"
+    },
+    {
+     "t": 2.5300438330159523,
+     "text": ") if m else \"\"\n"
+    },
+    {
+     "t": 2.6651808329916093,
+     "text": "        if recipient == \"self\":\n            self"
+    },
+    {
+     "t": 2.8003310420026537,
+     "text": "._channel = \"thinking\"\n            self._"
+    },
+    {
+     "t": 2.935637292015599,
+     "text": "think_open = True\n            return \"<think>"
+    },
+    {
+     "t": 3.138095667003654,
+     "text": "\"\n        if recipient in (\""
+    },
+    {
+     "t": 3.2734052920131944,
+     "text": "\", \"user\"):\n            self"
+    },
+    {
+     "t": 3.415159833006328,
+     "text": "._channel = \"text\"\n            return \"\""
+    },
+    {
+     "t": 3.6168591669993475,
+     "text": "\n        self._channel = \"tool\""
+    },
+    {
+     "t": 3.6990086669975426,
+     "text": "\n        return \"\"\n\n    def _"
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": ", head\n        return \"\", \"\"\n\n    def _finalize_header(self) -> str:\n        head, self._head = self._head, \"\"\n        m = _RECIPIENT_RE.search(head)\n        recipient = m.group(1) if m else \"\"\n        if recipient == \"self\":\n            self._channel = \"thinking\"\n            self._think_open = True\n            return \"<think>\"\n        if recipient in (\"\", \"user\"):\n            self._channel = \"text\"\n            return \"\"\n        self._channel = \"tool\"\n        return \"\"\n\n    def _",
+   "output_ids_est": [
+    11,
+    1901,
+    198,
+    285,
+    460,
+    7111,
+    1535,
+    271,
+    262,
+    687,
+    696,
+    91145,
+    8492,
+    1153,
+    8,
+    1411,
+    592,
+    25,
+    198,
+    285,
+    1901,
+    11,
+    638,
+    1385,
+    1916,
+    283,
+    638,
+    1385,
+    1916,
+    11,
+    1535,
+    198,
+    285,
+    295,
+    283,
+    696,
+    762,
+    10911,
+    1828,
+    1762,
+    2123,
+    9012,
+    24535,
+    8,
+    198,
+    285,
+    21042,
+    283,
+    295,
+    5982,
+    7,
+    16,
+    8,
+    413,
+    295,
+    745,
+    1535,
+    198,
+    285,
+    413,
+    21042,
+    606,
+    328,
+    701,
+    763,
+    198,
+    309,
+    638,
+    1385,
+    9819,
+    283,
+    328,
+    79420,
+    1,
+    198,
+    309,
+    638,
+    1385,
+    26003,
+    10984,
+    283,
+    2912,
+    198,
+    309,
+    460,
+    328,
+    248068,
+    1,
+    198,
+    285,
+    413,
+    21042,
+    303,
+    3376,
+    487,
+    328,
+    846,
+    35821,
+    198,
+    309,
+    638,
+    1385,
+    9819,
+    283,
+    328,
+    1272,
+    1,
+    198,
+    309,
+    460,
+    1535,
+    198,
+    285,
+    638,
+    1385,
+    9819,
+    283,
+    328,
+    13766,
+    1,
+    198,
+    285,
+    460,
+    1535,
+    271,
+    262,
+    687,
+    696
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 126,
+    "distinct": 104,
+    "distinct_ratio": 0.8253968253968254
+   },
+   "mem_before": {
+    "gen": 61,
+    "op": "mem",
+    "active": 34305383190,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 35199065008,
+    "t": 274.71886550000636
+   },
+   "mem_after": {
+    "gen": 62,
+    "op": "mem",
+    "active": 34305383194,
+    "cache": 16,
+    "peak": 36196203306,
+    "phys_footprint": 35208502192,
+    "t": 279.428507500008
+   },
+   "mem_settled": {
+    "gen": 64,
+    "op": "mem",
+    "active": 34305383194,
+    "cache": 16,
+    "peak": 36196203306,
+    "phys_footprint": 35199245232,
+    "t": 283.45427216700045
+   },
+   "mem_settled_15s": {
+    "gen": 65,
+    "op": "mem",
+    "active": 34305383194,
+    "cache": 16,
+    "peak": 36196203306,
+    "phys_footprint": 35199245232,
+    "t": 293.4724910420191
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791525137.639033,
+   "prefill_tps_ttft": 826.5202418159766,
+   "tg_backend_all": 52.03252032520325,
+   "tg_backend_after_first_event": 51.6260162601626,
+   "tg_stream_after_first_event": 51.62434703133081,
+   "problems": [],
+   "valid": true,
+   "uid": 7,
+   "mtp_log": [
+    {
+     "raw": "MTP[7] finish=length tokens=128 cycles=37 tok/cycle=3.46 accept=89/102 (87.3%) depth[d1=28/32,d2=22/27,d3=21/22,d4=18/21] d0=3 copy=0/14 in 2 emits[init=2,draft=89,bonus=22,verify=15] timing[backbone=2378.7ms mtp=20.5ms sample=1.3ms cache=20.8ms]",
+     "finish": "length",
+     "tokens": 128,
+     "cycles": 37,
+     "tok_per_cycle": 3.46,
+     "accepted": 89,
+     "proposed": 102,
+     "depth": {
+      "d1": [
+       28,
+       32
+      ],
+      "d2": [
+       22,
+       27
+      ],
+      "d3": [
+       21,
+       22
+      ],
+      "d4": [
+       18,
+       21
+      ]
+     },
+     "d0": 3,
+     "copy": [
+      0,
+      14,
+      2
+     ],
+     "emits": {
+      "init": 2,
+      "draft": 89,
+      "bonus": 22,
+      "verify": 15
+     },
+     "timing_ms": {
+      "backbone": 2378.7,
+      "mtp": 20.5,
+      "sample": 1.3,
+      "cache": 20.8
+     }
+    }
+   ],
+   "mtp_activation": {
+    "primed": 1024,
+    "raw": "MTP path activated for uid=7 (model has mtp_forward, batch=1, primed=1024)"
+   },
+   "mtp_log_gen_s": 2.4213
+  },
+  {
+   "role": "primary",
+   "length": 4096,
+   "nonce": "dec-r1-4096-p1",
+   "max_tokens": 128,
+   "request_body_sha256": "0240e1c48a00359af7ee32314eaa752871c4476ea9bd746de240864b96cd9678",
+   "planned_prompt_ids": 4096,
+   "usage": {
+    "prompt_tokens": 4096,
+    "completion_tokens": 75,
+    "total_tokens": 4171,
+    "input_tokens": 4096,
+    "output_tokens": 75,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 4.34,
+    "total_time": 5.79,
+    "prompt_eval_duration": 4.34,
+    "generation_duration": 1.45,
+    "prompt_tokens_per_second": 944.0,
+    "generation_tokens_per_second": 51.56
+   },
+   "prompt_tokens": 4096,
+   "completion_tokens": 75,
+   "cached_tokens": 0,
+   "finish_reason": "stop",
+   "client_ttft_s": 4.359027415979654,
+   "client_total_s": 5.81299362500431,
+   "n_events": 12,
+   "events": [
+    {
+     "t": 4.359027415979654,
+     "text": "_up"
+    },
+    {
+     "t": 4.491996291006217,
+     "text": "_to = n\n       "
+    },
+    {
+     "t": 4.6243380829982925,
+     "text": " if self._done:"
+    },
+    {
+     "t": 4.741583374998299,
+     "text": "\n            return logits\n\n        if"
+    },
+    {
+     "t": 4.851735082978848,
+     "text": " self._forcing"
+    },
+    {
+     "t": 5.042384250002215,
+     "text": ":\n            return self"
+    },
+    {
+     "t": 5.247064625000348,
+     "text": "._force_next_token(logits)\n\n        if"
+    },
+    {
+     "t": 5.383709082991118,
+     "text": " self._waiting_utf8:\n            return"
+    },
+    {
+     "t": 5.526987040997483,
+     "text": " self._force_next_token(logits)\n\n        if"
+    },
+    {
+     "t": 5.663677749980707,
+     "text": " self._in_thinking and self._"
+    },
+    {
+     "t": 5.799526249989867,
+     "text": "thinking_tokens >= self._budget:\n            self"
+    },
+    {
+     "t": 5.812436040985631,
+     "text": "._forcing ="
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "_up_to = n\n        if self._done:\n            return logits\n\n        if self._forcing:\n            return self._force_next_token(logits)\n\n        if self._waiting_utf8:\n            return self._force_next_token(logits)\n\n        if self._in_thinking and self._thinking_tokens >= self._budget:\n            self._forcing =",
+   "output_ids_est": [
+    7980,
+    2270,
+    283,
+    307,
+    198,
+    285,
+    413,
+    638,
+    1385,
+    10128,
+    25,
+    198,
+    309,
+    460,
+    58740,
+    271,
+    285,
+    413,
+    638,
+    1385,
+    40122,
+    25,
+    198,
+    309,
+    460,
+    638,
+    1385,
+    8566,
+    10930,
+    6256,
+    87960,
+    8,
+    271,
+    285,
+    413,
+    638,
+    1385,
+    47869,
+    38147,
+    23,
+    25,
+    198,
+    309,
+    460,
+    638,
+    1385,
+    8566,
+    10930,
+    6256,
+    87960,
+    8,
+    271,
+    285,
+    413,
+    638,
+    1385,
+    258,
+    5673,
+    15275,
+    321,
+    638,
+    1385,
+    79420,
+    27896,
+    2518,
+    638,
+    1385,
+    46793,
+    25,
+    198,
+    309,
+    638,
+    1385,
+    40122,
+    283
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 73,
+    "distinct": 50,
+    "distinct_ratio": 0.684931506849315
+   },
+   "mem_before": {
+    "gen": 70,
+    "op": "mem",
+    "active": 34305383194,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 35199245232,
+    "t": 321.6078880840214
+   },
+   "mem_after": {
+    "gen": 71,
+    "op": "mem",
+    "active": 34305383198,
+    "cache": 16,
+    "peak": 37482920750,
+    "phys_footprint": 35208764336,
+    "t": 328.4311842090101
+   },
+   "mem_settled": {
+    "gen": 73,
+    "op": "mem",
+    "active": 34305383198,
+    "cache": 16,
+    "peak": 37482920750,
+    "phys_footprint": 35199507376,
+    "t": 332.4485077499994
+   },
+   "mem_settled_15s": {
+    "gen": 74,
+    "op": "mem",
+    "active": 34305383198,
+    "cache": 16,
+    "peak": 37482920750,
+    "phys_footprint": 35199507376,
+    "t": 342.4661689590139
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791525186.632681,
+   "prefill_tps_ttft": 939.6591507969351,
+   "tg_backend_all": 51.724137931034484,
+   "tg_backend_after_first_event": 51.03448275862069,
+   "tg_stream_after_first_event": 50.91479349085029,
+   "problems": [
+    "completion_tokens=75",
+    "finish_reason=stop",
+    "MTP summary tokens=76 != completion_tokens"
+   ],
+   "valid": false,
+   "uid": 8,
+   "mtp_log": [
+    {
+     "raw": "MTP[8] finish=stop tokens=76 cycles=22 tok/cycle=3.45 accept=49/57 (86.0%) depth[d1=17/18,d2=15/16,d3=10/14,d4=7/9] d0=3 copy=3/7 in 1 emits[init=2,draft=52,bonus=13,verify=9] timing[backbone=1408.8ms mtp=11.9ms sample=0.8ms cache=11.9ms]",
+     "finish": "stop",
+     "tokens": 76,
+     "cycles": 22,
+     "tok_per_cycle": 3.45,
+     "accepted": 49,
+     "proposed": 57,
+     "depth": {
+      "d1": [
+       17,
+       18
+      ],
+      "d2": [
+       15,
+       16
+      ],
+      "d3": [
+       10,
+       14
+      ],
+      "d4": [
+       7,
+       9
+      ]
+     },
+     "d0": 3,
+     "copy": [
+      3,
+      7,
+      1
+     ],
+     "emits": {
+      "init": 2,
+      "draft": 52,
+      "bonus": 13,
+      "verify": 9
+     },
+     "timing_ms": {
+      "backbone": 1408.8,
+      "mtp": 11.9,
+      "sample": 0.8,
+      "cache": 11.9
+     }
+    }
+   ],
+   "mtp_activation": {
+    "primed": 4096,
+    "raw": "MTP path activated for uid=8 (model has mtp_forward, batch=1, primed=4096)"
+   },
+   "mtp_log_gen_s": 1.4334
+  },
+  {
+   "role": "primary",
+   "length": 8192,
+   "nonce": "dec-r1-8192-p1",
+   "max_tokens": 128,
+   "request_body_sha256": "192007cca34f7e69cb339a826def916424daa1dc504a9bc36c0e2dabbf4b12bf",
+   "planned_prompt_ids": 8192,
+   "usage": {
+    "prompt_tokens": 8192,
+    "completion_tokens": 128,
+    "total_tokens": 8320,
+    "input_tokens": 8192,
+    "output_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 8.92,
+    "total_time": 10.95,
+    "prompt_eval_duration": 8.92,
+    "generation_duration": 2.04,
+    "prompt_tokens_per_second": 918.86,
+    "generation_tokens_per_second": 62.88
+   },
+   "prompt_tokens": 8192,
+   "completion_tokens": 128,
+   "cached_tokens": 0,
+   "finish_reason": "length",
+   "client_ttft_s": 8.942595291999169,
+   "client_total_s": 10.977200332999928,
+   "n_events": 16,
+   "events": [
+    {
+     "t": 8.942595291999169,
+     "text": ":"
+    },
+    {
+     "t": 9.078208499995526,
+     "text": " list[dict] = []\n"
+    },
+    {
+     "t": 9.212438582995674,
+     "text": "            for block in content:\n                block_dict"
+    },
+    {
+     "t": 9.331275582982926,
+     "text": " = _content_block_to_dict(block"
+    },
+    {
+     "t": 9.443047291977564,
+     "text": ")\n               "
+    },
+    {
+     "t": 9.636778791988036,
+     "text": " if block_dict is None:\n"
+    },
+    {
+     "t": 9.775023666996276,
+     "text": "                    continue\n                block_type = block_dict.get"
+    },
+    {
+     "t": 9.91295945798629,
+     "text": "(\"type\", \"text\")"
+    },
+    {
+     "t": 10.050889957987238,
+     "text": "\n                if block_type == \"text\":\n"
+    },
+    {
+     "t": 10.188922125002136,
+     "text": "                    text_parts.append(block_dict.get(\"text\","
+    },
+    {
+     "t": 10.32717233299627,
+     "text": " \"\"))\n                elif block_type == \"image"
+    },
+    {
+     "t": 10.46540741698118,
+     "text": "\" and preserve_images:\n                    _append_an"
+    },
+    {
+     "t": 10.611316124995938,
+     "text": "thropic_image_part(image_parts, block_dict)"
+    },
+    {
+     "t": 10.752714832982747,
+     "text": "\n                elif block_type == \"input"
+    },
+    {
+     "t": 10.893760207982268,
+     "text": "_audio\" and preserve_images:\n                    _append"
+    },
+    {
+     "t": 10.976946416980354,
+     "text": "_anthropic_audio_part(audio_parts, block"
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": ": list[dict] = []\n            for block in content:\n                block_dict = _content_block_to_dict(block)\n                if block_dict is None:\n                    continue\n                block_type = block_dict.get(\"type\", \"text\")\n                if block_type == \"text\":\n                    text_parts.append(block_dict.get(\"text\", \"\"))\n                elif block_type == \"image\" and preserve_images:\n                    _append_anthropic_image_part(image_parts, block_dict)\n                elif block_type == \"input_audio\" and preserve_images:\n                    _append_anthropic_audio_part(audio_parts, block",
+   "output_ids_est": [
+    25,
+    1103,
+    58,
+    8217,
+    60,
+    283,
+    2958,
+    198,
+    309,
+    364,
+    2424,
+    303,
+    2144,
+    25,
+    198,
+    388,
+    2424,
+    5076,
+    283,
+    696,
+    1733,
+    6892,
+    2270,
+    5076,
+    18119,
+    8,
+    198,
+    388,
+    413,
+    2424,
+    5076,
+    369,
+    2168,
+    25,
+    198,
+    493,
+    2962,
+    198,
+    388,
+    2424,
+    1756,
+    283,
+    2424,
+    5076,
+    652,
+    437,
+    1267,
+    487,
+    328,
+    1272,
+    871,
+    198,
+    388,
+    413,
+    2424,
+    1756,
+    606,
+    328,
+    1272,
+    763,
+    198,
+    493,
+    1414,
+    32114,
+    1989,
+    18119,
+    5076,
+    652,
+    437,
+    1272,
+    487,
+    1535,
+    578,
+    198,
+    388,
+    4265,
+    2424,
+    1756,
+    606,
+    328,
+    1742,
+    1,
+    321,
+    20480,
+    12898,
+    25,
+    198,
+    493,
+    696,
+    4928,
+    11666,
+    337,
+    42481,
+    4794,
+    10182,
+    9778,
+    32114,
+    11,
+    2424,
+    5076,
+    8,
+    198,
+    388,
+    4265,
+    2424,
+    1756,
+    606,
+    328,
+    1307,
+    28718,
+    1,
+    321,
+    20480,
+    12898,
+    25,
+    198,
+    493,
+    696,
+    4928,
+    11666,
+    337,
+    42481,
+    28718,
+    10182,
+    53215,
+    32114,
+    11,
+    2424
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 126,
+    "distinct": 102,
+    "distinct_ratio": 0.8095238095238095
+   },
+   "mem_before": {
+    "gen": 79,
+    "op": "mem",
+    "active": 34305383198,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 35199507376,
+    "t": 378.60866116700345
+   },
+   "mem_after": {
+    "gen": 80,
+    "op": "mem",
+    "active": 34305383202,
+    "cache": 16,
+    "peak": 37768149814,
+    "phys_footprint": 35209305008,
+    "t": 390.5960351670219
+   },
+   "mem_settled": {
+    "gen": 82,
+    "op": "mem",
+    "active": 34305383202,
+    "cache": 16,
+    "peak": 37768149814,
+    "phys_footprint": 35200048048,
+    "t": 394.6149139170011
+   },
+   "mem_settled_15s": {
+    "gen": 83,
+    "op": "mem",
+    "active": 34305383202,
+    "cache": 16,
+    "peak": 37768149814,
+    "phys_footprint": 35200048048,
+    "t": 404.63278479201836
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791525248.8079722,
+   "prefill_tps_ttft": 916.0651614559011,
+   "tg_backend_all": 62.745098039215684,
+   "tg_backend_after_first_event": 62.25490196078431,
+   "tg_stream_after_first_event": 62.42776797008164,
+   "problems": [],
+   "valid": true,
+   "uid": 9,
+   "mtp_log": [
+    {
+     "raw": "MTP[9] finish=length tokens=128 cycles=30 tok/cycle=4.27 accept=94/95 (98.9%) depth[d1=25/26,d2=24/24,d3=23/23,d4=22/22] d0=3 copy=2/7 in 1 emits[init=2,draft=96,bonus=28,verify=2] timing[backbone=1973.9ms mtp=17.4ms sample=1.0ms cache=16.8ms]",
+     "finish": "length",
+     "tokens": 128,
+     "cycles": 30,
+     "tok_per_cycle": 4.27,
+     "accepted": 94,
+     "proposed": 95,
+     "depth": {
+      "d1": [
+       25,
+       26
+      ],
+      "d2": [
+       24,
+       24
+      ],
+      "d3": [
+       23,
+       23
+      ],
+      "d4": [
+       22,
+       22
+      ]
+     },
+     "d0": 3,
+     "copy": [
+      2,
+      7,
+      1
+     ],
+     "emits": {
+      "init": 2,
+      "draft": 96,
+      "bonus": 28,
+      "verify": 2
+     },
+     "timing_ms": {
+      "backbone": 1973.9,
+      "mtp": 17.4,
+      "sample": 1.0,
+      "cache": 16.8
+     }
+    }
+   ],
+   "mtp_activation": {
+    "primed": 8192,
+    "raw": "MTP path activated for uid=9 (model has mtp_forward, batch=1, primed=8192)"
+   },
+   "mtp_log_gen_s": 2.0091
+  }
+ ],
+ "power_start": {
+  "batt": "Now drawing from 'AC Power'\n -InternalBattery-0 (id=24641635)\t80%; AC attached; not charging present: true\n",
+  "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded\n"
+ },
+ "flags": {
+  "gen": 1,
+  "op": "flags",
+  "pid": 46629,
+  "oq_a8_module_loaded": false,
+  "mlp_patched": false,
+  "gdn_registered": false,
+  "omlx_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/__init__.py",
+  "ext_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/custom_kernels/qwen35_prefill/_ext.cpython-311-darwin.so",
+  "oq_a8_available": true
+ },
+ "mem_after_load": {
+  "gen": 3,
+  "op": "mem",
+  "active": 34305383166,
+  "cache": 336141040,
+  "peak": 0,
+  "phys_footprint": 35524483752,
+  "t": 4.7644492920080665
+ },
+ "mem_after_load_5s": {
+  "gen": 4,
+  "op": "mem",
+  "active": 34305383166,
+  "cache": 16,
+  "peak": 34305383182,
+  "phys_footprint": 35184941736,
+  "t": 9.78239362500608
+ },
+ "mem_after_warmup": {
+  "gen": 32,
+  "op": "mem",
+  "active": 34305383178,
+  "cache": 16,
+  "peak": 0,
+  "phys_footprint": 35198131096,
+  "t": 102.16554225000436
+ },
+ "power_end": {
+  "batt": "Now drawing from 'AC Power'\n -InternalBattery-0 (id=24641635)\t80%; AC attached; not charging present: true\n",
+  "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded\n"
+ },
+ "mtp_summary_lines_total": 10,
+ "mtp_activation_lines_total": 10,
+ "log_suspect_lines": [
+  "2026-10-09 14:47:24,836 - omlx.scheduler - INFO - ChunkedKVCache patch: methods already present upstream, skipped: size",
+  "2026-10-09 14:47:24,914 - omlx.server - INFO - ModelScope SDK not installed, MS downloader disabled",
+  "2026-10-09 14:47:27,317 - omlx.engine.vlm - INFO - Vision feature cache enabled (SSD: disabled)",
+  "2026-10-09 14:47:28,218 - omlx.memory_monitor - INFO - MemoryMonitor initialized (estimator-only, eviction disabled)",
+  "2026-10-09 14:47:28,228 - omlx.scheduler - INFO - oMLX cache disabled (mlx-lm BatchGenerator manages KV internally)",
+  "2026-10-09 14:47:28,229 - omlx.patches.qwen35_fa256_attention - INFO - Qwen FA-256 steel patch skipped: NAX GPU, MLX native fused SDPA is faster",
+  "2026-10-09 14:47:28,240 - omlx.patches.qwen35_ragged_decode - INFO - qwen3_5 ragged decode threadgroup fallback patch applied"
+ ],
+ "log_lines_penalty_or_depth": [
+  "2026-10-09 14:47:26,223 - omlx.utils.model_loading - INFO - Speculative backend selected for <HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models/Qwen3.8-27B-oQ8e-mtp: Lightning MTP (model_type=qwen3_5, active)"
+ ]
+}

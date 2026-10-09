@@ -1,0 +1,2027 @@
+{
+ "schema": 1,
+ "cond": "off",
+ "round": 2,
+ "tag": "m1L_off_r2_mtpoff",
+ "argv": [
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/session.py",
+  "--python",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/venv323/bin/python",
+  "--tree",
+  "<HOME>/Projects/omlx-q8a8-measured/prep",
+  "--workdir",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work",
+  "--model-dir",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models",
+  "--checkpoint",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models/Qwen3.8-27B-oQ8e-mtp",
+  "--model",
+  "Qwen3.8-27B-oQ8e-mtp",
+  "--corpus",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/corpus.json",
+  "--ref-main",
+  "models--Jundot--Qwen3.8-27B-oQ8e-mtp",
+  "--arm",
+  "m1L_off",
+  "--cond",
+  "off",
+  "--a8",
+  "off",
+  "--round",
+  "2",
+  "--out",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/final_validation/results/e2e/m1L_off_r2_mtpoff.json",
+  "--lengths",
+  "16384",
+  "32768",
+  "--repeats",
+  "2"
+ ],
+ "tree": "<HOME>/Projects/omlx-q8a8-measured/prep",
+ "tree_git_head": "7a82157d865f3f628926298bdee463a4b680f95f",
+ "tree_git_status": "",
+ "tree_git_branch": "prep/q8a8-zero-copy-pr4350",
+ "model_blob_shard1": "<HOME>/.cache/huggingface/hub/models--Jundot--Qwen3.8-27B-oQ8e-mtp/blobs/9da9254852c5dd0c677c4f60ab791cf6995e7e3bebbe7e5e68a14204f36645e4",
+ "model_ref_main": "c99e5aad8a478f71c10b9a3dde6709158b690da6",
+ "versions": {
+  "omlx_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/__init__.py",
+  "python": "3.11.15",
+  "mlx": "0.32.3",
+  "mlx_lm": "0.31.4.dev132+g94cdcae13",
+  "mlx_vlm": "0.7.4",
+  "tokenizers": "0.23.2"
+ },
+ "settings": {
+  "version": 1.0,
+  "server": {
+   "host": "127.0.0.1",
+   "log_level": "info"
+  },
+  "model": {
+   "model_dir": "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models",
+   "model_fallback": false
+  },
+  "cache": {
+   "enabled": false
+  },
+  "scheduler": {
+   "max_concurrent_requests": 1,
+   "chunked_prefill": true
+  },
+  "sampling": {
+   "temperature": 0.0,
+   "max_tokens": 4096
+  },
+  "auth": {
+   "api_key": null,
+   "skip_api_key_verification": true
+  },
+  "logging": {
+   "log_dir": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/sess_m1L_off_r2_mtpoff/logs",
+   "retention_days": 1
+  },
+  "memory": {
+   "prefill_memory_guard": false
+  },
+  "huggingface": {
+   "hf_cache_enabled": false
+  }
+ },
+ "model_settings": {
+  "qwen35_oq_a8_enabled": false,
+  "qwen35_oq_a8_min_tokens": 128,
+  "mtp_enabled": false
+ },
+ "generation_config": {
+  "bos_token_id": 248044,
+  "do_sample": true,
+  "eos_token_id": [
+   248046,
+   248044
+  ],
+  "pad_token_id": 248044,
+  "temperature": 1.0,
+  "top_k": 20,
+  "top_p": 0.95
+ },
+ "env": {
+  "PYTHONPATH": "<HOME>/Projects/omlx-q8a8-measured/prep:<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/hook",
+  "HOME": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/sess_m1L_off_r2_mtpoff/home",
+  "OMLX_DEC_CTL": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/sess_m1L_off_r2_mtpoff/ctl"
+ },
+ "host": {
+  "chip": "Apple M5 Max",
+  "hw_model": "Mac17,6",
+  "memory_gib": 128.0,
+  "macos": "27.0.1"
+ },
+ "requests": [
+  {
+   "role": "warmup",
+   "length": 16384,
+   "nonce": "dec-warm-2-16384",
+   "max_tokens": 128,
+   "request_body_sha256": "c64f31d2b69005d409ce309453267301a869a9adcbfc04855cef1bb036c8c678",
+   "planned_prompt_ids": 16384,
+   "usage": {
+    "prompt_tokens": 16384,
+    "completion_tokens": 128,
+    "total_tokens": 16512,
+    "input_tokens": 16384,
+    "output_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 19.04,
+    "total_time": 26.01,
+    "prompt_eval_duration": 19.04,
+    "generation_duration": 6.97,
+    "prompt_tokens_per_second": 860.71,
+    "generation_tokens_per_second": 18.35
+   },
+   "prompt_tokens": 16384,
+   "completion_tokens": 128,
+   "cached_tokens": 0,
+   "finish_reason": "length",
+   "client_ttft_s": 19.083291791990632,
+   "client_total_s": 26.054767749999883,
+   "n_events": 44,
+   "events": [
+    {
+     "t": 19.083291791990632,
+     "text": "#"
+    },
+    {
+     "t": 19.24456041699159,
+     "text": " SPDX-License-Identifier"
+    },
+    {
+     "t": 19.4088147500006,
+     "text": ": Apache-"
+    },
+    {
+     "t": 19.57332112500444,
+     "text": "2.0"
+    },
+    {
+     "t": 19.737946709006792,
+     "text": "\n\"\"\"H"
+    },
+    {
+     "t": 19.90215116701438,
+     "text": "uggingFace model"
+    },
+    {
+     "t": 20.066627791995415,
+     "text": " uploader for o"
+    },
+    {
+     "t": 20.230815000017174,
+     "text": "MLX admin"
+    },
+    {
+     "t": 20.395211958995787,
+     "text": " panel.\n\n"
+    },
+    {
+     "t": 20.559639250015607,
+     "text": "Uploads a"
+    },
+    {
+     "t": 20.724518083996372,
+     "text": " local model directory"
+    },
+    {
+     "t": 20.88883833400905,
+     "text": " to Hugging"
+    },
+    {
+     "t": 21.05350974999601,
+     "text": "Face using h"
+    },
+    {
+     "t": 21.218077083991375,
+     "text": "uggingface_hub"
+    },
+    {
+     "t": 21.382191500015324,
+     "text": "'s\nupload"
+    },
+    {
+     "t": 21.54689966700971,
+     "text": "_folder. Progress"
+    },
+    {
+     "t": 21.71126816701144,
+     "text": " is tracked by"
+    },
+    {
+     "t": 21.875737875001505,
+     "text": " polling the local"
+    },
+    {
+     "t": 22.040239249996375,
+     "text": " directory's\n"
+    },
+    {
+     "t": 22.204863666993333,
+     "text": "file sizes and"
+    },
+    {
+     "t": 22.369323958992027,
+     "text": " comparing against the"
+    },
+    {
+     "t": 22.534078416996635,
+     "text": " remote repo's"
+    },
+    {
+     "t": 22.698985916998936,
+     "text": " file sizes."
+    },
+    {
+     "t": 22.863130250014365,
+     "text": "\n\"\"\"\n\n"
+    },
+    {
+     "t": 23.02799687499646,
+     "text": "import asyncio\n"
+    },
+    {
+     "t": 23.19279041700065,
+     "text": "import enum\n"
+    },
+    {
+     "t": 23.357725542009575,
+     "text": "import logging\n"
+    },
+    {
+     "t": 23.522313041990856,
+     "text": "import os\n"
+    },
+    {
+     "t": 23.686855792009737,
+     "text": "import time\n"
+    },
+    {
+     "t": 23.8516139590065,
+     "text": "import uuid\n"
+    },
+    {
+     "t": 24.016489292000188,
+     "text": "from dataclasses"
+    },
+    {
+     "t": 24.181382917013252,
+     "text": " import dataclass"
+    },
+    {
+     "t": 24.345653083990328,
+     "text": ", field\n"
+    },
+    {
+     "t": 24.510351375007303,
+     "text": "from pathlib import"
+    },
+    {
+     "t": 24.675314209016506,
+     "text": " Path\nfrom"
+    },
+    {
+     "t": 24.839506209013052,
+     "text": " typing import Optional"
+    },
+    {
+     "t": 25.004078666999703,
+     "text": "\n\nfrom h"
+    },
+    {
+     "t": 25.1688577090099,
+     "text": "uggingface_hub"
+    },
+    {
+     "t": 25.33369716699235,
+     "text": " import Hf"
+    },
+    {
+     "t": 25.499523917009356,
+     "text": "Api, upload"
+    },
+    {
+     "t": 25.664400584006216,
+     "text": "_folder\nfrom"
+    },
+    {
+     "t": 25.829310208995594,
+     "text": " huggingface"
+    },
+    {
+     "t": 25.994271709001623,
+     "text": "_hub.utils import"
+    },
+    {
+     "t": 26.054529334011022,
+     "text": " ("
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "# SPDX-License-Identifier: Apache-2.0\n\"\"\"HuggingFace model uploader for oMLX admin panel.\n\nUploads a local model directory to HuggingFace using huggingface_hub's\nupload_folder. Progress is tracked by polling the local directory's\nfile sizes and comparing against the remote repo's file sizes.\n\"\"\"\n\nimport asyncio\nimport enum\nimport logging\nimport os\nimport time\nimport uuid\nfrom dataclasses import dataclass, field\nfrom pathlib import Path\nfrom typing import Optional\n\nfrom huggingface_hub import HfApi, upload_folder\nfrom huggingface_hub.utils import (",
+   "output_ids_est": [
+    2,
+    34313,
+    35274,
+    35555,
+    25,
+    8644,
+    12,
+    17,
+    13,
+    15,
+    198,
+    12237,
+    39,
+    34098,
+    15802,
+    1558,
+    79417,
+    364,
+    296,
+    2581,
+    55,
+    3853,
+    6729,
+    13,
+    271,
+    13448,
+    82,
+    264,
+    2136,
+    1558,
+    6025,
+    310,
+    462,
+    34098,
+    15802,
+    1608,
+    304,
+    34098,
+    1509,
+    90751,
+    579,
+    198,
+    5928,
+    14824,
+    13,
+    15561,
+    369,
+    31961,
+    539,
+    29643,
+    279,
+    2136,
+    6025,
+    579,
+    198,
+    1152,
+    11930,
+    321,
+    25456,
+    2272,
+    279,
+    8434,
+    15400,
+    579,
+    999,
+    11930,
+    13,
+    198,
+    12237,
+    271,
+    464,
+    43424,
+    198,
+    464,
+    7376,
+    198,
+    464,
+    8132,
+    198,
+    464,
+    2556,
+    198,
+    464,
+    854,
+    198,
+    464,
+    15567,
+    198,
+    1445,
+    795,
+    8588,
+    1120,
+    795,
+    1005,
+    11,
+    2002,
+    198,
+    1445,
+    51372,
+    1120,
+    7683,
+    198,
+    1445,
+    18904,
+    1120,
+    11906,
+    271,
+    1445,
+    304,
+    34098,
+    1509,
+    90751,
+    1120,
+    462,
+    69,
+    6358,
+    11,
+    7878,
+    14824,
+    198,
+    1445,
+    304,
+    34098,
+    1509,
+    90751,
+    8150,
+    1120,
+    318
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 126,
+    "distinct": 121,
+    "distinct_ratio": 0.9603174603174603
+   },
+   "mem_before": {
+    "gen": 6,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30875277848,
+    "t": 14.815701792016625
+   },
+   "mem_after": {
+    "gen": 7,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30886435376,
+    "t": 41.8886902500235
+   },
+   "mem_settled": {
+    "gen": 9,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30883469872,
+    "t": 45.90743150000344
+   },
+   "mem_settled_15s": {
+    "gen": 10,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30883469872,
+    "t": 55.925667667004745
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791524291.525978,
+   "prefill_tps_ttft": 858.5520872702087,
+   "tg_backend_all": 18.36441893830703,
+   "tg_backend_after_first_event": 18.220946915351508,
+   "tg_stream_after_first_event": 18.21771231212315,
+   "problems": [],
+   "valid": true,
+   "uid": 1,
+   "mtp_log": [],
+   "mtp_activation": null
+  },
+  {
+   "role": "warmup",
+   "length": 32768,
+   "nonce": "dec-warm-2-32768",
+   "max_tokens": 128,
+   "request_body_sha256": "a9a18c91f13b62a5243f87ac744675d10b26457e8a144998ccc18b3513034f2d",
+   "planned_prompt_ids": 32768,
+   "usage": {
+    "prompt_tokens": 32768,
+    "completion_tokens": 0,
+    "total_tokens": 32768,
+    "input_tokens": 32768,
+    "output_tokens": 0,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 41.58,
+    "total_time": 41.58,
+    "prompt_eval_duration": 41.58,
+    "generation_duration": 41.58,
+    "prompt_tokens_per_second": 788.03,
+    "generation_tokens_per_second": 0.0
+   },
+   "prompt_tokens": 32768,
+   "completion_tokens": 0,
+   "cached_tokens": 0,
+   "finish_reason": "stop",
+   "client_ttft_s": null,
+   "client_total_s": 41.65322262499831,
+   "n_events": 0,
+   "events": [],
+   "first_event_tokens_est": 0,
+   "text": "",
+   "output_ids_est": [],
+   "ngram3": {
+    "n": 3,
+    "total": 0,
+    "distinct": 0,
+    "distinct_ratio": null
+   },
+   "mem_before": {
+    "gen": 15,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30883486256,
+    "t": 61.11471012502443
+   },
+   "mem_after": {
+    "gen": 16,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30897396272,
+    "t": 103.78614737500902
+   },
+   "mem_settled": {
+    "gen": 18,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30894512688,
+    "t": 107.81010150001384
+   },
+   "mem_settled_15s": {
+    "gen": 19,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30894512688,
+    "t": 117.82825929200044
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791524353.414504,
+   "problems": [
+    "completion_tokens=0",
+    "finish_reason=stop"
+   ],
+   "valid": false,
+   "uid": 2,
+   "mtp_log": [],
+   "mtp_activation": null
+  },
+  {
+   "role": "primary",
+   "length": 16384,
+   "nonce": "dec-r2-16384-p0",
+   "max_tokens": 128,
+   "request_body_sha256": "a6aa580f2e5bb87a7196d2f90107103182d7ae6a8d855e6e81214621232035b8",
+   "planned_prompt_ids": 16384,
+   "usage": {
+    "prompt_tokens": 16384,
+    "completion_tokens": 128,
+    "total_tokens": 16512,
+    "input_tokens": 16384,
+    "output_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 18.82,
+    "total_time": 25.79,
+    "prompt_eval_duration": 18.82,
+    "generation_duration": 6.97,
+    "prompt_tokens_per_second": 870.69,
+    "generation_tokens_per_second": 18.36
+   },
+   "prompt_tokens": 16384,
+   "completion_tokens": 128,
+   "cached_tokens": 0,
+   "finish_reason": "length",
+   "client_ttft_s": 18.86205429097754,
+   "client_total_s": 25.830670458002714,
+   "n_events": 44,
+   "events": [
+    {
+     "t": 18.86205429097754,
+     "text": "=self"
+    },
+    {
+     "t": 19.025752290996024,
+     "text": "._connect_timeout"
+    },
+    {
+     "t": 19.19014324998716,
+     "text": ",\n       "
+    },
+    {
+     "t": 19.354071082983864,
+     "text": " )\n       "
+    },
+    {
+     "t": 19.518812624999555,
+     "text": " self._stream"
+    },
+    {
+     "t": 19.683017499977723,
+     "text": "_proxy = proxy"
+    },
+    {
+     "t": 19.847189457999775,
+     "text": "\n        stream"
+    },
+    {
+     "t": 20.0116469579807,
+     "text": " = proxy.stream"
+    },
+    {
+     "t": 20.176079750002827,
+     "text": "\n        self"
+    },
+    {
+     "t": 20.340514332987368,
+     "text": "._configure(stream"
+    },
+    {
+     "t": 20.504849374992773,
+     "text": ")\n       "
+    },
+    {
+     "t": 20.669466833001934,
+     "text": " self._authenticate"
+    },
+    {
+     "t": 20.833775415987475,
+     "text": "_worker_stream(stream"
+    },
+    {
+     "t": 20.998179207992507,
+     "text": ")\n       "
+    },
+    {
+     "t": 21.162576874980005,
+     "text": " if time.mon"
+    },
+    {
+     "t": 21.32703904097434,
+     "text": "otonic()"
+    },
+    {
+     "t": 21.491712999995798,
+     "text": " > deadline:"
+    },
+    {
+     "t": 21.65588024997851,
+     "text": "\n            raise"
+    },
+    {
+     "t": 21.8203464159742,
+     "text": " TimeoutError(\""
+    },
+    {
+     "t": 21.98460649998742,
+     "text": "rank-control connection"
+    },
+    {
+     "t": 22.1490864160005,
+     "text": " timed out\")"
+    },
+    {
+     "t": 22.313755540992133,
+     "text": "\n\n    def"
+    },
+    {
+     "t": 22.47805412497837,
+     "text": " _connect_direct"
+    },
+    {
+     "t": 22.642452250001952,
+     "text": "(self, *,"
+    },
+    {
+     "t": 22.80667741599609,
+     "text": " deadline: float"
+    },
+    {
+     "t": 22.971032874978846,
+     "text": ") -> None"
+    },
+    {
+     "t": 23.135513290995732,
+     "text": ":\n       "
+    },
+    {
+     "t": 23.299975332978647,
+     "text": " logger.info("
+    },
+    {
+     "t": 23.464680999983102,
+     "text": "\n            \"["
+    },
+    {
+     "t": 23.629100624995772,
+     "text": "ControlPlane R"
+    },
+    {
+     "t": 23.79345241599367,
+     "text": "%d] transport"
+    },
+    {
+     "t": 23.957840832998045,
+     "text": "=direct ->"
+    },
+    {
+     "t": 24.12318475000211,
+     "text": " %s:%"
+    },
+    {
+     "t": 24.287539290991845,
+     "text": "d\",\n"
+    },
+    {
+     "t": 24.452114374988014,
+     "text": "            self.rank"
+    },
+    {
+     "t": 24.616442790982546,
+     "text": ",\n           "
+    },
+    {
+     "t": 24.78081391597516,
+     "text": " self.host,"
+    },
+    {
+     "t": 24.945139999996172,
+     "text": "\n            self"
+    },
+    {
+     "t": 25.109697540989146,
+     "text": ".port,\n"
+    },
+    {
+     "t": 25.274212207994424,
+     "text": "        )\n"
+    },
+    {
+     "t": 25.438955915975384,
+     "text": "        stream ="
+    },
+    {
+     "t": 25.603841332980664,
+     "text": " socket.create_connection"
+    },
+    {
+     "t": 25.770481082989136,
+     "text": "(\n           "
+    },
+    {
+     "t": 25.830411499977345,
+     "text": " ("
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "=self._connect_timeout,\n        )\n        self._stream_proxy = proxy\n        stream = proxy.stream\n        self._configure(stream)\n        self._authenticate_worker_stream(stream)\n        if time.monotonic() > deadline:\n            raise TimeoutError(\"rank-control connection timed out\")\n\n    def _connect_direct(self, *, deadline: float) -> None:\n        logger.info(\n            \"[ControlPlane R%d] transport=direct -> %s:%d\",\n            self.rank,\n            self.host,\n            self.port,\n        )\n        stream = socket.create_connection(\n            (",
+   "output_ids_est": [
+    7424,
+    1385,
+    6257,
+    19912,
+    11,
+    198,
+    285,
+    847,
+    198,
+    285,
+    638,
+    1385,
+    3892,
+    28742,
+    283,
+    12906,
+    198,
+    285,
+    4129,
+    283,
+    12906,
+    14525,
+    198,
+    285,
+    638,
+    1385,
+    20361,
+    19949,
+    8,
+    198,
+    285,
+    638,
+    1385,
+    48375,
+    39048,
+    12309,
+    19949,
+    8,
+    198,
+    285,
+    413,
+    854,
+    50304,
+    349,
+    13609,
+    363,
+    835,
+    20771,
+    25,
+    198,
+    309,
+    4673,
+    38075,
+    1401,
+    437,
+    12748,
+    4317,
+    3511,
+    24382,
+    680,
+    871,
+    271,
+    262,
+    687,
+    696,
+    6257,
+    31781,
+    1153,
+    11,
+    11439,
+    20771,
+    25,
+    2153,
+    8,
+    1411,
+    2168,
+    25,
+    198,
+    285,
+    5741,
+    5223,
+    7,
+    198,
+    309,
+    10232,
+    3168,
+    33425,
+    423,
+    14411,
+    60,
+    7318,
+    28,
+    19194,
+    1411,
+    984,
+    82,
+    7297,
+    67,
+    487,
+    198,
+    309,
+    638,
+    43101,
+    11,
+    198,
+    309,
+    638,
+    17307,
+    11,
+    198,
+    309,
+    638,
+    14178,
+    11,
+    198,
+    285,
+    847,
+    198,
+    285,
+    4129,
+    283,
+    7335,
+    2440,
+    15399,
+    7,
+    198,
+    309,
+    318
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 126,
+    "distinct": 110,
+    "distinct_ratio": 0.873015873015873
+   },
+   "mem_before": {
+    "gen": 25,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30886124080,
+    "t": 180.02232337501482
+   },
+   "mem_after": {
+    "gen": 26,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30898084400,
+    "t": 206.86991125001805
+   },
+   "mem_settled": {
+    "gen": 28,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30895118896,
+    "t": 210.88646241702372
+   },
+   "mem_settled_15s": {
+    "gen": 29,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30895118896,
+    "t": 220.8990271250077
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791524456.490904,
+   "prefill_tps_ttft": 868.6222479932692,
+   "tg_backend_all": 18.36441893830703,
+   "tg_backend_after_first_event": 18.220946915351508,
+   "tg_stream_after_first_event": 18.225242505647724,
+   "problems": [],
+   "valid": true,
+   "uid": 3,
+   "mtp_log": [],
+   "mtp_activation": null
+  },
+  {
+   "role": "primary",
+   "length": 32768,
+   "nonce": "dec-r2-32768-p0",
+   "max_tokens": 128,
+   "request_body_sha256": "ef6db8cff4f509ee907da6408bc94c028cdada0c4c643259c7ef53b28764e06b",
+   "planned_prompt_ids": 32768,
+   "usage": {
+    "prompt_tokens": 32768,
+    "completion_tokens": 13,
+    "total_tokens": 32781,
+    "input_tokens": 32768,
+    "output_tokens": 13,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 43.3,
+    "total_time": 44.05,
+    "prompt_eval_duration": 43.3,
+    "generation_duration": 0.75,
+    "prompt_tokens_per_second": 756.79,
+    "generation_tokens_per_second": 17.3
+   },
+   "prompt_tokens": 32768,
+   "completion_tokens": 13,
+   "cached_tokens": 0,
+   "finish_reason": "stop",
+   "client_ttft_s": 43.36859625001671,
+   "client_total_s": 44.11828633400728,
+   "n_events": 5,
+   "events": [
+    {
+     "t": 43.36859625001671,
+     "text": "ails"
+    },
+    {
+     "t": 43.53941979201045,
+     "text": " shorter than a"
+    },
+    {
+     "t": 43.71132720899186,
+     "text": " block that cannot"
+    },
+    {
+     "t": 43.883258374989964,
+     "text": " be stored as"
+    },
+    {
+     "t": 44.05555175000336,
+     "text": " blocks.\n"
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "ails shorter than a block that cannot be stored as blocks.\n",
+   "output_ids_est": [
+    6015,
+    22602,
+    1056,
+    264,
+    2424,
+    421,
+    4021,
+    381,
+    9476,
+    430,
+    9714,
+    13,
+    198
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 11,
+    "distinct": 11,
+    "distinct_ratio": 1.0
+   },
+   "mem_before": {
+    "gen": 34,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30886730288,
+    "t": 305.10060175001854
+   },
+   "mem_after": {
+    "gen": 35,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30899673648,
+    "t": 350.2350639590004
+   },
+   "mem_settled": {
+    "gen": 37,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30896773680,
+    "t": 354.2591771670268
+   },
+   "mem_settled_15s": {
+    "gen": 38,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30896773680,
+    "t": 364.2750742089993
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791524599.862505,
+   "prefill_tps_ttft": 755.5697632244063,
+   "tg_backend_all": 17.333333333333332,
+   "tg_backend_after_first_event": 16.0,
+   "tg_stream_after_first_event": 17.46838041217104,
+   "problems": [
+    "completion_tokens=13",
+    "finish_reason=stop"
+   ],
+   "valid": false,
+   "uid": 4,
+   "mtp_log": [],
+   "mtp_activation": null
+  },
+  {
+   "role": "primary",
+   "length": 16384,
+   "nonce": "dec-r2-16384-p1",
+   "max_tokens": 128,
+   "request_body_sha256": "005ad70b2d78c03899978465015c4718e3fd34bbab849c67a0a64181ac44c8dd",
+   "planned_prompt_ids": 16384,
+   "usage": {
+    "prompt_tokens": 16384,
+    "completion_tokens": 128,
+    "total_tokens": 16512,
+    "input_tokens": 16384,
+    "output_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 18.89,
+    "total_time": 25.86,
+    "prompt_eval_duration": 18.89,
+    "generation_duration": 6.97,
+    "prompt_tokens_per_second": 867.41,
+    "generation_tokens_per_second": 18.37
+   },
+   "prompt_tokens": 16384,
+   "completion_tokens": 128,
+   "cached_tokens": 0,
+   "finish_reason": "length",
+   "client_ttft_s": 18.932924082997488,
+   "client_total_s": 25.89852766599506,
+   "n_events": 44,
+   "events": [
+    {
+     "t": 18.932924082997488,
+     "text": "WN"
+    },
+    {
+     "t": 19.096436583000468,
+     "text": "ED_BYTES_AUTH"
+    },
+    {
+     "t": 19.26075704098912,
+     "text": "_DOMAIN = b"
+    },
+    {
+     "t": 19.424888582987478,
+     "text": "\"omlx"
+    },
+    {
+     "t": 19.589169415994547,
+     "text": "-rank-control"
+    },
+    {
+     "t": 19.753781957988394,
+     "text": "-owned-bytes"
+    },
+    {
+     "t": 19.918277040997054,
+     "text": "-v1\""
+    },
+    {
+     "t": 20.08298708300572,
+     "text": "\n_BARRIER"
+    },
+    {
+     "t": 20.247094749996904,
+     "text": "_AUTH_DOMAIN ="
+    },
+    {
+     "t": 20.411352124996483,
+     "text": " b\"om"
+    },
+    {
+     "t": 20.5757791660144,
+     "text": "lx-rank"
+    },
+    {
+     "t": 20.740395500004524,
+     "text": "-control-barrier"
+    },
+    {
+     "t": 20.904915499995695,
+     "text": "-v1\""
+    },
+    {
+     "t": 21.06923850000021,
+     "text": "\n_BARRIER"
+    },
+    {
+     "t": 21.23395987501135,
+     "text": "_TIMEOUT_SECONDS ="
+    },
+    {
+     "t": 21.398464208003134,
+     "text": " 30"
+    },
+    {
+     "t": 21.563169458007906,
+     "text": "0.0"
+    },
+    {
+     "t": 21.72751004100428,
+     "text": "\n_BARRIER"
+    },
+    {
+     "t": 21.89208870800212,
+     "text": "_POLL_SECONDS ="
+    },
+    {
+     "t": 22.056679625005927,
+     "text": " 0."
+    },
+    {
+     "t": 22.22091224999167,
+     "text": "05\n"
+    },
+    {
+     "t": 22.385354458005168,
+     "text": "_BARRIER_MAX"
+    },
+    {
+     "t": 22.54924670798937,
+     "text": "_WAIT_SECONDS ="
+    },
+    {
+     "t": 22.71359995799139,
+     "text": " 18"
+    },
+    {
+     "t": 22.878082125011133,
+     "text": "00."
+    },
+    {
+     "t": 23.042386040993733,
+     "text": "0\n_B"
+    },
+    {
+     "t": 23.206750457989983,
+     "text": "ARRIER_MAX_AT"
+    },
+    {
+     "t": 23.37130770800286,
+     "text": "TEMPTS ="
+    },
+    {
+     "t": 23.535839707998093,
+     "text": " 10"
+    },
+    {
+     "t": 23.700357041001553,
+     "text": "\n_BARRIER"
+    },
+    {
+     "t": 23.86484995801584,
+     "text": "_MAX_BYTES ="
+    },
+    {
+     "t": 24.02935245799017,
+     "text": " 16"
+    },
+    {
+     "t": 24.19386666599894,
+     "text": " * 1"
+    },
+    {
+     "t": 24.35825862499769,
+     "text": "024"
+    },
+    {
+     "t": 24.522713707992807,
+     "text": " * 1"
+    },
+    {
+     "t": 24.68719308299478,
+     "text": "024"
+    },
+    {
+     "t": 24.851370666001458,
+     "text": "\n_BARRIER"
+    },
+    {
+     "t": 25.015772290993482,
+     "text": "_MAX_PARTS"
+    },
+    {
+     "t": 25.180506166012492,
+     "text": " = 1"
+    },
+    {
+     "t": 25.344874791015172,
+     "text": "024"
+    },
+    {
+     "t": 25.509332207991974,
+     "text": "\n_BARRIER"
+    },
+    {
+     "t": 25.67370874999324,
+     "text": "_MAX_PART_BYTES"
+    },
+    {
+     "t": 25.838204083003802,
+     "text": " = 1"
+    },
+    {
+     "t": 25.89827599999262,
+     "text": "0"
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "WNED_BYTES_AUTH_DOMAIN = b\"omlx-rank-control-owned-bytes-v1\"\n_BARRIER_AUTH_DOMAIN = b\"omlx-rank-control-barrier-v1\"\n_BARRIER_TIMEOUT_SECONDS = 300.0\n_BARRIER_POLL_SECONDS = 0.05\n_BARRIER_MAX_WAIT_SECONDS = 1800.0\n_BARRIER_MAX_ATTEMPTS = 10\n_BARRIER_MAX_BYTES = 16 * 1024 * 1024\n_BARRIER_MAX_PARTS = 1024\n_BARRIER_MAX_PART_BYTES = 10",
+   "output_ids_est": [
+    35695,
+    1425,
+    39361,
+    21971,
+    32612,
+    283,
+    292,
+    1,
+    315,
+    30413,
+    3667,
+    1140,
+    4317,
+    27760,
+    13909,
+    2262,
+    8015,
+    16,
+    1,
+    198,
+    1609,
+    79854,
+    21971,
+    32612,
+    283,
+    292,
+    1,
+    315,
+    30413,
+    3667,
+    1140,
+    4317,
+    15309,
+    7026,
+    8015,
+    16,
+    1,
+    198,
+    1609,
+    79854,
+    22684,
+    72783,
+    283,
+    220,
+    18,
+    15,
+    15,
+    13,
+    15,
+    198,
+    1609,
+    79854,
+    74193,
+    72783,
+    283,
+    220,
+    15,
+    13,
+    15,
+    20,
+    198,
+    1609,
+    79854,
+    6592,
+    31034,
+    72783,
+    283,
+    220,
+    16,
+    23,
+    15,
+    15,
+    13,
+    15,
+    198,
+    1609,
+    79854,
+    6592,
+    8403,
+    20376,
+    71188,
+    283,
+    220,
+    16,
+    15,
+    198,
+    1609,
+    79854,
+    6592,
+    39361,
+    283,
+    220,
+    16,
+    21,
+    348,
+    220,
+    16,
+    15,
+    17,
+    19,
+    348,
+    220,
+    16,
+    15,
+    17,
+    19,
+    198,
+    1609,
+    79854,
+    6592,
+    27360,
+    50,
+    283,
+    220,
+    16,
+    15,
+    17,
+    19,
+    198,
+    1609,
+    79854,
+    6592,
+    27360,
+    39361,
+    283,
+    220,
+    16,
+    15
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 126,
+    "distinct": 79,
+    "distinct_ratio": 0.626984126984127
+   },
+   "mem_before": {
+    "gen": 43,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30896773680,
+    "t": 416.4403925840161
+   },
+   "mem_after": {
+    "gen": 44,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30902606408,
+    "t": 443.3570301250147
+   },
+   "mem_settled": {
+    "gen": 46,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30899640904,
+    "t": 447.382795750018
+   },
+   "mem_settled_15s": {
+    "gen": 47,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33946106650,
+    "phys_footprint": 30899640904,
+    "t": 457.3943072090042
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791524692.98293,
+   "prefill_tps_ttft": 865.3708179558739,
+   "tg_backend_all": 18.36441893830703,
+   "tg_backend_after_first_event": 18.220946915351508,
+   "tg_stream_after_first_event": 18.2331060244244,
+   "problems": [],
+   "valid": true,
+   "uid": 5,
+   "mtp_log": [],
+   "mtp_activation": null
+  },
+  {
+   "role": "primary",
+   "length": 32768,
+   "nonce": "dec-r2-32768-p1",
+   "max_tokens": 128,
+   "request_body_sha256": "536c1887b2c87b462cc18b6511c5f0db474686046f63697f9de02fd05b59ed4a",
+   "planned_prompt_ids": 32768,
+   "usage": {
+    "prompt_tokens": 32768,
+    "completion_tokens": 128,
+    "total_tokens": 32896,
+    "input_tokens": 32768,
+    "output_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "time_to_first_token": 43.15,
+    "total_time": 50.49,
+    "prompt_eval_duration": 43.15,
+    "generation_duration": 7.34,
+    "prompt_tokens_per_second": 759.38,
+    "generation_tokens_per_second": 17.45
+   },
+   "prompt_tokens": 32768,
+   "completion_tokens": 128,
+   "cached_tokens": 0,
+   "finish_reason": "length",
+   "client_ttft_s": 43.22090829201625,
+   "client_total_s": 50.555362417013384,
+   "n_events": 44,
+   "events": [
+    {
+     "t": 43.22090829201625,
+     "text": "def"
+    },
+    {
+     "t": 43.40030916701653,
+     "text": " _scan()"
+    },
+    {
+     "t": 43.5699155840266,
+     "text": " -> list["
+    },
+    {
+     "t": 43.74188791701454,
+     "text": "dict]:\n"
+    },
+    {
+     "t": 43.9139081670146,
+     "text": "            models ="
+    },
+    {
+     "t": 44.08583591700881,
+     "text": " []\n           "
+    },
+    {
+     "t": 44.257891709014075,
+     "text": " seen: set"
+    },
+    {
+     "t": 44.43013287501526,
+     "text": "[str] ="
+    },
+    {
+     "t": 44.602593292016536,
+     "text": " set()\n\n"
+    },
+    {
+     "t": 44.77534233400365,
+     "text": "            for model"
+    },
+    {
+     "t": 44.94798154200544,
+     "text": "_dir in self"
+    },
+    {
+     "t": 45.1205116250203,
+     "text": "._model_dirs"
+    },
+    {
+     "t": 45.293595584022114,
+     "text": ":\n               "
+    },
+    {
+     "t": 45.46590466701309,
+     "text": " if not model"
+    },
+    {
+     "t": 45.638530084019294,
+     "text": "_dir.exists():"
+    },
+    {
+     "t": 45.811240250011906,
+     "text": "\n                    continue"
+    },
+    {
+     "t": 45.98386216702056,
+     "text": "\n                for"
+    },
+    {
+     "t": 46.15704733401071,
+     "text": " subdir in sorted"
+    },
+    {
+     "t": 46.329270084010204,
+     "text": "(model_dir.iter"
+    },
+    {
+     "t": 46.501702417008346,
+     "text": "dir()):\n"
+    },
+    {
+     "t": 46.674494000006234,
+     "text": "                    if not"
+    },
+    {
+     "t": 46.84742500001448,
+     "text": " subdir.is_dir"
+    },
+    {
+     "t": 47.02027758400072,
+     "text": "():\n                       "
+    },
+    {
+     "t": 47.19320895901183,
+     "text": " continue\n                   "
+    },
+    {
+     "t": 47.36640479200287,
+     "text": " candidates = []"
+    },
+    {
+     "t": 47.540298834006535,
+     "text": "\n                    if"
+    },
+    {
+     "t": 47.71364933400764,
+     "text": " (subdir"
+    },
+    {
+     "t": 47.88700508401962,
+     "text": " / \"config"
+    },
+    {
+     "t": 48.06010625002091,
+     "text": ".json\").exists"
+    },
+    {
+     "t": 48.23375362501247,
+     "text": "():\n                       "
+    },
+    {
+     "t": 48.40831458402681,
+     "text": " candidates.append(sub"
+    },
+    {
+     "t": 48.58143758401275,
+     "text": "dir)\n"
+    },
+    {
+     "t": 48.75502175002475,
+     "text": "                    else:"
+    },
+    {
+     "t": 48.92850454201107,
+     "text": "\n                        for"
+    },
+    {
+     "t": 49.102162084018346,
+     "text": " child in sorted"
+    },
+    {
+     "t": 49.27575566701125,
+     "text": "(subdir.iter"
+    },
+    {
+     "t": 49.448981917026686,
+     "text": "dir()):\n"
+    },
+    {
+     "t": 49.62886279201484,
+     "text": "                            if child"
+    },
+    {
+     "t": 49.79871395902592,
+     "text": ".is_dir()"
+    },
+    {
+     "t": 49.97198733402183,
+     "text": " and (child"
+    },
+    {
+     "t": 50.14549133402761,
+     "text": " / \"config"
+    },
+    {
+     "t": 50.31928350002272,
+     "text": ".json\").exists"
+    },
+    {
+     "t": 50.492521709005814,
+     "text": "():\n                               "
+    },
+    {
+     "t": 50.55511612500413,
+     "text": " candidates"
+    }
+   ],
+   "first_event_tokens_est": 1,
+   "text": "def _scan() -> list[dict]:\n            models = []\n            seen: set[str] = set()\n\n            for model_dir in self._model_dirs:\n                if not model_dir.exists():\n                    continue\n                for subdir in sorted(model_dir.iterdir()):\n                    if not subdir.is_dir():\n                        continue\n                    candidates = []\n                    if (subdir / \"config.json\").exists():\n                        candidates.append(subdir)\n                    else:\n                        for child in sorted(subdir.iterdir()):\n                            if child.is_dir() and (child / \"config.json\").exists():\n                                candidates",
+   "output_ids_est": [
+    727,
+    696,
+    15924,
+    363,
+    1411,
+    1103,
+    58,
+    8217,
+    5491,
+    198,
+    309,
+    3983,
+    283,
+    2958,
+    198,
+    309,
+    3753,
+    25,
+    716,
+    16793,
+    60,
+    283,
+    716,
+    363,
+    271,
+    309,
+    364,
+    1558,
+    4193,
+    303,
+    638,
+    1385,
+    2448,
+    43375,
+    25,
+    198,
+    388,
+    413,
+    524,
+    1558,
+    4193,
+    11733,
+    4406,
+    198,
+    493,
+    2962,
+    198,
+    388,
+    364,
+    94640,
+    303,
+    10300,
+    7392,
+    4193,
+    18879,
+    3614,
+    75458,
+    198,
+    493,
+    413,
+    524,
+    94640,
+    2011,
+    4193,
+    4406,
+    198,
+    646,
+    2962,
+    198,
+    493,
+    10853,
+    283,
+    2958,
+    198,
+    493,
+    413,
+    318,
+    1899,
+    3614,
+    593,
+    328,
+    1617,
+    4182,
+    1764,
+    15825,
+    4406,
+    198,
+    646,
+    10853,
+    1989,
+    10309,
+    3614,
+    8,
+    198,
+    493,
+    745,
+    25,
+    198,
+    646,
+    364,
+    1623,
+    303,
+    10300,
+    10309,
+    3614,
+    18879,
+    3614,
+    75458,
+    198,
+    967,
+    413,
+    1623,
+    2011,
+    4193,
+    363,
+    321,
+    318,
+    2950,
+    593,
+    328,
+    1617,
+    4182,
+    1764,
+    15825,
+    4406,
+    198,
+    1335,
+    10853
+   ],
+   "ngram3": {
+    "n": 3,
+    "total": 126,
+    "distinct": 115,
+    "distinct_ratio": 0.9126984126984127
+   },
+   "mem_before": {
+    "gen": 52,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30891252296,
+    "t": 541.5818898750003
+   },
+   "mem_after": {
+    "gen": 53,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30908144200,
+    "t": 593.1535366669996
+   },
+   "mem_settled": {
+    "gen": 55,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30905244232,
+    "t": 597.1793151670136
+   },
+   "mem_settled_15s": {
+    "gen": 56,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35019914010,
+    "phys_footprint": 30905244232,
+    "t": 607.1903169170255
+   },
+   "counters_1s": {},
+   "counters_15s": {},
+   "rows_hist": {},
+   "clear_events": [],
+   "lifetime_stats": null,
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   },
+   "power_before": "Now drawing from 'AC Power'",
+   "therm_before": "Note: No thermal warning level has been recorded | Note: No performance warning level has been recorded | Note: No CPU power status has been recorded",
+   "t_wall": 1791524842.7803662,
+   "prefill_tps_ttft": 758.1515820678136,
+   "tg_backend_all": 17.438692098092645,
+   "tg_backend_after_first_event": 17.302452316076295,
+   "tg_stream_after_first_event": 17.316116872060526,
+   "problems": [],
+   "valid": true,
+   "uid": 6,
+   "mtp_log": [],
+   "mtp_activation": null
+  }
+ ],
+ "power_start": {
+  "batt": "Now drawing from 'AC Power'\n -InternalBattery-0 (id=24641635)\t80%; AC attached; not charging present: true\n",
+  "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded\n"
+ },
+ "flags": {
+  "gen": 1,
+  "op": "flags",
+  "pid": 46534,
+  "oq_a8_module_loaded": false,
+  "mlp_patched": false,
+  "gdn_registered": false,
+  "omlx_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/__init__.py",
+  "ext_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/custom_kernels/qwen35_prefill/_ext.cpython-311-darwin.so",
+  "oq_a8_available": true
+ },
+ "mem_after_load": {
+  "gen": 3,
+  "op": "mem",
+  "active": 30002535166,
+  "cache": 194280592,
+  "peak": 0,
+  "phys_footprint": 31072623128,
+  "t": 4.675488917011535
+ },
+ "mem_after_load_5s": {
+  "gen": 4,
+  "op": "mem",
+  "active": 30002535166,
+  "cache": 16,
+  "peak": 30002535182,
+  "phys_footprint": 30875277848,
+  "t": 9.689023917017039
+ },
+ "mem_after_warmup": {
+  "gen": 23,
+  "op": "mem",
+  "active": 30002535166,
+  "cache": 16,
+  "peak": 0,
+  "phys_footprint": 30894512688,
+  "t": 127.89555054201628
+ },
+ "power_end": {
+  "batt": "Now drawing from 'AC Power'\n -InternalBattery-0 (id=24641635)\t80%; AC attached; not charging present: true\n",
+  "therm": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded\n"
+ },
+ "mtp_summary_lines_total": 0,
+ "mtp_activation_lines_total": 0,
+ "log_suspect_lines": [
+  "2026-10-09 14:37:16,258 - omlx.scheduler - INFO - ChunkedKVCache patch: methods already present upstream, skipped: size",
+  "2026-10-09 14:37:16,335 - omlx.server - INFO - ModelScope SDK not installed, MS downloader disabled",
+  "2026-10-09 14:37:18,741 - omlx.engine.vlm - INFO - Vision feature cache enabled (SSD: disabled)",
+  "2026-10-09 14:37:19,639 - omlx.memory_monitor - INFO - MemoryMonitor initialized (estimator-only, eviction disabled)",
+  "2026-10-09 14:37:19,649 - omlx.scheduler - INFO - oMLX cache disabled (mlx-lm BatchGenerator manages KV internally)",
+  "2026-10-09 14:37:19,650 - omlx.patches.qwen35_fa256_attention - INFO - Qwen FA-256 steel patch skipped: NAX GPU, MLX native fused SDPA is faster",
+  "2026-10-09 14:37:19,661 - omlx.patches.qwen35_ragged_decode - INFO - qwen3_5 ragged decode threadgroup fallback patch applied"
+ ],
+ "log_lines_penalty_or_depth": []
+}

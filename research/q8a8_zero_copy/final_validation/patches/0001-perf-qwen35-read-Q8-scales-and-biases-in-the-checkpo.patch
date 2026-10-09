@@ -1,0 +1,952 @@
+From 8f64602f77cb7dc306a259973a51a743e457e54f Mon Sep 17 00:00:00 2001
+From: hojin12312 <hojin12312@gmail.com>
+Date: Fri, 9 Oct 2026 00:27:57 +0900
+Subject: [PATCH] perf(qwen35): read Q8 scales and biases in the checkpoint
+ layout for W8A8 prefill
+
+The Q8 W8A8 prefill kernel needed the group scales and biases transposed to
+[K/64, N], which kept a second copy of them for every Q8 projection (1.416 GiB
+on Qwen3.8-27B). This adds a Q8 kernel that reads them as the checkpoint stores
+them, [N, K/64], and routes every Q8 projection to it, so the copy is never
+built.
+
+The kernel swaps the tensor-op operands: weights are the left input and tokens
+the right one. A lane then accumulates four weight rows, the rows whose codes
+it already loads, so a group's scale and bias are scalar loads, and the
+token-side values become four-wide loads. There is no threadgroup memory and no
+barrier. The arithmetic per element is unchanged, so the output is bit-identical
+to the group-major kernel, which stays in the tree as the reference the tests
+compare against. Q4/Q5, decode and MTP paths are untouched.
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+---
+ .../qwen35_prefill/csrc/CMakeLists.txt        |   3 +-
+ .../qwen35_prefill/csrc/bindings.cpp          |   1 +
+ .../qwen35_prefill/csrc/qwen35_oq_a8.cpp      |  40 ++-
+ .../csrc/qwen35_oq_q8_a8_nm_nax.metal         | 331 ++++++++++++++++++
+ .../qwen35_prefill/csrc/qwen35_prefill.h      |   3 +
+ omlx/custom_kernels/qwen35_prefill/fast.py    |   2 +
+ omlx/patches/qwen35_oq_a8.py                  |  14 +-
+ tests/test_q8a8_native_metadata.py            | 327 +++++++++++++++++
+ 8 files changed, 709 insertions(+), 12 deletions(-)
+ create mode 100644 omlx/custom_kernels/qwen35_prefill/csrc/qwen35_oq_q8_a8_nm_nax.metal
+ create mode 100644 tests/test_q8a8_native_metadata.py
+
+diff --git a/omlx/custom_kernels/qwen35_prefill/csrc/CMakeLists.txt b/omlx/custom_kernels/qwen35_prefill/csrc/CMakeLists.txt
+index 59ca1249..cac58360 100644
+--- a/omlx/custom_kernels/qwen35_prefill/csrc/CMakeLists.txt
++++ b/omlx/custom_kernels/qwen35_prefill/csrc/CMakeLists.txt
+@@ -142,7 +142,8 @@ if(MLX_BUILD_METAL)
+     set(OMLX_QWEN35_PREFILL_NAX_SOURCES
+         ${CMAKE_CURRENT_LIST_DIR}/qwen35_qmm_nax.metal
+         ${CMAKE_CURRENT_LIST_DIR}/qwen35_oq_a8_nax.metal
+-        ${CMAKE_CURRENT_LIST_DIR}/qwen35_oq_q8_a8_nax.metal)
++        ${CMAKE_CURRENT_LIST_DIR}/qwen35_oq_q8_a8_nax.metal
++        ${CMAKE_CURRENT_LIST_DIR}/qwen35_oq_q8_a8_nm_nax.metal)
+     set(OMLX_QWEN35_PREFILL_NAX_AIR)
+     foreach(NAX_SRCFILE IN LISTS OMLX_QWEN35_PREFILL_NAX_SOURCES)
+       get_filename_component(NAX_TARGET_NAME ${NAX_SRCFILE} NAME_WE)
+diff --git a/omlx/custom_kernels/qwen35_prefill/csrc/bindings.cpp b/omlx/custom_kernels/qwen35_prefill/csrc/bindings.cpp
+index 8bc26ae9..cdf17613 100644
+--- a/omlx/custom_kernels/qwen35_prefill/csrc/bindings.cpp
++++ b/omlx/custom_kernels/qwen35_prefill/csrc/bindings.cpp
+@@ -473,6 +473,7 @@ NB_MODULE(_ext, m) {
+       "act_mode"_a = 0,
+       "variant"_a = 800,
+       "packed"_a = false,
++      "native_meta"_a = false,
+       "stream"_a = nb::none());
+   m.def(
+       "qwen35_oq_a8_decode_weights",
+diff --git a/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_oq_a8.cpp b/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_oq_a8.cpp
+index 15d9b158..7dba76ba 100644
+--- a/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_oq_a8.cpp
++++ b/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_oq_a8.cpp
+@@ -119,6 +119,9 @@ bool oq_a8_packed_shape_matches(int packed_dim, int K, int bits) {
+ 
+ std::atomic<bool> oq_nax_runtime_ok{true};
+ 
++// Native-metadata Q8 kernel: up to this many rows use the (2,2) tile.
++constexpr int kNativeMetaWideTileMaxRows = 1024;
++
+ // ---------------------------------------------------------------------------
+ // Stage A
+ // ---------------------------------------------------------------------------
+@@ -215,12 +218,14 @@ class Qwen35OqA8QmmTPrimitive : public Primitive {
+       int bits,
+       int act_mode,
+       int variant,
+-      bool packed)
++      bool packed,
++      bool native_meta)
+       : Primitive(stream),
+         bits_(bits),
+         act_mode_(act_mode),
+         variant_(variant),
+-        packed_(packed) {
++        packed_(packed),
++        native_meta_(native_meta) {
+     if (!oq_a8_bits_supported(bits_)) {
+       std::ostringstream msg;
+       msg << "Unsupported oQ A8 bits " << bits_ << " (expected 4, 5 or 8).";
+@@ -259,9 +264,16 @@ class Qwen35OqA8QmmTPrimitive : public Primitive {
+     const int N = weight.shape(0);
+     const int M = qa.size() / K;
+ 
+-    const auto cfg = oq_a8_nax_variant(variant_);
++    auto cfg = oq_a8_nax_variant(variant_);
+     std::string kname;
+-    if (bits_ == 8) {
++    if (bits_ == 8 && native_meta_) {
++      // Swapped-orientation kernel over [N, K/64] metadata. Both tiles are
++      // BN = 64 weight rows; the wider token tile wins up to 1024 rows.
++      cfg = M <= kNativeMetaWideTileMaxRows ? OqA8NaxVariant{64, 64, 2, 2}
++                                            : OqA8NaxVariant{32, 64, 1, 2};
++      concatenate(kname, "oq_q8_a8_qmm_t_nax_nm_am", act_mode_, "_",
++                  oq_type_name(out.dtype()), "_wm_", cfg.wm, "_wn_", cfg.wn);
++    } else if (bits_ == 8) {
+       concatenate(kname, "oq_q8_a8_qmm_t_nax_am", act_mode_, "_",
+                   oq_type_name(out.dtype()), "_wm_", cfg.wm, "_wn_", cfg.wn);
+     } else {
+@@ -302,10 +314,11 @@ class Qwen35OqA8QmmTPrimitive : public Primitive {
+   bool is_equivalent(const Primitive& other) const override {
+     const auto& rhs = static_cast<const Qwen35OqA8QmmTPrimitive&>(other);
+     return bits_ == rhs.bits_ && act_mode_ == rhs.act_mode_ &&
+-        variant_ == rhs.variant_ && packed_ == rhs.packed_;
++        variant_ == rhs.variant_ && packed_ == rhs.packed_ &&
++        native_meta_ == rhs.native_meta_;
+   }
+   auto state() const {
+-    return std::make_tuple(bits_, act_mode_, variant_, packed_);
++    return std::make_tuple(bits_, act_mode_, variant_, packed_, native_meta_);
+   }
+ 
+  private:
+@@ -313,6 +326,7 @@ class Qwen35OqA8QmmTPrimitive : public Primitive {
+   int act_mode_;
+   int variant_;
+   bool packed_;
++  bool native_meta_;
+ };
+ 
+ // ---------------------------------------------------------------------------
+@@ -448,6 +462,7 @@ array qwen35_oq_a8_qmm_t(
+     int act_mode,
+     int variant,
+     bool packed,
++    bool native_meta,
+     StreamOrDevice s) {
+   if (!oq_a8_bits_supported(bits)) {
+     std::ostringstream msg;
+@@ -455,6 +470,11 @@ array qwen35_oq_a8_qmm_t(
+         << " unsupported (expected 4, 5 or 8).";
+     throw std::invalid_argument(msg.str());
+   }
++  if (native_meta && (bits != 8 || packed || variant != 806)) {
++    throw std::invalid_argument(
++        "[omlx_qwen35_prefill.qwen35_oq_a8_qmm_t] native metadata is a Q8 "
++        "row-major layout and needs variant 806.");
++  }
+   if (bits == 8 && packed) {
+     throw std::invalid_argument(
+         "[omlx_qwen35_prefill.qwen35_oq_a8_qmm_t] Q8 has no packed layout.");
+@@ -515,7 +535,8 @@ array qwen35_oq_a8_qmm_t(
+         << " bits.";
+     throw std::invalid_argument(msg.str());
+   }
+-  // Metadata is group-major: scales/biases [K/64, N], Ra [K/64, M]. Packed
++  // Metadata is group-major: scales/biases [K/64, N], Ra [K/64, M] (native
++  // metadata keeps the checkpoint's [N, K/64] for scales/biases). Packed
+   // metadata holds the same N * K/64 values in the PackedLinear tile order.
+   (void)oq_a8_nax_variant(variant);
+   if (packed) {
+@@ -532,7 +553,8 @@ array qwen35_oq_a8_qmm_t(
+   const size_t sc_size = static_cast<size_t>(N) * static_cast<size_t>(groups);
+   const bool sc_ok = packed
+       ? scales.size() == sc_size && biases.size() == sc_size
+-      : scales.shape(0) == groups && scales.shape(1) == N &&
++      : (native_meta ? scales.shape(0) == N && scales.shape(1) == groups
++                     : scales.shape(0) == groups && scales.shape(1) == N) &&
+           biases.shape() == scales.shape();
+   if (!sc_ok) {
+     std::ostringstream msg;
+@@ -581,7 +603,7 @@ array qwen35_oq_a8_qmm_t(
+       std::move(out_shape),
+       out_dtype,
+       std::make_shared<Qwen35OqA8QmmTPrimitive>(
+-          stream, bits, act_mode, variant, packed),
++          stream, bits, act_mode, variant, packed, native_meta),
+       {qa, sa, ra, weight, scales, biases});
+ }
+ 
+diff --git a/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_oq_q8_a8_nm_nax.metal b/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_oq_q8_a8_nm_nax.metal
+new file mode 100644
+index 00000000..daf2c6be
+--- /dev/null
++++ b/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_oq_q8_a8_nm_nax.metal
+@@ -0,0 +1,331 @@
++// SPDX-License-Identifier: Apache-2.0
++// oQ Q8 W8A8 GEMM on the M5 NAX tensor units, reading the checkpoint's own
++// scale and bias layout [N, K/64] ("native metadata").
++//
++// qwen35_oq_q8_a8_nax.metal needs the group metadata transposed to [K/64, N]
++// so that a lane's four adjacent output columns are one 8-byte load. Producing
++// that layout costs a second copy of every scale and bias (1.416 GiB for
++// Qwen3.8-27B). This kernel needs no copy.
++//
++// The tensor op computes C[16 x 32] = A[16 x 16] * B[32 x 16]^T per K step.
++// The production kernel puts activations on the A side and weights on the B
++// side, so a lane's accumulator elements sit in eight different weight
++// columns (4 adjacent columns x 2 column blocks): reading those from [N, K/64]
++// takes sixteen separate 2-byte loads per group. Here the operands are
++// swapped: weights are A (16 rows per fragment) and activations are B (32
++// tokens). A lane's accumulator elements then sit in only FOUR weight rows,
++// and those are the same rows whose codes the lane already loads, so the
++// scale and bias of a row are plain scalar loads from that row. The
++// token-side values (Ra, Sa), which are token-contiguous in memory, become
++// the four-wide vector loads.
++//
++// The arithmetic is identical element for element to the production kernel
++// (same INT32 accumulation, same fma nesting, same BF16/FP16 -> float
++// conversions), so the output is bit-identical to it.
++//
++// Codes are read as the checkpoint stores them and centered to signed INT8 in
++// registers, exactly as in the production kernel:
++//
++//   sum_k a_k w_k = s * (acc + 128 * r) + b * r      per GS64 group.
++
++#if __has_include(<MetalPerformancePrimitives/MetalPerformancePrimitives.h>)
++
++// clang-format off
++#include <metal_stdlib>
++
++#include "mlx/backend/metal/kernels/utils.h"
++#include "mlx/backend/metal/kernels/steel/gemm/nax.h"
++
++#include "oq_a8_decode.h"
++// clang-format on
++
++using namespace metal;
++using namespace mlx::steel;
++using namespace omlx::oq_a8;
++
++namespace {
++constant constexpr int kNmFragM = 16;
++constant constexpr int kNmFragN = 32;
++constant constexpr int kNmFragK = 16;
++constant constexpr int kNmElemsPerFrag = 8;
++constant constexpr int kNmDestElems = 2 * kNmElemsPerFrag;
++constant constexpr int kNmStepsPerGroup = kGroupSize / kNmFragK; // 4
++constant constexpr uint32_t kNmCenter = 0x80808080u;
++} // namespace
++
++// One simdgroup owns 32 weight rows (two A fragments) x 32 tokens (one B
++// fragment). WM simdgroups tile tokens and WN tile weight rows.
++template <typename T, int ACT_MODE, int WM, int WN>
++[[kernel]] void oq_q8_a8_qmm_t_nax_nm(
++    const device int8_t* qa [[buffer(0)]],
++    const device float* sa [[buffer(1)]],
++    const device short* ra [[buffer(2)]],
++    const device uint32_t* w [[buffer(3)]],
++    const device T* scales [[buffer(4)]], // [N, K/64]
++    const device T* biases [[buffer(5)]], // [N, K/64]
++    device T* out [[buffer(6)]],
++    const constant int& K [[buffer(7)]],
++    const constant int& N [[buffer(8)]],
++    const constant int& M [[buffer(9)]],
++    uint3 tid [[threadgroup_position_in_grid]],
++    uint simd_gid [[simdgroup_index_in_threadgroup]]) {
++  constexpr int BM = kNmFragN * WM; // tokens per threadgroup
++  constexpr int BN = 2 * kNmFragM * WN; // weight rows per threadgroup
++  constexpr int words = oq_group_words(8);
++
++  const int groups = K / kGroupSize;
++  const int sg_m = int(simd_gid) % WM;
++  const int sg_n = int(simd_gid) / WM;
++  const int tok_base = int(tid.y) * BM + sg_m * kNmFragN;
++  const int n_base = int(tid.x) * BN + sg_n * (2 * kNmFragM);
++
++  const short2 coord = BaseNAXFrag::get_coord();
++
++  constexpr auto desc = mpp::tensor_ops::matmul2d_descriptor(
++      kNmFragM,
++      kNmFragN,
++      kNmFragK,
++      /* transpose_left = */ false,
++      /* transpose_right = */ true,
++      /* relaxed_precision = */ false,
++      mpp::tensor_ops::matmul2d_descriptor::mode::multiply_accumulate);
++  constexpr auto desc_set = mpp::tensor_ops::matmul2d_descriptor(
++      kNmFragM,
++      kNmFragN,
++      kNmFragK,
++      /* transpose_left = */ false,
++      /* transpose_right = */ true,
++      /* relaxed_precision = */ false,
++      mpp::tensor_ops::matmul2d_descriptor::mode::multiply);
++
++  mpp::tensor_ops::matmul2d<desc, metal::execution_simdgroup> op;
++  mpp::tensor_ops::matmul2d<desc_set, metal::execution_simdgroup> op_set;
++
++  auto ct_a =
++      op.template get_left_input_cooperative_tensor<int8_t, int8_t, int32_t>();
++  auto ct_b =
++      op.template get_right_input_cooperative_tensor<int8_t, int8_t, int32_t>();
++  auto acc0 = op.template get_destination_cooperative_tensor<
++      decltype(ct_a),
++      decltype(ct_b),
++      int32_t>();
++  auto acc1 = op.template get_destination_cooperative_tensor<
++      decltype(ct_a),
++      decltype(ct_b),
++      int32_t>();
++
++  float Cf[2][kNmDestElems];
++  STEEL_PRAGMA_UNROLL
++  for (int i = 0; i < 2; ++i) {
++    STEEL_PRAGMA_UNROLL
++    for (int e = 0; e < kNmDestElems; ++e) {
++      Cf[i][e] = 0.0f;
++    }
++  }
++
++  // Destination element e of fragment i: weight row n_base + 16 i + y + 8 r,
++  // token tok_base + 16 h + x + c, with h = e >> 3, r = (e & 7) >> 2, c = e & 3.
++  const int y = int(coord.y);
++  const int x = int(coord.x);
++  // Which 16-code run of the affine group this lane owns: 0..3.
++  const int cx = x >> 2;
++
++  const int n_lane = n_base + y;
++  const device uint32_t* wbase = w + size_t(n_lane) * size_t(groups) * words;
++  const int w_row = groups * words;
++  const int w_stride8 = 8 * w_row;
++  const int w_stride16 = kNmFragM * w_row;
++
++  // Scale and bias of the lane's four weight rows n_lane + 8 r + 16 i.
++  const device T* srow = scales + size_t(n_lane) * size_t(groups);
++  const device T* brow = biases + size_t(n_lane) * size_t(groups);
++  const size_t meta_stride8 = size_t(8) * size_t(groups);
++  const size_t meta_stride16 = size_t(16) * size_t(groups);
++
++  // Ra and Sa are [K/64, M]. Four adjacent tokens per lane are one vector load
++  // when M is a multiple of 4; otherwise they fall back to clamped scalars.
++  const bool vec_ok = (M & 3) == 0;
++
++  for (int g = 0; g < groups; ++g) {
++    uint4 wg[4];
++    STEEL_PRAGMA_UNROLL
++    for (int q = 0; q < 4; ++q) {
++      const device uint32_t* wr = wbase + (q & 1) * w_stride8 +
++          (q >> 1) * w_stride16 + size_t(g) * words;
++      wg[q] = reinterpret_cast<const device uint4*>(wr)[cx];
++    }
++
++    STEEL_PRAGMA_UNROLL
++    for (int t = 0; t < kNmStepsPerGroup; ++t) {
++      // Right operand: 32 tokens, rows past M read row M-1 and are never
++      // stored.
++      STEEL_PRAGMA_UNROLL
++      for (int q = 0; q < 4; ++q) {
++        const int base = (q >> 1) * kNmElemsPerFrag + (q & 1) * 4;
++        const int m = min(tok_base + y + (q & 1) * 8 + (q >> 1) * 16, M - 1);
++        const char4 quad = as_type<char4>(
++            *reinterpret_cast<const device uint32_t*>(
++                qa + size_t(m) * size_t(K) + size_t(g) * kGroupSize +
++                size_t(cx) * 16 + size_t(t) * 4));
++        ct_b[base + 0] = quad.x;
++        ct_b[base + 1] = quad.y;
++        ct_b[base + 2] = quad.z;
++        ct_b[base + 3] = quad.w;
++      }
++      STEEL_PRAGMA_UNROLL
++      for (int i = 0; i < 2; ++i) {
++        STEEL_PRAGMA_UNROLL
++        for (int r = 0; r < 2; ++r) {
++          const char4 quad = as_type<char4>(wg[i * 2 + r][t] ^ kNmCenter);
++          ct_a[r * 4 + 0] = quad.x;
++          ct_a[r * 4 + 1] = quad.y;
++          ct_a[r * 4 + 2] = quad.z;
++          ct_a[r * 4 + 3] = quad.w;
++        }
++        if (t == 0) {
++          if (i == 0) {
++            op_set.run(ct_a, ct_b, acc0);
++          } else {
++            op_set.run(ct_a, ct_b, acc1);
++          }
++        } else {
++          if (i == 0) {
++            op.run(ct_a, ct_b, acc0);
++          } else {
++            op.run(ct_a, ct_b, acc1);
++          }
++        }
++      }
++    }
++
++    // Token-side group sums: tokens tok_base + 16 h + x + c.
++    const device short* rrow = ra + size_t(g) * size_t(M);
++    float r_g[2][4];
++    float r_c[2][4];
++    STEEL_PRAGMA_UNROLL
++    for (int h = 0; h < 2; ++h) {
++      const int t0 = tok_base + h * kNmFragM + x;
++      if (vec_ok) {
++        const short4 v =
++            *reinterpret_cast<const device short4*>(rrow + min(t0, M - 4));
++        STEEL_PRAGMA_UNROLL
++        for (int c = 0; c < 4; ++c) {
++          r_g[h][c] = float(v[c]);
++        }
++      } else {
++        STEEL_PRAGMA_UNROLL
++        for (int c = 0; c < 4; ++c) {
++          r_g[h][c] = float(rrow[min(t0 + c, M - 1)]);
++        }
++      }
++      STEEL_PRAGMA_UNROLL
++      for (int c = 0; c < 4; ++c) {
++        r_c[h][c] = 128.0f * r_g[h][c];
++      }
++    }
++
++    // Weight-side group metadata of the lane's four rows.
++    float swv[2][2];
++    float bwv[2][2];
++    STEEL_PRAGMA_UNROLL
++    for (int i = 0; i < 2; ++i) {
++      STEEL_PRAGMA_UNROLL
++      for (int r = 0; r < 2; ++r) {
++        const size_t off = size_t(r) * meta_stride8 + size_t(i) * meta_stride16;
++        swv[i][r] = float(srow[off + g]);
++        bwv[i][r] = float(brow[off + g]);
++      }
++    }
++
++    if (ACT_MODE == 0) {
++      STEEL_PRAGMA_UNROLL
++      for (int e = 0; e < kNmDestElems; ++e) {
++        const int h = e >> 3;
++        const int r = (e & 7) >> 2;
++        const int c = e & 3;
++        Cf[0][e] = metal::fma(
++            swv[0][r],
++            float(acc0[e]) + r_c[h][c],
++            metal::fma(bwv[0][r], r_g[h][c], Cf[0][e]));
++        Cf[1][e] = metal::fma(
++            swv[1][r],
++            float(acc1[e]) + r_c[h][c],
++            metal::fma(bwv[1][r], r_g[h][c], Cf[1][e]));
++      }
++    } else {
++      const device float* arow = sa + size_t(g) * size_t(M);
++      float s_g[2][4];
++      STEEL_PRAGMA_UNROLL
++      for (int h = 0; h < 2; ++h) {
++        const int t0 = tok_base + h * kNmFragM + x;
++        if (vec_ok) {
++          const float4 v =
++              *reinterpret_cast<const device float4*>(arow + min(t0, M - 4));
++          STEEL_PRAGMA_UNROLL
++          for (int c = 0; c < 4; ++c) {
++            s_g[h][c] = v[c];
++          }
++        } else {
++          STEEL_PRAGMA_UNROLL
++          for (int c = 0; c < 4; ++c) {
++            s_g[h][c] = arow[min(t0 + c, M - 1)];
++          }
++        }
++      }
++      STEEL_PRAGMA_UNROLL
++      for (int e = 0; e < kNmDestElems; ++e) {
++        const int h = e >> 3;
++        const int r = (e & 7) >> 2;
++        const int c = e & 3;
++        Cf[0][e] = metal::fma(
++            s_g[h][c],
++            metal::fma(
++                swv[0][r], float(acc0[e]) + r_c[h][c], bwv[0][r] * r_g[h][c]),
++            Cf[0][e]);
++        Cf[1][e] = metal::fma(
++            s_g[h][c],
++            metal::fma(
++                swv[1][r], float(acc1[e]) + r_c[h][c], bwv[1][r] * r_g[h][c]),
++            Cf[1][e]);
++      }
++    }
++  }
++
++  STEEL_PRAGMA_UNROLL
++  for (int i = 0; i < 2; ++i) {
++    STEEL_PRAGMA_UNROLL
++    for (int e = 0; e < kNmDestElems; ++e) {
++      const int h = e >> 3;
++      const int r = (e & 7) >> 2;
++      const int c = e & 3;
++      const int m = tok_base + h * kNmFragM + x + c;
++      if (m < M) {
++        const int n = n_base + i * kNmFragM + y + r * 8;
++        const float v = ACT_MODE == 0 ? sa[m] * Cf[i][e] : Cf[i][e];
++        out[size_t(m) * size_t(N) + size_t(n)] = static_cast<T>(v);
++      }
++    }
++  }
++}
++
++#define instantiate_oq_q8_a8_qmm_t_nax_nm(act_mode, type, wm, wn)              \
++  instantiate_kernel(                                                         \
++      "oq_q8_a8_qmm_t_nax_nm_am" #act_mode "_" #type "_wm_" #wm "_wn_" #wn,   \
++      oq_q8_a8_qmm_t_nax_nm,                                                  \
++      type,                                                                   \
++      act_mode,                                                               \
++      wm,                                                                     \
++      wn)
++
++// Two tiles, both BN = 64 weight rows: (1,2) for long prompts and (2,2) for
++// up to 1024 rows, where the wider token tile wins. The host picks by M.
++#define instantiate_oq_q8_a8_qmm_t_nax_nm_tiles(act_mode, type)                \
++  instantiate_oq_q8_a8_qmm_t_nax_nm(act_mode, type, 1, 2);                     \
++  instantiate_oq_q8_a8_qmm_t_nax_nm(act_mode, type, 2, 2)
++
++instantiate_oq_q8_a8_qmm_t_nax_nm_tiles(0, float16_t);
++instantiate_oq_q8_a8_qmm_t_nax_nm_tiles(0, bfloat16_t);
++instantiate_oq_q8_a8_qmm_t_nax_nm_tiles(1, float16_t);
++instantiate_oq_q8_a8_qmm_t_nax_nm_tiles(1, bfloat16_t);
++
++#endif // __has_include(<MetalPerformancePrimitives/MetalPerformancePrimitives.h>)
+diff --git a/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_prefill.h b/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_prefill.h
+index b7378c27..70268b1e 100644
+--- a/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_prefill.h
++++ b/omlx/custom_kernels/qwen35_prefill/csrc/qwen35_prefill.h
+@@ -117,6 +117,8 @@ std::vector<mx::array> qwen35_oq_a8_quantize(
+ // `scales`. `packed` reads Q4 weights and metadata in the PackedLinear tile
+ // layout instead of row-major weights and [K/64, N] metadata. Q4/Q5 read Qa in
+ // Stage A v8's permuted K order; Q8 reads it in checkpoint order.
++// `native_meta` (Q8, variant 806 only) reads scales/biases in the checkpoint
++// layout [N, K/64], so no group-major copy has to exist.
+ mx::array qwen35_oq_a8_qmm_t(
+     const mx::array& qa,
+     const mx::array& sa,
+@@ -128,6 +130,7 @@ mx::array qwen35_oq_a8_qmm_t(
+     int act_mode = 0,
+     int variant = 800,
+     bool packed = false,
++    bool native_meta = false,
+     mx::StreamOrDevice s = {});
+ 
+ // Test helper: unpack Q4/Q5/Q8 codes to INT8 [N, group_count * 64] (Q8 is
+diff --git a/omlx/custom_kernels/qwen35_prefill/fast.py b/omlx/custom_kernels/qwen35_prefill/fast.py
+index b251e329..1fe0d950 100644
+--- a/omlx/custom_kernels/qwen35_prefill/fast.py
++++ b/omlx/custom_kernels/qwen35_prefill/fast.py
+@@ -1264,6 +1264,7 @@ def qwen35_oq_a8_qmm_t(
+     variant: int = 800,
+     *,
+     packed: bool = False,
++    native_meta: bool = False,
+     stream=None,
+ ) -> mx.array:
+     if _ext is None or not hasattr(_ext, "qwen35_oq_a8_qmm_t"):
+@@ -1279,6 +1280,7 @@ def qwen35_oq_a8_qmm_t(
+         act_mode,
+         variant,
+         packed=packed,
++        **({"native_meta": True} if native_meta else {}),
+         **_native_stream_kwargs(stream),
+     )
+ 
+diff --git a/omlx/patches/qwen35_oq_a8.py b/omlx/patches/qwen35_oq_a8.py
+index 8ea07520..40a059ed 100644
+--- a/omlx/patches/qwen35_oq_a8.py
++++ b/omlx/patches/qwen35_oq_a8.py
+@@ -100,6 +100,9 @@ class OqA8Plan:
+     act_mode: int
+     variant: int
+     packed: bool = False
++    # Q8 only: read scales/biases in the checkpoint layout [N, K/64] instead
++    # of a group-major [K/64, N] copy (saves 1.416 GiB on Qwen3.8-27B).
++    native_meta: bool = False
+ 
+     @property
+     def kernel(self) -> str:
+@@ -206,6 +209,8 @@ def _plan_for(bits: int, n: int, packed: bool = False) -> OqA8Plan | None:
+         act_mode=_act_mode_for_bits(bits),
+         variant=_variant_for_bits(bits),
+         packed=packed,
++        # Q8 always uses the 806 tile, whose kernel reads the checkpoint layout.
++        native_meta=bits == 8 and not packed,
+     )
+ 
+     from omlx.custom_kernels.qwen35_prefill import fast
+@@ -249,11 +254,15 @@ def _variant_bn(variant: int) -> int:
+     return _variant_tile(variant)[1]
+ 
+ 
+-def _prepared_weights(linear: Any):
++def _prepared_weights(linear: Any, native_meta: bool = False):
+     """Cache transposed metadata while reusing the packed weight array.
+ 
+     A ``PackedLinear`` is read in its own tile layout, so nothing is copied.
++    With ``native_meta`` the layer's own arrays are returned: the kernel reads
++    the checkpoint layout, so no transposed copy is built or cached.
+     """
++    if native_meta and not isinstance(linear, PackedLinear):
++        return (linear.weight, linear.scales, linear.biases)
+     cached = getattr(linear, _PREPARED_ATTR, None)
+     if cached is not None:
+         return cached
+@@ -326,7 +335,7 @@ def apply_plan(linear: Any, stage: StageA, plan: OqA8Plan) -> mx.array:
+         )
+     from omlx.custom_kernels.qwen35_prefill import fast
+ 
+-    weight, scales, biases = _prepared_weights(linear)
++    weight, scales, biases = _prepared_weights(linear, plan.native_meta)
+     return fast.qwen35_oq_a8_qmm_t(
+         stage.qa,
+         stage.sa,
+@@ -338,6 +347,7 @@ def apply_plan(linear: Any, stage: StageA, plan: OqA8Plan) -> mx.array:
+         plan.act_mode,
+         plan.variant,
+         packed=plan.packed,
++        native_meta=plan.native_meta,
+     )
+ 
+ 
+diff --git a/tests/test_q8a8_native_metadata.py b/tests/test_q8a8_native_metadata.py
+new file mode 100644
+index 00000000..d094f80a
+--- /dev/null
++++ b/tests/test_q8a8_native_metadata.py
+@@ -0,0 +1,327 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Q8 W8A8 prefill over the checkpoint's own scale/bias layout (no [K/64, N] copy).
++
++The native-metadata kernel must be bit-identical to the group-major kernel it replaces for Q8
++GS64 and must not leave any second copy of the group metadata.
++"""
++
++from __future__ import annotations
++
++import numpy as np
++import pytest
++
++mx = pytest.importorskip("mlx.core")
++
++GROUP_SIZE = 64
++
++
++def _kernels():
++    try:
++        from omlx.custom_kernels.qwen35_prefill import fast
++    except Exception:
++        return None
++    if not fast.oq_a8_available():
++        return None
++    return fast
++
++
++requires_kernels = pytest.mark.skipif(
++    _kernels() is None,
++    reason="oQ A8 NAX kernels are unavailable (no native build or no tensor units)",
++)
++
++
++def _raw_q8(n, k, dtype, seed):
++    """Random Q8 tensors, with the boundary codes 0, 127, 128 and 255 forced in."""
++    rng = np.random.default_rng(seed)
++    codes = rng.integers(0, 256, size=(n, k), dtype=np.uint8)
++    codes[:, :4] = [0, 127, 128, 255]
++    codes[0, :] = 255
++    codes[1, :] = 0
++    codes[2, :] = 128
++    codes[3, :] = 127
++    packed = mx.array(codes.view("<u4").copy())
++    scales = mx.array(
++        rng.uniform(0.001, 0.05, (n, k // GROUP_SIZE)).astype(np.float32), dtype
++    )
++    biases = mx.array(
++        rng.uniform(-3.0, 1.0, (n, k // GROUP_SIZE)).astype(np.float32), dtype
++    )
++    return codes, packed, scales, biases
++
++
++def _bits(a):
++    return np.array(a.astype(mx.float32)).view(np.uint32)
++
++
++def _quantized_linear(in_dim, out_dim, bits):
++    import mlx.nn as nn
++
++    linear = nn.QuantizedLinear(
++        in_dim, out_dim, bias=False, group_size=GROUP_SIZE, bits=bits
++    )
++    linear.set_dtype(mx.float16)
++    mx.eval(linear.parameters())
++    return linear
++
++
++# --------------------------------------------------------------------------
++# Kernel
++# --------------------------------------------------------------------------
++
++
++@requires_kernels
++@pytest.mark.parametrize("dtype", [mx.float16, mx.bfloat16])
++@pytest.mark.parametrize("act_mode", [0, 1])
++@pytest.mark.parametrize("m", [1, 3, 31, 33, 127, 128, 129, 1000, 1024, 1025, 1500])
++def test_native_metadata_is_bit_identical_to_transposed(dtype, act_mode, m):
++    """Same Stage A, same arithmetic: every output element must match bit for bit.
++
++    m covers a single row, M % 4 != 0 (scalar token-metadata path), partial tiles, and
++    both sides of the 1024-row boundary where the host switches tile.
++    """
++    fast = _kernels()
++    n, k = 192, 512
++    _, packed, scales, biases = _raw_q8(n, k, dtype, seed=m + 7 * act_mode)
++    rng = np.random.default_rng(m)
++    x = mx.array((rng.standard_normal((m, k)) * 0.5).astype(np.float32), dtype)
++    qa, sa, ra = fast.qwen35_oq_a8_stage_a_natural(x, act_mode)
++
++    want = fast.qwen35_oq_a8_qmm_t(
++        qa,
++        sa,
++        ra,
++        packed,
++        mx.contiguous(scales.T),
++        mx.contiguous(biases.T),
++        8,
++        act_mode,
++        806,
++    )
++    got = fast.qwen35_oq_a8_qmm_t(
++        qa, sa, ra, packed, scales, biases, 8, act_mode, 806, native_meta=True
++    )
++    mx.eval(want, got)
++    assert got.shape == want.shape and got.dtype == want.dtype
++    np.testing.assert_array_equal(_bits(got), _bits(want))
++
++
++@requires_kernels
++@pytest.mark.parametrize("act_mode", [0, 1])
++def test_native_metadata_matches_independent_affine_reference(act_mode):
++    """Anchor to the checkpoint format, not only to the other kernel."""
++    fast = _kernels()
++    m, n, k = 130, 128, 256
++    codes, packed, scales, biases = _raw_q8(n, k, mx.float16, seed=11)
++    rng = np.random.default_rng(12)
++    x = mx.array((rng.standard_normal((m, k)) * 0.5).astype(np.float32), mx.float16)
++    qa, sa, ra = fast.qwen35_oq_a8_stage_a_natural(x, act_mode)
++    got = fast.qwen35_oq_a8_qmm_t(
++        qa, sa, ra, packed, scales, biases, 8, act_mode, 806, native_meta=True
++    )
++    mx.eval(got, qa, sa)
++
++    s = np.array(scales.astype(mx.float32)).astype(np.float64).repeat(GROUP_SIZE, 1)
++    b = np.array(biases.astype(mx.float32)).astype(np.float64).repeat(GROUP_SIZE, 1)
++    deq = s * codes.astype(np.float64) + b
++    qa64 = np.array(qa).astype(np.float64)
++    sa64 = np.array(sa).astype(np.float64)
++    want = np.zeros((m, n))
++    for g in range(k // GROUP_SIZE):
++        part = qa64[:, g * 64 : (g + 1) * 64] @ deq[:, g * 64 : (g + 1) * 64].T
++        want += sa64[g][:, None] * part if act_mode == 1 else part
++    if act_mode == 0:
++        want *= sa64[:, None]
++    np.testing.assert_allclose(
++        np.array(got.astype(mx.float32)), want, rtol=2**-7, atol=2e-3
++    )
++
++
++@requires_kernels
++def test_native_metadata_rejects_wrong_layout_and_unsupported_modes():
++    fast = _kernels()
++    n, k, m = 128, 256, 64
++    _, packed, scales, biases = _raw_q8(n, k, mx.float16, seed=1)
++    x = mx.zeros((m, k), mx.float16)
++    qa, sa, ra = fast.qwen35_oq_a8_stage_a_natural(x, 0)
++    # A group-major copy handed to the native kernel is a shape error, not silent garbage.
++    with pytest.raises(Exception, match="incompatible"):
++        fast.qwen35_oq_a8_qmm_t(
++            qa,
++            sa,
++            ra,
++            packed,
++            mx.contiguous(scales.T),
++            mx.contiguous(biases.T),
++            8,
++            0,
++            806,
++            native_meta=True,
++        )
++    # Only the 806 tile family exists for the native kernel.
++    with pytest.raises(Exception, match="806"):
++        fast.qwen35_oq_a8_qmm_t(
++            qa, sa, ra, packed, scales, biases, 8, 0, 800, native_meta=True
++        )
++    # Q4 has its own layout and is out of scope.
++    with pytest.raises(Exception, match="Q8"):
++        fast.qwen35_oq_a8_qmm_t(
++            qa, sa, ra, packed, scales, biases, 4, 0, 806, native_meta=True
++        )
++
++
++# --------------------------------------------------------------------------
++# Routing and memory
++# --------------------------------------------------------------------------
++
++
++@pytest.fixture
++def planner_available(monkeypatch):
++    """Let the planner classify projections on hosts without the native extension (CI)."""
++    from omlx.custom_kernels.qwen35_prefill import fast
++
++    monkeypatch.setattr(fast, "oq_a8_available", lambda: True)
++
++
++@pytest.mark.parametrize("bits, expected", [(8, True), (4, False), (5, False)])
++def test_only_q8_reads_the_checkpoint_layout(planner_available, bits, expected):
++    from omlx.patches import qwen35_oq_a8 as dispatch
++
++    linear = _quantized_linear(256, 128, bits)
++    plan = dispatch.classify_linear(linear)
++    assert plan is not None and plan.native_meta is expected
++    assert plan.variant == (806 if bits in (4, 8) else 800)
++
++
++def _stage(plan, m=130, k=256):
++    from omlx.patches import qwen35_oq_a8 as dispatch
++
++    return dispatch.StageA(
++        qa=mx.zeros((m, k), mx.int8),
++        sa=mx.zeros((k // GROUP_SIZE, m), mx.float32),
++        ra=mx.zeros((k // GROUP_SIZE, m), mx.int16),
++        act_mode=plan.act_mode,
++        layout=plan.layout,
++    )
++
++
++def _recording_kernel(monkeypatch):
++    from omlx.custom_kernels.qwen35_prefill import fast
++
++    calls = []
++
++    def recorder(qa, sa, ra, w, s, b, bits, act_mode, variant, **kw):
++        calls.append((w, s, b, bits, variant, kw))
++        return mx.zeros((qa.shape[0], w.shape[0]), mx.float16)
++
++    monkeypatch.setattr(fast, "qwen35_oq_a8_qmm_t", recorder)
++    return calls
++
++
++def test_q8_apply_plan_hands_the_checkpoint_arrays_to_the_kernel(
++    planner_available, monkeypatch
++):
++    """The layer's own [N, K/64] arrays and the native flag reach the kernel; no copy is cached."""
++    from omlx.patches import qwen35_oq_a8 as dispatch
++
++    calls = _recording_kernel(monkeypatch)
++    linear = _quantized_linear(256, 128, 8)
++    plan = dispatch.classify_linear(linear)
++    dispatch.apply_plan(linear, _stage(plan), plan)
++    w, s, b, bits, variant, kw = calls[0]
++    assert w is linear.weight and s is linear.scales and b is linear.biases
++    assert s.shape == (128, 256 // GROUP_SIZE)
++    assert (bits, variant) == (8, 806)
++    assert kw.get("native_meta") is True and not kw.get("packed")
++    assert getattr(linear, dispatch._PREPARED_ATTR, None) is None
++
++
++@pytest.mark.parametrize("bits", [4, 5])
++def test_q4_q5_apply_plan_keeps_the_group_major_copy(
++    planner_available, monkeypatch, bits
++):
++    from omlx.patches import qwen35_oq_a8 as dispatch
++
++    calls = _recording_kernel(monkeypatch)
++    linear = _quantized_linear(256, 128, bits)
++    plan = dispatch.classify_linear(linear)
++    dispatch.apply_plan(linear, _stage(plan), plan)
++    w, s, b, got_bits, variant, kw = calls[0]
++    assert s.shape == (256 // GROUP_SIZE, 128) and b.shape == s.shape
++    assert got_bits == bits and not kw.get("native_meta")
++    assert getattr(linear, dispatch._PREPARED_ATTR, None) is not None
++
++
++@requires_kernels
++def test_q8_projection_allocates_no_metadata_bytes():
++    """Active memory across a routed projection grows by 0 bytes, not by 2*N*G*itemsize.
++
++    The explicit group-major copy is the negative control: it proves the measurement can see one.
++    """
++    from omlx.patches import qwen35_oq_a8 as dispatch
++
++    n, k, m = 2048, 4096, 256
++    expected_copy = 2 * n * (k // GROUP_SIZE) * 2  # scales + biases, 16-bit
++    linear = _quantized_linear(k, n, 8)
++    x = mx.array(
++        np.random.default_rng(0).standard_normal((m, k)).astype(np.float32), mx.float16
++    )
++    mx.eval(x)
++    mx.synchronize()
++    before = mx.get_active_memory()
++    plan = dispatch.classify_linear(linear)
++    assert plan is not None and plan.native_meta
++    y = dispatch.apply_plan(
++        linear, dispatch.stage_a(x, plan.act_mode, plan.layout), plan
++    )
++    mx.eval(y)
++    mx.synchronize()
++    del y
++    mx.synchronize()
++    routed = mx.get_active_memory() - before
++    assert routed < expected_copy // 8
++
++    before = mx.get_active_memory()
++    copy = dispatch._prepared_weights(linear)  # the group-major copy, built on purpose
++    mx.eval(*copy)
++    mx.synchronize()
++    assert mx.get_active_memory() - before >= expected_copy
++
++
++@requires_kernels
++@pytest.mark.parametrize("m", [130, 1024, 1500])
++def test_q8_projection_matches_the_group_major_kernel(m):
++    """Through the dispatch layer, the routed output equals the group-major kernel's bit for bit."""
++    from omlx.patches import qwen35_oq_a8 as dispatch
++
++    fast = _kernels()
++    n, k = 256, 512
++    rng = np.random.default_rng(m)
++    x = mx.array((rng.standard_normal((m, k)) * 0.5).astype(np.float32), mx.float16)
++    linear = _quantized_linear(k, n, 8)
++    packed, scales, biases = mx.quantize(
++        mx.array(rng.standard_normal((n, k)).astype(np.float32) * 0.05, mx.float16),
++        group_size=GROUP_SIZE,
++        bits=8,
++        mode="affine",
++    )
++    linear.weight = packed
++    linear.scales = scales.astype(mx.float16)
++    linear.biases = biases.astype(mx.float16)
++    plan = dispatch.classify_linear(linear)
++    assert plan is not None and plan.native_meta
++    stage = dispatch.stage_a(x, plan.act_mode, plan.layout)
++    got = dispatch.apply_plan(linear, stage, plan)
++    want = fast.qwen35_oq_a8_qmm_t(
++        stage.qa,
++        stage.sa,
++        stage.ra,
++        linear.weight,
++        mx.contiguous(linear.scales.T),
++        mx.contiguous(linear.biases.T),
++        8,
++        plan.act_mode,
++        plan.variant,
++    )
++    mx.eval(got, want)
++    np.testing.assert_array_equal(_bits(got), _bits(want))
+-- 
+2.54.0 (Apple Git-157)
+

@@ -1,0 +1,15 @@
+{
+ "tree": "<HOME>/Projects/omlx-q8a8-measured/prep",
+ "cases": 14060,
+ "mismatches": 0,
+ "fails": [],
+ "rejections": {
+  "group_major_metadata": "ValueError: [omlx_qwen35_prefill.qwen35_oq_a8_qmm_t] scales (4,128) incompatible with N=128 groups=4.",
+  "variant_800": "ValueError: [omlx_qwen35_prefill.qwen35_oq_a8_qmm_t] native metadata is a Q8 row-major layout and needs variant 806.",
+  "q4": "ValueError: [omlx_qwen35_prefill.qwen35_oq_a8_qmm_t] native metadata is a Q8 row-major layout and needs variant 806.",
+  "packed": "ValueError: [omlx_qwen35_prefill.qwen35_oq_a8_qmm_t] native metadata is a Q8 row-major layout and needs variant 806.",
+  "n_not_multiple_of_64": "ValueError: [omlx_qwen35_prefill.qwen35_oq_a8_qmm_t] N=96 is not a multiple of the tile BN=64."
+ },
+ "mlx": "0.32.3",
+ "seconds": 184.83247089385986
+}

@@ -1,0 +1,1361 @@
+{
+ "schema": 1,
+ "mode": "chunks",
+ "arm": "native",
+ "argv": [
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/scenarios.py",
+  "--python",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/venv323/bin/python",
+  "--tree",
+  "<HOME>/Projects/omlx-q8a8-measured/prep",
+  "--workdir",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work",
+  "--model-dir",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models",
+  "--checkpoint",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models/Qwen3.8-27B-oQ8e-mtp",
+  "--model",
+  "Qwen3.8-27B-oQ8e-mtp",
+  "--corpus",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/corpus.json",
+  "--mode",
+  "chunks",
+  "--arm",
+  "native",
+  "--a8",
+  "on",
+  "--mtp",
+  "off",
+  "--out",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/final_validation/results/scn/m1_chunks_native.json",
+  "--lengths",
+  "4096",
+  "8192",
+  "--chunks",
+  "512",
+  "1024",
+  "2048",
+  "4096",
+  "8192"
+ ],
+ "tree": "<HOME>/Projects/omlx-q8a8-measured/prep",
+ "tree_git_head": "7a82157d865f3f628926298bdee463a4b680f95f",
+ "model_settings": {
+  "qwen35_oq_a8_enabled": true,
+  "qwen35_oq_a8_min_tokens": 128,
+  "mtp_enabled": false
+ },
+ "env": {
+  "PYTHONPATH": "<HOME>/Projects/omlx-q8a8-measured/prep:<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/hook",
+  "HOME": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/scn_chunks_native/home",
+  "OMLX_DEC_CTL": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/scn_chunks_native/ctl"
+ },
+ "requests": [
+  {
+   "label": "L4096.chunk512",
+   "planned_prompt_ids": 4096,
+   "prompt_sha256": "1245574a3c52a701",
+   "prompt_tokens": 4096,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 2.918972749990644,
+   "total_s": 6.2515832080098335,
+   "finish": "length",
+   "text": "None\n        self._in_body = False\n\n    def feed(self, text: str) -> list[tuple[str, str]]:\n        \"\"\"Append decoded text; return (channel, text) chunks.\n\n        Channel is ``\"header\"`` for the remnant between ``<|start|>``",
+   "text_sha256": "6d968f5c29152255",
+   "counts": {
+    "clear_cache_calls": 27,
+    "prepare_native": 3200,
+    "a8_qmm_calls": 3200,
+    "a8_q8_native": 3200
+   },
+   "rows_hist": {
+    "511": 400,
+    "512": 2800
+   },
+   "mem_before": {
+    "gen": 6,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30885943856,
+    "t": 12.701596583006904
+   },
+   "mem_after": {
+    "gen": 7,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 31417606952,
+    "phys_footprint": 30890515016,
+    "t": 19.963485667016357
+   },
+   "mem_settled": {
+    "gen": 9,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 31417606952,
+    "phys_footprint": 30887500360,
+    "t": 27.982806625019293
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4096.chunk1024",
+   "planned_prompt_ids": 4096,
+   "prompt_sha256": "1245574a3c52a701",
+   "prompt_tokens": 4096,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 2.9066954589798115,
+   "total_s": 6.2470929169794545,
+   "finish": "length",
+   "text": "None\n        self._in_body = False\n\n    def feed(self, text: str) -> list[tuple[str, str]]:\n        \"\"\"Return (channel, text) chunks; channel is None for header text.\"\"\"\n        self._buffer += text\n        out: list[tuple[str, str]]",
+   "text_sha256": "77ed242af8fc428d",
+   "counts": {
+    "clear_cache_calls": 23,
+    "prepare_native": 1600,
+    "a8_qmm_calls": 1600,
+    "a8_q8_native": 1600
+   },
+   "rows_hist": {
+    "1023": 400,
+    "1024": 1200
+   },
+   "mem_before": {
+    "gen": 13,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30888925768,
+    "t": 36.0689654580201
+   },
+   "mem_after": {
+    "gen": 14,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 32134654754,
+    "phys_footprint": 30892235336,
+    "t": 43.33429787500063
+   },
+   "mem_settled": {
+    "gen": 16,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 32134654754,
+    "phys_footprint": 30889269832,
+    "t": 51.35822583301342
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4096.chunk2048",
+   "planned_prompt_ids": 4096,
+   "prompt_sha256": "1245574a3c52a701",
+   "prompt_tokens": 4096,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 2.940080249973107,
+   "total_s": 6.286700041993754,
+   "finish": "length",
+   "text": "None\n        self._in_body = False\n\n    def feed(self, text: str) -> list[tuple[str, str]]:\n        \"\"\"Return (channel, text) chunks; channel is None for header text.\"\"\"\n        self._buffer += text\n        out: list[tuple[str, str]]",
+   "text_sha256": "77ed242af8fc428d",
+   "counts": {
+    "clear_cache_calls": 21,
+    "prepare_native": 800,
+    "a8_qmm_calls": 800,
+    "a8_q8_native": 800
+   },
+   "rows_hist": {
+    "2047": 400,
+    "2048": 400
+   },
+   "mem_before": {
+    "gen": 20,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30889286216,
+    "t": 59.40176070801681
+   },
+   "mem_after": {
+    "gen": 21,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33177238290,
+    "phys_footprint": 30892284488,
+    "t": 66.69877791701583
+   },
+   "mem_settled": {
+    "gen": 23,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33177238290,
+    "phys_footprint": 30889302600,
+    "t": 74.72470429202076
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4096.chunk4096",
+   "planned_prompt_ids": 4096,
+   "prompt_sha256": "1245574a3c52a701",
+   "prompt_tokens": 4096,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 3.006577958003618,
+   "total_s": 6.346186290989863,
+   "finish": "length",
+   "text": "None\n        self._in_body = False\n\n    def feed(self, text: str) -> list[tuple[str, str]]:\n        \"\"\"Append decoded text; return (channel, text) chunks.\n\n        Channel is ``\"header\"`` for the remnant between ``<|start|>``",
+   "text_sha256": "6d968f5c29152255",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_native": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 400
+   },
+   "rows_hist": {
+    "4095": 400
+   },
+   "mem_before": {
+    "gen": 27,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30889318984,
+    "t": 82.78996770799858
+   },
+   "mem_after": {
+    "gen": 28,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35410811664,
+    "phys_footprint": 30892382792,
+    "t": 90.15126075001899
+   },
+   "mem_settled": {
+    "gen": 30,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35410811664,
+    "phys_footprint": 30889417288,
+    "t": 98.1772482500237
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4096.chunk8192",
+   "planned_prompt_ids": 4096,
+   "prompt_sha256": "1245574a3c52a701",
+   "prompt_tokens": 4096,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 3.0028090410050936,
+   "total_s": 6.339746000012383,
+   "finish": "length",
+   "text": "None\n        self._in_body = False\n\n    def feed(self, text: str) -> list[tuple[str, str]]:\n        \"\"\"Append decoded text; return (channel, text) chunks.\n\n        Channel is ``\"header\"`` for the remnant between ``<|start|>``",
+   "text_sha256": "6d968f5c29152255",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_native": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 400
+   },
+   "rows_hist": {
+    "4095": 400
+   },
+   "mem_before": {
+    "gen": 34,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30889417288,
+    "t": 106.24074291699799
+   },
+   "mem_after": {
+    "gen": 35,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35410811664,
+    "phys_footprint": 30892399176,
+    "t": 113.59077933299704
+   },
+   "mem_settled": {
+    "gen": 37,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35410811664,
+    "phys_footprint": 30889433672,
+    "t": 121.61663520801812
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4096.chunk_default",
+   "planned_prompt_ids": 4096,
+   "prompt_sha256": "1245574a3c52a701",
+   "prompt_tokens": 4096,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 2.935373082989827,
+   "total_s": 6.273468250001315,
+   "finish": "length",
+   "text": "None\n        self._in_body = False\n\n    def feed(self, text: str) -> list[tuple[str, str]]:\n        \"\"\"Return (channel, text) chunks; channel is None for header text.\"\"\"\n        self._buffer += text\n        out: list[tuple[str, str]]",
+   "text_sha256": "77ed242af8fc428d",
+   "counts": {
+    "clear_cache_calls": 21,
+    "prepare_native": 800,
+    "a8_qmm_calls": 800,
+    "a8_q8_native": 800
+   },
+   "rows_hist": {
+    "2047": 400,
+    "2048": 400
+   },
+   "mem_before": {
+    "gen": 41,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30889433672,
+    "t": 129.6870432080177
+   },
+   "mem_after": {
+    "gen": 42,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33177238290,
+    "phys_footprint": 30892202568,
+    "t": 136.97618783300277
+   },
+   "mem_settled": {
+    "gen": 44,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33177238290,
+    "phys_footprint": 30889450056,
+    "t": 144.9922642080055
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4099.chunk512",
+   "planned_prompt_ids": 4099,
+   "prompt_sha256": "3377a66a9ee12162",
+   "prompt_tokens": 4099,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 2.974559374997625,
+   "total_s": 6.312819416983984,
+   "finish": "length",
+   "text": "OMLX_NETWORK_AUTH_NOTICE\")\n    if notice_path:\n        try:\n            Path(notice_path).write_text(message, encoding=\"utf-8\")\n        except OSError:\n            pass\n    else:\n        print(message, file=sys.stderr)\n\n    try:\n        fd, tmp",
+   "text_sha256": "eaff65ad28b7eb1c",
+   "counts": {
+    "clear_cache_calls": 28,
+    "prepare_native": 3200,
+    "a8_qmm_calls": 3200,
+    "a8_q8_native": 3200
+   },
+   "rows_hist": {
+    "512": 3200
+   },
+   "mem_before": {
+    "gen": 48,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30889450056,
+    "t": 153.072939375008
+   },
+   "mem_after": {
+    "gen": 49,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 31434400556,
+    "phys_footprint": 30893152840,
+    "t": 160.40390937501797
+   },
+   "mem_settled": {
+    "gen": 51,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 31434400556,
+    "phys_footprint": 30890170952,
+    "t": 168.42637825000565
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4099.chunk1024",
+   "planned_prompt_ids": 4099,
+   "prompt_sha256": "3377a66a9ee12162",
+   "prompt_tokens": 4099,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 2.933831709000515,
+   "total_s": 6.274276042007841,
+   "finish": "length",
+   "text": "OMLX_NETWORK_AUTH_NOTICE\")\n    if notice_path:\n        try:\n            Path(notice_path).write_text(message, encoding=\"utf-8\")\n        except OSError:\n            pass\n    else:\n        print(message, file=sys.stderr)\n\n    try:\n        fd, tmp",
+   "text_sha256": "eaff65ad28b7eb1c",
+   "counts": {
+    "clear_cache_calls": 25,
+    "prepare_native": 1600,
+    "a8_qmm_calls": 1600,
+    "a8_q8_native": 1600
+   },
+   "rows_hist": {
+    "1024": 1600
+   },
+   "mem_before": {
+    "gen": 55,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30890203720,
+    "t": 176.49858033302007
+   },
+   "mem_after": {
+    "gen": 56,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 32056208166,
+    "phys_footprint": 30893283912,
+    "t": 183.78151733300183
+   },
+   "mem_settled": {
+    "gen": 58,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 32056208166,
+    "phys_footprint": 30890318408,
+    "t": 191.80302849999862
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4099.chunk2048",
+   "planned_prompt_ids": 4099,
+   "prompt_sha256": "3377a66a9ee12162",
+   "prompt_tokens": 4099,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 2.9718440829892643,
+   "total_s": 6.309585374983726,
+   "finish": "length",
+   "text": "OMLX_NETWORK_AUTH_NOTICE\")\n    if notice_path:\n        try:\n            Path(notice_path).write_text(message, encoding=\"utf-8\")\n        except OSError:\n            pass\n    else:\n        print(message, file=sys.stderr)\n\n    try:\n        fd, tmp",
+   "text_sha256": "eaff65ad28b7eb1c",
+   "counts": {
+    "clear_cache_calls": 22,
+    "prepare_native": 800,
+    "a8_qmm_calls": 800,
+    "a8_q8_native": 800
+   },
+   "rows_hist": {
+    "2048": 800
+   },
+   "mem_before": {
+    "gen": 62,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30890318408,
+    "t": 199.86893495800905
+   },
+   "mem_after": {
+    "gen": 63,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33194965786,
+    "phys_footprint": 30893283912,
+    "t": 207.19452587500564
+   },
+   "mem_settled": {
+    "gen": 65,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33194965786,
+    "phys_footprint": 30890318408,
+    "t": 215.22047620802186
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4099.chunk4096",
+   "planned_prompt_ids": 4099,
+   "prompt_sha256": "3377a66a9ee12162",
+   "prompt_tokens": 4099,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 2.9977494580089115,
+   "total_s": 6.3355727909947746,
+   "finish": "length",
+   "text": "OMLX_MIGRATION_NOTICE\")\n    if notice_path:\n        try:\n            Path(notice_path).write_text(message, encoding=\"utf-8\")\n        except OSError:\n            pass\n    else:\n        print(message, file=sys.stderr)\n\n    try:\n        fd,",
+   "text_sha256": "207d096c71f2f4fb",
+   "counts": {
+    "clear_cache_calls": 21,
+    "prepare_native": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 400
+   },
+   "rows_hist": {
+    "4096": 400
+   },
+   "mem_before": {
+    "gen": 69,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30890318408,
+    "t": 223.2964994580252
+   },
+   "mem_after": {
+    "gen": 70,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35411729172,
+    "phys_footprint": 30893300296,
+    "t": 230.64828041702276
+   },
+   "mem_settled": {
+    "gen": 72,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35411729172,
+    "phys_footprint": 30890318408,
+    "t": 238.66852250002557
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4099.chunk8192",
+   "planned_prompt_ids": 4099,
+   "prompt_sha256": "3377a66a9ee12162",
+   "prompt_tokens": 4099,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 3.0241880410176236,
+   "total_s": 6.360746749996906,
+   "finish": "length",
+   "text": "OMLX_MIGRATION_NOTICE\")\n    if notice_path:\n        try:\n            Path(notice_path).write_text(message, encoding=\"utf-8\")\n        except OSError:\n            pass\n    else:\n        print(message, file=sys.stderr)\n\n    try:\n        fd,",
+   "text_sha256": "207d096c71f2f4fb",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_native": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 400
+   },
+   "rows_hist": {
+    "4098": 400
+   },
+   "mem_before": {
+    "gen": 76,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30890318408,
+    "t": 246.7359791250201
+   },
+   "mem_after": {
+    "gen": 77,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35429210904,
+    "phys_footprint": 30893398600,
+    "t": 254.10496104200138
+   },
+   "mem_settled": {
+    "gen": 79,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35429210904,
+    "phys_footprint": 30890433096,
+    "t": 262.1228927920165
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4099.chunk_default",
+   "planned_prompt_ids": 4099,
+   "prompt_sha256": "3377a66a9ee12162",
+   "prompt_tokens": 4099,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 2.977567459020065,
+   "total_s": 6.317918959015515,
+   "finish": "length",
+   "text": "OMLX_NETWORK_AUTH_NOTICE\")\n    if notice_path:\n        try:\n            Path(notice_path).write_text(message, encoding=\"utf-8\")\n        except OSError:\n            pass\n    else:\n        print(message, file=sys.stderr)\n\n    try:\n        fd, tmp",
+   "text_sha256": "eaff65ad28b7eb1c",
+   "counts": {
+    "clear_cache_calls": 22,
+    "prepare_native": 800,
+    "a8_qmm_calls": 800,
+    "a8_q8_native": 800
+   },
+   "rows_hist": {
+    "2048": 800
+   },
+   "mem_before": {
+    "gen": 83,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30890433096,
+    "t": 270.19269295802223
+   },
+   "mem_after": {
+    "gen": 84,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33194965786,
+    "phys_footprint": 30893398600,
+    "t": 277.5186818750226
+   },
+   "mem_settled": {
+    "gen": 86,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33194965786,
+    "phys_footprint": 30890433096,
+    "t": 285.54235583302216
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L8192.chunk512",
+   "planned_prompt_ids": 8192,
+   "prompt_sha256": "24848e1a482a81f2",
+   "prompt_tokens": 8192,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 5.948563125013607,
+   "total_s": 9.334492207999574,
+   "finish": "length",
+   "text": "With the dispatch fix, the 64-MLP + 48-GDN dual path measured 4.798 s for the\n64-layer body (427.3 prompt tokens/s), 1.250x the 5.999 s GPU baseline.\n",
+   "text_sha256": "6fcb1ebc486efb04",
+   "counts": {
+    "clear_cache_calls": 35,
+    "prepare_native": 6400,
+    "a8_qmm_calls": 6400,
+    "a8_q8_native": 6400
+   },
+   "rows_hist": {
+    "511": 400,
+    "512": 6000
+   },
+   "mem_before": {
+    "gen": 90,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30890433096,
+    "t": 293.6375995420094
+   },
+   "mem_after": {
+    "gen": 91,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 31769387814,
+    "phys_footprint": 30897003080,
+    "t": 303.98283608301426
+   },
+   "mem_settled": {
+    "gen": 93,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 31769387814,
+    "phys_footprint": 30894037576,
+    "t": 312.00869200000307
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L8192.chunk1024",
+   "planned_prompt_ids": 8192,
+   "prompt_sha256": "24848e1a482a81f2",
+   "prompt_tokens": 8192,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 5.878030041989405,
+   "total_s": 9.263553625001805,
+   "finish": "length",
+   "text": "With the dispatch fix, the same 2,048-token prompt measured:\n\n| Configuration | Time | Prompt tok/s |\n|---|---:|---:|\n| GPU only | 5.9991 s | 340.1 |\n| MLP only | ",
+   "text_sha256": "4dc9d582e24c1fb5",
+   "counts": {
+    "clear_cache_calls": 27,
+    "prepare_native": 3200,
+    "a8_qmm_calls": 3200,
+    "a8_q8_native": 3200
+   },
+   "rows_hist": {
+    "1023": 400,
+    "1024": 2800
+   },
+   "mem_before": {
+    "gen": 97,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30894037576,
+    "t": 320.0674410420179
+   },
+   "mem_after": {
+    "gen": 98,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 32604236582,
+    "phys_footprint": 30897363528,
+    "t": 330.3438436250144
+   },
+   "mem_settled": {
+    "gen": 100,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 32604236582,
+    "phys_footprint": 30894398024,
+    "t": 338.36980387501535
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L8192.chunk2048",
+   "planned_prompt_ids": 8192,
+   "prompt_sha256": "24848e1a482a81f2",
+   "prompt_tokens": 8192,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 6.0082274159940425,
+   "total_s": 9.394737124996027,
+   "finish": "length",
+   "text": "With the dispatch fix, the same 2,048-token prompt measured:\n\n| Configuration | Language body | Prompt tok/s |\n|---|---:|---:|\n| GPU only | 5.9991 s | 340.0 |\n| MLP only |",
+   "text_sha256": "2951dcdf20ad9bef",
+   "counts": {
+    "clear_cache_calls": 23,
+    "prepare_native": 1600,
+    "a8_qmm_calls": 1600,
+    "a8_q8_native": 1600
+   },
+   "rows_hist": {
+    "2047": 400,
+    "2048": 1200
+   },
+   "mem_before": {
+    "gen": 104,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30894398024,
+    "t": 346.44168637500843
+   },
+   "mem_after": {
+    "gen": 105,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33446624026,
+    "phys_footprint": 30897363528,
+    "t": 356.8452885830193
+   },
+   "mem_settled": {
+    "gen": 107,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33446624026,
+    "phys_footprint": 30894398024,
+    "t": 364.8712732499989
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L8192.chunk4096",
+   "planned_prompt_ids": 8192,
+   "prompt_sha256": "24848e1a482a81f2",
+   "prompt_tokens": 8192,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 6.123796500003664,
+   "total_s": 9.514418708015,
+   "finish": "length",
+   "text": "With the dispatch fix, the same 2,048-token prompt measured:\n\n| Configuration | Language body | Prompt tok/s |\n|---|---:|---:|\n| GPU only | 5.9991 s | 340.0 |\n| MLP only |",
+   "text_sha256": "2951dcdf20ad9bef",
+   "counts": {
+    "clear_cache_calls": 23,
+    "prepare_native": 800,
+    "a8_qmm_calls": 800,
+    "a8_q8_native": 800
+   },
+   "rows_hist": {
+    "4095": 400,
+    "4096": 400
+   },
+   "mem_before": {
+    "gen": 111,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30894398024,
+    "t": 372.9340942920244
+   },
+   "mem_after": {
+    "gen": 112,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35696040714,
+    "phys_footprint": 30897363528,
+    "t": 383.46668929202133
+   },
+   "mem_settled": {
+    "gen": 114,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35696040714,
+    "phys_footprint": 30894398024,
+    "t": 391.486730375007
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L8192.chunk8192",
+   "planned_prompt_ids": 8192,
+   "prompt_sha256": "24848e1a482a81f2",
+   "prompt_tokens": 8192,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 6.33579687497695,
+   "total_s": 9.722076332982397,
+   "finish": "length",
+   "text": "With the dispatch fix, the 64-MLP + 48-GDN dual path measured 4.798 s for the\n64-layer body (427.3 prompt tokens/s), 1.250x the 5.999 s GPU baseline.\n",
+   "text_sha256": "6fcb1ebc486efb04",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_native": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 400
+   },
+   "rows_hist": {
+    "8191": 400
+   },
+   "mem_before": {
+    "gen": 118,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30894398024,
+    "t": 399.5586285830068
+   },
+   "mem_after": {
+    "gen": 119,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 40238455572,
+    "phys_footprint": 30897379912,
+    "t": 410.29203537502326
+   },
+   "mem_settled": {
+    "gen": 121,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 40238455572,
+    "phys_footprint": 30894414408,
+    "t": 418.3179516250093
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L8192.chunk_default",
+   "planned_prompt_ids": 8192,
+   "prompt_sha256": "24848e1a482a81f2",
+   "prompt_tokens": 8192,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 6.031735708005726,
+   "total_s": 9.419479875010438,
+   "finish": "length",
+   "text": "With the dispatch fix, the same 2,048-token prompt measured:\n\n| Configuration | Language body | Prompt tok/s |\n|---|---:|---:|\n| GPU only | 5.9991 s | 340.0 |\n| MLP only |",
+   "text_sha256": "2951dcdf20ad9bef",
+   "counts": {
+    "clear_cache_calls": 23,
+    "prepare_native": 1600,
+    "a8_qmm_calls": 1600,
+    "a8_q8_native": 1600
+   },
+   "rows_hist": {
+    "2047": 400,
+    "2048": 1200
+   },
+   "mem_before": {
+    "gen": 125,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30894414408,
+    "t": 426.389956250001
+   },
+   "mem_after": {
+    "gen": 126,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33446624026,
+    "phys_footprint": 30897379912,
+    "t": 436.82240691702464
+   },
+   "mem_settled": {
+    "gen": 128,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33446624026,
+    "phys_footprint": 30894414408,
+    "t": 444.84839029199793
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L8195.chunk512",
+   "planned_prompt_ids": 8195,
+   "prompt_sha256": "e683e3993ed15db4",
+   "prompt_tokens": 8195,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 6.017349792004097,
+   "total_s": 9.401468459021999,
+   "finish": "length",
+   "text": "_type\n\n    @classmethod\n    def get_handler_for_object(cls, cache_obj: Any) -> CacheTypeHandler:\n        \"\"\"Get handler for a cache object.\n\n        Args:\n            cache_obj: An mlx-lm cache object\n\n        Returns:\n            Handler for the cache object's type\n       ",
+   "text_sha256": "a7ac64516f67a841",
+   "counts": {
+    "clear_cache_calls": 36,
+    "prepare_native": 6400,
+    "a8_qmm_calls": 6400,
+    "a8_q8_native": 6400
+   },
+   "rows_hist": {
+    "512": 6400
+   },
+   "mem_before": {
+    "gen": 132,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30894414408,
+    "t": 452.94487175001996
+   },
+   "mem_after": {
+    "gen": 133,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 31775122218,
+    "phys_footprint": 30897904224,
+    "t": 463.359515750024
+   },
+   "mem_settled": {
+    "gen": 135,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 31775122218,
+    "phys_footprint": 30894938720,
+    "t": 471.3842394580133
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L8195.chunk1024",
+   "planned_prompt_ids": 8195,
+   "prompt_sha256": "e683e3993ed15db4",
+   "prompt_tokens": 8195,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 5.875647790991934,
+   "total_s": 9.265838207997149,
+   "finish": "length",
+   "text": "_type\n\n    @classmethod\n    def get_handler_for_cache(cls, cache_obj: Any) -> CacheTypeHandler:\n        \"\"\"Get handler for a cache object.\n\n        Args:\n            cache_obj: An mlx-lm cache object\n\n        Returns:\n            Handler for the cache object's type\n       ",
+   "text_sha256": "22abc4e15edda4ed",
+   "counts": {
+    "clear_cache_calls": 28,
+    "prepare_native": 3200,
+    "a8_qmm_calls": 3200,
+    "a8_q8_native": 3200
+   },
+   "rows_hist": {
+    "1024": 3200
+   },
+   "mem_before": {
+    "gen": 139,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30894938720,
+    "t": 479.45415875001345
+   },
+   "mem_after": {
+    "gen": 140,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 32331016986,
+    "phys_footprint": 30897904224,
+    "t": 489.72938491700916
+   },
+   "mem_settled": {
+    "gen": 142,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 32331016986,
+    "phys_footprint": 30894938720,
+    "t": 497.75540270801866
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L8195.chunk2048",
+   "planned_prompt_ids": 8195,
+   "prompt_sha256": "e683e3993ed15db4",
+   "prompt_tokens": 8195,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 6.028443333983887,
+   "total_s": 9.416951249993872,
+   "finish": "length",
+   "text": "_type\n\n    @classmethod\n    def get_handler_for_cache(cls, cache_obj: Any) -> CacheTypeHandler:\n        \"\"\"Get handler for a cache object.\n\n        Args:\n            cache_obj: An mlx-lm cache object\n\n        Returns:\n            Handler for the cache object's type\n       ",
+   "text_sha256": "22abc4e15edda4ed",
+   "counts": {
+    "clear_cache_calls": 24,
+    "prepare_native": 1600,
+    "a8_qmm_calls": 1600,
+    "a8_q8_native": 1600
+   },
+   "rows_hist": {
+    "2048": 1600
+   },
+   "mem_before": {
+    "gen": 146,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30894938720,
+    "t": 505.82905595802004
+   },
+   "mem_after": {
+    "gen": 147,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33463417626,
+    "phys_footprint": 30897920608,
+    "t": 516.2642352500116
+   },
+   "mem_settled": {
+    "gen": 149,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33463417626,
+    "phys_footprint": 30894938720,
+    "t": 524.2900598749984
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L8195.chunk4096",
+   "planned_prompt_ids": 8195,
+   "prompt_sha256": "e683e3993ed15db4",
+   "prompt_tokens": 8195,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 6.089569584000856,
+   "total_s": 9.475741458998527,
+   "finish": "length",
+   "text": "_type\n\n    @classmethod\n    def get_handler_for_cache(cls, cache_obj: Any) -> CacheTypeHandler:\n        \"\"\"Get handler for a cache object.\n\n        Args:\n            cache_obj: An mlx-lm cache object\n\n        Returns:\n            Handler for the cache object's type\n       ",
+   "text_sha256": "22abc4e15edda4ed",
+   "counts": {
+    "clear_cache_calls": 22,
+    "prepare_native": 800,
+    "a8_qmm_calls": 800,
+    "a8_q8_native": 800
+   },
+   "rows_hist": {
+    "4096": 800
+   },
+   "mem_before": {
+    "gen": 153,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30894938720,
+    "t": 532.3526216669998
+   },
+   "mem_after": {
+    "gen": 154,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35713735438,
+    "phys_footprint": 30897904224,
+    "t": 542.8465645830147
+   },
+   "mem_settled": {
+    "gen": 156,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 35713735438,
+    "phys_footprint": 30894938720,
+    "t": 550.8713008750055
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L8195.chunk8192",
+   "planned_prompt_ids": 8195,
+   "prompt_sha256": "e683e3993ed15db4",
+   "prompt_tokens": 8195,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 6.180097082979046,
+   "total_s": 9.566578749974724,
+   "finish": "length",
+   "text": "_type\n\n    @classmethod\n    def get_handler_for_cache(cls, cache_obj: Any) -> CacheTypeHandler:\n        \"\"\"Get handler for a cache object.\n\n        Args:\n            cache_obj: An mlx-lm cache object\n\n        Returns:\n            Handler for the cache object's type\n       ",
+   "text_sha256": "22abc4e15edda4ed",
+   "counts": {
+    "clear_cache_calls": 21,
+    "prepare_native": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 400
+   },
+   "rows_hist": {
+    "8192": 400
+   },
+   "mem_before": {
+    "gen": 160,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30894938720,
+    "t": 558.942523833015
+   },
+   "mem_after": {
+    "gen": 161,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 40239340304,
+    "phys_footprint": 30897920608,
+    "t": 569.518629416998
+   },
+   "mem_settled": {
+    "gen": 163,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 40239340304,
+    "phys_footprint": 30894938720,
+    "t": 577.5423395000107
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L8195.chunk_default",
+   "planned_prompt_ids": 8195,
+   "prompt_sha256": "e683e3993ed15db4",
+   "prompt_tokens": 8195,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 6.012843042000895,
+   "total_s": 9.401185791997705,
+   "finish": "length",
+   "text": "_type\n\n    @classmethod\n    def get_handler_for_cache(cls, cache_obj: Any) -> CacheTypeHandler:\n        \"\"\"Get handler for a cache object.\n\n        Args:\n            cache_obj: An mlx-lm cache object\n\n        Returns:\n            Handler for the cache object's type\n       ",
+   "text_sha256": "22abc4e15edda4ed",
+   "counts": {
+    "clear_cache_calls": 25,
+    "prepare_native": 1600,
+    "a8_qmm_calls": 1600,
+    "a8_q8_native": 1600
+   },
+   "rows_hist": {
+    "2048": 1600
+   },
+   "mem_before": {
+    "gen": 167,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30894938720,
+    "t": 585.606975542003
+   },
+   "mem_after": {
+    "gen": 168,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33463417626,
+    "phys_footprint": 30897904224,
+    "t": 596.023517292022
+   },
+   "mem_settled": {
+    "gen": 170,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33463417626,
+    "phys_footprint": 30894938720,
+    "t": 604.0449389580172
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  }
+ ],
+ "events": [],
+ "flags": {
+  "gen": 1,
+  "op": "flags",
+  "pid": 39328,
+  "oq_a8_module_loaded": true,
+  "mlp_patched": true,
+  "gdn_registered": true,
+  "omlx_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/__init__.py",
+  "ext_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/custom_kernels/qwen35_prefill/_ext.cpython-311-darwin.so",
+  "oq_a8_available": true
+ },
+ "mem_after_load": {
+  "gen": 3,
+  "op": "mem",
+  "active": 30002535166,
+  "cache": 194275376,
+  "peak": 0,
+  "phys_footprint": 31083272752,
+  "t": 4.662726250011474
+ },
+ "log_suspect_lines": [
+  "2026-10-09 10:59:56,747 - omlx.patches.qwen35_oq_a8 - INFO - oQ A8 prefill kernels enabled (mlp=True, gdn=True, modules=1255, min_tokens=128)",
+  "2026-10-09 10:59:56,748 - omlx.patches.qwen35_ragged_decode - INFO - qwen3_5 ragged decode threadgroup fallback patch applied"
+ ]
+}

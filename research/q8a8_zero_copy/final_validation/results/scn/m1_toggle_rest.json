@@ -1,0 +1,1522 @@
+{
+ "schema": 1,
+ "mode": "toggle",
+ "arm": "toggle_rest",
+ "argv": [
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/scenarios.py",
+  "--python",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/venv323/bin/python",
+  "--tree",
+  "<HOME>/Projects/omlx-q8a8-measured/prep",
+  "--workdir",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work",
+  "--model-dir",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models",
+  "--checkpoint",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models/Qwen3.8-27B-oQ8e-mtp",
+  "--model",
+  "Qwen3.8-27B-oQ8e-mtp",
+  "--corpus",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/corpus.json",
+  "--mode",
+  "toggle",
+  "--arm",
+  "toggle_rest",
+  "--a8",
+  "on",
+  "--mtp",
+  "off",
+  "--out",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/final_validation/results/scn/m1_toggle_rest.json",
+  "--lengths",
+  "2048",
+  "--blocks",
+  "native",
+  "transposed",
+  "transposed",
+  "native",
+  "native",
+  "transposed",
+  "--per-block",
+  "3",
+  "--subset",
+  "rest"
+ ],
+ "tree": "<HOME>/Projects/omlx-q8a8-measured/prep",
+ "tree_git_head": "0572d95efff617beec73b7b5ea7ba01e31ed14b0",
+ "model_settings": {
+  "qwen35_oq_a8_enabled": true,
+  "qwen35_oq_a8_min_tokens": 128,
+  "mtp_enabled": false
+ },
+ "env": {
+  "PYTHONPATH": "<HOME>/Projects/omlx-q8a8-measured/prep:<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/hook",
+  "HOME": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/scn_toggle_toggle_rest/home",
+  "OMLX_DEC_CTL": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/scn_toggle_toggle_rest/ctl"
+ },
+ "requests": [
+  {
+   "label": "L2048.init",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "987a0a0a8b1d0810",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.5321371250029188,
+   "total_s": 4.85346225000103,
+   "finish": "length",
+   "text": "init__.py\n# oMLX Admin Panel\n\"\"\"Admin panel for oMLX - model management, settings, and monitoring.\"\"\"\n\n# file: omlx/admin/api.py\n\"\"\"Admin API endpoints for oMLX.\"\"\"\n\nfrom __future__ import annotations\n\nimport asyncio\nimport json\nimport logging\nimport",
+   "text_sha256": "bda49242336fef09",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_native": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 400
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 5,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30878112328,
+    "t": 12.639407542010304
+   },
+   "mem_after": {
+    "gen": 6,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33034623778,
+    "phys_footprint": 30882961992,
+    "t": 18.503218792000553
+   },
+   "mem_settled": {
+    "gen": 8,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 33034623778,
+    "phys_footprint": 30879996488,
+    "t": 26.524045291997027
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L2048.b0.native.warm",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "14ddad44e6dcf274",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.778997374989558,
+   "total_s": 5.101375083992025,
+   "finish": "length",
+   "text": "024)\n        if not chunk:\n            break\n        total += len(chunk)\n        if total > limit:\n            raise HTTPException(\n                status_code=413,\n                detail=f\"Audio file exceeds maximum size of {limit // (1024 * 1",
+   "text_sha256": "e8cfa04339746897",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_native": 208,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 208,
+    "prepare_calls": 192,
+    "prepare_builds": 192,
+    "a8_q8_transposed": 192
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 12,
+    "op": "mem",
+    "active": 30002535166,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30880864840,
+    "t": 34.63162833399838
+   },
+   "mem_after": {
+    "gen": 13,
+    "op": "mem",
+    "active": 31072082686,
+    "cache": 16,
+    "peak": 34104171298,
+    "phys_footprint": 31954131528,
+    "t": 40.751152750017354
+   },
+   "mem_settled": {
+    "gen": 15,
+    "op": "mem",
+    "active": 31072082686,
+    "cache": 16,
+    "peak": 34104171298,
+    "phys_footprint": 31951166024,
+    "t": 48.77708458399866
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 192,
+    "prepared_copy_bytes": 1069547520
+   }
+  },
+  {
+   "label": "L2048.b0.native.k0",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "6e4fe91f3f9c6e4f",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.664088042016374,
+   "total_s": 4.985686291998718,
+   "finish": "length",
+   "text": "Support de nouveaux mod\u00e8les\n- Documentation et tutoriels\n\n## Licence\n\n[MIT](LICENSE)\n\n## Auteurs\n\n- **Jundot** \u2014 [GitHub](https://github.com/jundot)\n- **Blaizzy** \u2014 [GitHub](https://github.com/Blaizzy)\n\n## Rem",
+   "text_sha256": "f22250d846b92587",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_native": 208,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 208,
+    "prepare_calls": 192,
+    "a8_q8_transposed": 192
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 18,
+    "op": "mem",
+    "active": 31072082686,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 31951264328,
+    "t": 56.847829083999386
+   },
+   "mem_after": {
+    "gen": 19,
+    "op": "mem",
+    "active": 31072082686,
+    "cache": 16,
+    "peak": 34104171298,
+    "phys_footprint": 31954442824,
+    "t": 62.85130379200564
+   },
+   "mem_settled": {
+    "gen": 21,
+    "op": "mem",
+    "active": 31072082686,
+    "cache": 16,
+    "peak": 34104171298,
+    "phys_footprint": 31951477320,
+    "t": 70.87583958401228
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 192,
+    "prepared_copy_bytes": 1069547520
+   }
+  },
+  {
+   "label": "L2048.b0.native.k1",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "7f4c2caa94494c5e",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.6646205419965554,
+   "total_s": 4.990200125001138,
+   "finish": "length",
+   "text": ")\n\n    return convert_file_to_markdown(file, global_settings=global_settings)\n\n\ndef _is_plain_text_attachment(file: MarkItDownFile) -> bool:\n    if file.extension in PLAIN_TEXT_EXTENSIONS:\n        return True\n    if file.mime_type in PLAIN_TEXT_MIME_TYPES:\n",
+   "text_sha256": "decd3c26a15274c7",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_native": 208,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 208,
+    "prepare_calls": 192,
+    "a8_q8_transposed": 192
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 24,
+    "op": "mem",
+    "active": 31072082686,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 31951477320,
+    "t": 78.94336354199913
+   },
+   "mem_after": {
+    "gen": 25,
+    "op": "mem",
+    "active": 31072082686,
+    "cache": 16,
+    "peak": 34104171298,
+    "phys_footprint": 31954590280,
+    "t": 84.94267366701388
+   },
+   "mem_settled": {
+    "gen": 27,
+    "op": "mem",
+    "active": 31072082686,
+    "cache": 16,
+    "peak": 34104171298,
+    "phys_footprint": 31951624776,
+    "t": 92.96546362500521
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 192,
+    "prepared_copy_bytes": 1069547520
+   }
+  },
+  {
+   "label": "L2048.b0.native.k2",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "e5779f6ae5291aad",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.6633609169803094,
+   "total_s": 4.987121999991359,
+   "finish": "length",
+   "text": "dn_z_only\": true,\n  \"qwen35_ane_prefill_gdn_cpu\": false,\n  \"qwen35_ane_prefill_gdn_cpu_fraction\": 0.25,\n  \"qwen35_ane_prefill_gdn_cpu_threads\": 0,",
+   "text_sha256": "612737818c9ecf66",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_native": 208,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 208,
+    "prepare_calls": 192,
+    "a8_q8_transposed": 192
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 30,
+    "op": "mem",
+    "active": 31072082686,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 31951624776,
+    "t": 101.02887524999096
+   },
+   "mem_after": {
+    "gen": 31,
+    "op": "mem",
+    "active": 31072082686,
+    "cache": 16,
+    "peak": 34104171298,
+    "phys_footprint": 31954786888,
+    "t": 107.03162237501238
+   },
+   "mem_settled": {
+    "gen": 33,
+    "op": "mem",
+    "active": 31072082686,
+    "cache": 16,
+    "peak": 34104171298,
+    "phys_footprint": 31951821384,
+    "t": 115.05756454201764
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 192,
+    "prepared_copy_bytes": 1069547520
+   }
+  },
+  {
+   "label": "L2048.b1.transposed.warm",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "14ddad44e6dcf274",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.801638415985508,
+   "total_s": 5.123128415987594,
+   "finish": "length",
+   "text": "024)\n        if not chunk:\n            break\n        total += len(chunk)\n        if total > limit:\n            raise HTTPException(\n                status_code=413,\n                detail=f\"Audio file exceeds maximum size of {limit // (1024 * 1",
+   "text_sha256": "e8cfa04339746897",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_calls": 400,
+    "prepare_builds": 208,
+    "a8_qmm_calls": 400,
+    "a8_q8_transposed": 400
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 37,
+    "op": "mem",
+    "active": 31072082686,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 31952083528,
+    "t": 123.14805216700188
+   },
+   "mem_after": {
+    "gen": 38,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406461000,
+    "t": 129.27979241701541
+   },
+   "mem_settled": {
+    "gen": 40,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403495496,
+    "t": 137.30577495900798
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b1.transposed.k0",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "6e4fe91f3f9c6e4f",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.7110485839948524,
+   "total_s": 5.032432625012007,
+   "finish": "length",
+   "text": "Support de nouveaux mod\u00e8les\n- Documentation et tutoriels\n\n## Licence\n\n[MIT](LICENSE)\n\n## Auteurs\n\n- **Jundot** \u2014 [GitHub](https://github.com/jundot)\n- **Blaizzy** \u2014 [GitHub](https://github.com/Blaizzy)\n\n## Rem",
+   "text_sha256": "f22250d846b92587",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_calls": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_transposed": 400
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 43,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403495496,
+    "t": 145.3705936250044
+   },
+   "mem_after": {
+    "gen": 44,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406461000,
+    "t": 151.421211125009
+   },
+   "mem_settled": {
+    "gen": 46,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403495496,
+    "t": 159.44256741699064
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b1.transposed.k1",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "7f4c2caa94494c5e",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.711964457994327,
+   "total_s": 5.041494832985336,
+   "finish": "length",
+   "text": ")\n\n    return convert_file_to_markdown(file, global_settings=global_settings)\n\n\ndef _is_plain_text_attachment(file: MarkItDownFile) -> bool:\n    if file.extension in PLAIN_TEXT_EXTENSIONS:\n        return True\n    if file.mime_type in PLAIN_TEXT_MIME_TYPES:\n",
+   "text_sha256": "decd3c26a15274c7",
+   "counts": {
+    "clear_cache_calls": 5,
+    "prepare_calls": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_transposed": 400
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 49,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403495496,
+    "t": 167.5123122090008
+   },
+   "mem_after": {
+    "gen": 50,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406461000,
+    "t": 173.57190199999604
+   },
+   "mem_settled": {
+    "gen": 52,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403495496,
+    "t": 181.59007558401208
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b1.transposed.k2",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "e5779f6ae5291aad",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.716524791001575,
+   "total_s": 5.037867500010179,
+   "finish": "length",
+   "text": "dn_z_only\": true,\n  \"qwen35_ane_prefill_gdn_cpu\": false,\n  \"qwen35_ane_prefill_gdn_cpu_fraction\": 0.25,\n  \"qwen35_ane_prefill_gdn_cpu_threads\": 0,",
+   "text_sha256": "612737818c9ecf66",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_calls": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_transposed": 400
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 55,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403495496,
+    "t": 189.65283008400002
+   },
+   "mem_after": {
+    "gen": 56,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406461000,
+    "t": 195.70160258401302
+   },
+   "mem_settled": {
+    "gen": 58,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403495496,
+    "t": 203.72351145901484
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b2.transposed.warm",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "14ddad44e6dcf274",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.7114194160094485,
+   "total_s": 5.034924791019876,
+   "finish": "length",
+   "text": "024)\n        if not chunk:\n            break\n        total += len(chunk)\n        if total > limit:\n            raise HTTPException(\n                status_code=413,\n                detail=f\"Audio file exceeds maximum size of {limit // (1024 * 1",
+   "text_sha256": "e8cfa04339746897",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_calls": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_transposed": 400
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 62,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403495496,
+    "t": 211.81018291699002
+   },
+   "mem_after": {
+    "gen": 63,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406461000,
+    "t": 217.86054583400255
+   },
+   "mem_settled": {
+    "gen": 65,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403495496,
+    "t": 225.88643104201765
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b2.transposed.k0",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "6e4fe91f3f9c6e4f",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.7098094999964815,
+   "total_s": 5.0311812500003725,
+   "finish": "length",
+   "text": "Support de nouveaux mod\u00e8les\n- Documentation et tutoriels\n\n## Licence\n\n[MIT](LICENSE)\n\n## Auteurs\n\n- **Jundot** \u2014 [GitHub](https://github.com/jundot)\n- **Blaizzy** \u2014 [GitHub](https://github.com/Blaizzy)\n\n## Rem",
+   "text_sha256": "f22250d846b92587",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_calls": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_transposed": 400
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 68,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403495496,
+    "t": 233.94838325001183
+   },
+   "mem_after": {
+    "gen": 69,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406461000,
+    "t": 239.99755258401274
+   },
+   "mem_settled": {
+    "gen": 71,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403495496,
+    "t": 248.02095587499207
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b2.transposed.k1",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "7f4c2caa94494c5e",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.7048367919924203,
+   "total_s": 5.028903166996315,
+   "finish": "length",
+   "text": ")\n\n    return convert_file_to_markdown(file, global_settings=global_settings)\n\n\ndef _is_plain_text_attachment(file: MarkItDownFile) -> bool:\n    if file.extension in PLAIN_TEXT_EXTENSIONS:\n        return True\n    if file.mime_type in PLAIN_TEXT_MIME_TYPES:\n",
+   "text_sha256": "decd3c26a15274c7",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_calls": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_transposed": 400
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 74,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403495496,
+    "t": 256.0918684999924
+   },
+   "mem_after": {
+    "gen": 75,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406461000,
+    "t": 262.1296559170005
+   },
+   "mem_settled": {
+    "gen": 77,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403495496,
+    "t": 270.1477467090008
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b2.transposed.k2",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "e5779f6ae5291aad",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.7090760410064831,
+   "total_s": 5.030337833013618,
+   "finish": "length",
+   "text": "dn_z_only\": true,\n  \"qwen35_ane_prefill_gdn_cpu\": false,\n  \"qwen35_ane_prefill_gdn_cpu_fraction\": 0.25,\n  \"qwen35_ane_prefill_gdn_cpu_threads\": 0,",
+   "text_sha256": "612737818c9ecf66",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_calls": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_transposed": 400
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 80,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403495496,
+    "t": 278.2185785000038
+   },
+   "mem_after": {
+    "gen": 81,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406461000,
+    "t": 284.264803500002
+   },
+   "mem_settled": {
+    "gen": 83,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403495496,
+    "t": 292.2900377920014
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b3.native.warm",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "14ddad44e6dcf274",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.6610260410234332,
+   "total_s": 4.983340125007089,
+   "finish": "length",
+   "text": "024)\n        if not chunk:\n            break\n        total += len(chunk)\n        if total > limit:\n            raise HTTPException(\n                status_code=413,\n                detail=f\"Audio file exceeds maximum size of {limit // (1024 * 1",
+   "text_sha256": "e8cfa04339746897",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_native": 208,
+    "prepare_native_cached_copy": 208,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 208,
+    "prepare_calls": 192,
+    "a8_q8_transposed": 192
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 87,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403495496,
+    "t": 300.3804356250039
+   },
+   "mem_after": {
+    "gen": 88,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406461000,
+    "t": 306.381830792001
+   },
+   "mem_settled": {
+    "gen": 90,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403495496,
+    "t": 314.4076823340147
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b3.native.k0",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "6e4fe91f3f9c6e4f",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.660658082982991,
+   "total_s": 4.98161958300625,
+   "finish": "length",
+   "text": "Support de nouveaux mod\u00e8les\n- Documentation et tutoriels\n\n## Licence\n\n[MIT](LICENSE)\n\n## Auteurs\n\n- **Jundot** \u2014 [GitHub](https://github.com/jundot)\n- **Blaizzy** \u2014 [GitHub](https://github.com/Blaizzy)\n\n## Rem",
+   "text_sha256": "f22250d846b92587",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_native": 208,
+    "prepare_native_cached_copy": 208,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 208,
+    "prepare_calls": 192,
+    "a8_q8_transposed": 192
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 93,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403495496,
+    "t": 322.4764905839984
+   },
+   "mem_after": {
+    "gen": 94,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406461000,
+    "t": 328.4682938749902
+   },
+   "mem_settled": {
+    "gen": 96,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403495496,
+    "t": 336.4900375000143
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b3.native.k1",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "7f4c2caa94494c5e",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.6601462499820627,
+   "total_s": 4.985136999981478,
+   "finish": "length",
+   "text": ")\n\n    return convert_file_to_markdown(file, global_settings=global_settings)\n\n\ndef _is_plain_text_attachment(file: MarkItDownFile) -> bool:\n    if file.extension in PLAIN_TEXT_EXTENSIONS:\n        return True\n    if file.mime_type in PLAIN_TEXT_MIME_TYPES:\n",
+   "text_sha256": "decd3c26a15274c7",
+   "counts": {
+    "clear_cache_calls": 6,
+    "prepare_native": 208,
+    "prepare_native_cached_copy": 208,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 208,
+    "prepare_calls": 192,
+    "a8_q8_transposed": 192
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 99,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403495496,
+    "t": 344.5608752499975
+   },
+   "mem_after": {
+    "gen": 100,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406461000,
+    "t": 350.5562691669911
+   },
+   "mem_settled": {
+    "gen": 102,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403495496,
+    "t": 358.5821668340068
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b3.native.k2",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "e5779f6ae5291aad",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.664010792010231,
+   "total_s": 4.986018666997552,
+   "finish": "length",
+   "text": "dn_z_only\": true,\n  \"qwen35_ane_prefill_gdn_cpu\": false,\n  \"qwen35_ane_prefill_gdn_cpu_fraction\": 0.25,\n  \"qwen35_ane_prefill_gdn_cpu_threads\": 0,",
+   "text_sha256": "612737818c9ecf66",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_native": 208,
+    "prepare_native_cached_copy": 208,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 208,
+    "prepare_calls": 192,
+    "a8_q8_transposed": 192
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 105,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403495496,
+    "t": 366.6527742090111
+   },
+   "mem_after": {
+    "gen": 106,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406461000,
+    "t": 372.6569849170046
+   },
+   "mem_settled": {
+    "gen": 108,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403495496,
+    "t": 380.68289633400855
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b4.native.warm",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "14ddad44e6dcf274",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.662547165993601,
+   "total_s": 4.985639957973035,
+   "finish": "length",
+   "text": "024)\n        if not chunk:\n            break\n        total += len(chunk)\n        if total > limit:\n            raise HTTPException(\n                status_code=413,\n                detail=f\"Audio file exceeds maximum size of {limit // (1024 * 1",
+   "text_sha256": "e8cfa04339746897",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_native": 208,
+    "prepare_native_cached_copy": 208,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 208,
+    "prepare_calls": 192,
+    "a8_q8_transposed": 192
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 112,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403495496,
+    "t": 388.7784709589905
+   },
+   "mem_after": {
+    "gen": 113,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406461000,
+    "t": 394.77502991701476
+   },
+   "mem_settled": {
+    "gen": 115,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403495496,
+    "t": 402.7957054589933
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b4.native.k0",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "6e4fe91f3f9c6e4f",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.6608474160020705,
+   "total_s": 4.982139541010838,
+   "finish": "length",
+   "text": "Support de nouveaux mod\u00e8les\n- Documentation et tutoriels\n\n## Licence\n\n[MIT](LICENSE)\n\n## Auteurs\n\n- **Jundot** \u2014 [GitHub](https://github.com/jundot)\n- **Blaizzy** \u2014 [GitHub](https://github.com/Blaizzy)\n\n## Rem",
+   "text_sha256": "f22250d846b92587",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_native": 208,
+    "prepare_native_cached_copy": 208,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 208,
+    "prepare_calls": 192,
+    "a8_q8_transposed": 192
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 118,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403495496,
+    "t": 410.8615230419964
+   },
+   "mem_after": {
+    "gen": 119,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406477384,
+    "t": 416.8617196670093
+   },
+   "mem_settled": {
+    "gen": 121,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403479112,
+    "t": 424.88716574999853
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b4.native.k1",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "7f4c2caa94494c5e",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.6605903330200817,
+   "total_s": 4.98441725000157,
+   "finish": "length",
+   "text": ")\n\n    return convert_file_to_markdown(file, global_settings=global_settings)\n\n\ndef _is_plain_text_attachment(file: MarkItDownFile) -> bool:\n    if file.extension in PLAIN_TEXT_EXTENSIONS:\n        return True\n    if file.mime_type in PLAIN_TEXT_MIME_TYPES:\n",
+   "text_sha256": "decd3c26a15274c7",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_native": 208,
+    "prepare_native_cached_copy": 208,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 208,
+    "prepare_calls": 192,
+    "a8_q8_transposed": 192
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 124,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403479112,
+    "t": 432.948997458996
+   },
+   "mem_after": {
+    "gen": 125,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406444616,
+    "t": 438.95097216701834
+   },
+   "mem_settled": {
+    "gen": 127,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403479112,
+    "t": 446.97459320901544
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b4.native.k2",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "e5779f6ae5291aad",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.662561708013527,
+   "total_s": 4.984720583015587,
+   "finish": "length",
+   "text": "dn_z_only\": true,\n  \"qwen35_ane_prefill_gdn_cpu\": false,\n  \"qwen35_ane_prefill_gdn_cpu_fraction\": 0.25,\n  \"qwen35_ane_prefill_gdn_cpu_threads\": 0,",
+   "text_sha256": "612737818c9ecf66",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_native": 208,
+    "prepare_native_cached_copy": 208,
+    "a8_qmm_calls": 400,
+    "a8_q8_native": 208,
+    "prepare_calls": 192,
+    "a8_q8_transposed": 192
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 130,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403479112,
+    "t": 455.04202970900224
+   },
+   "mem_after": {
+    "gen": 131,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406444616,
+    "t": 461.0417931250122
+   },
+   "mem_settled": {
+    "gen": 133,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403479112,
+    "t": 469.06311725001433
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b5.transposed.warm",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "14ddad44e6dcf274",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.7122059579996858,
+   "total_s": 5.034118332987418,
+   "finish": "length",
+   "text": "024)\n        if not chunk:\n            break\n        total += len(chunk)\n        if total > limit:\n            raise HTTPException(\n                status_code=413,\n                detail=f\"Audio file exceeds maximum size of {limit // (1024 * 1",
+   "text_sha256": "e8cfa04339746897",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_calls": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_transposed": 400
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 137,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403479112,
+    "t": 477.1543831670133
+   },
+   "mem_after": {
+    "gen": 138,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406444616,
+    "t": 483.2066263750021
+   },
+   "mem_settled": {
+    "gen": 140,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403479112,
+    "t": 491.2325536670105
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b5.transposed.k0",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "6e4fe91f3f9c6e4f",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.7108970830158796,
+   "total_s": 5.031494916998781,
+   "finish": "length",
+   "text": "Support de nouveaux mod\u00e8les\n- Documentation et tutoriels\n\n## Licence\n\n[MIT](LICENSE)\n\n## Auteurs\n\n- **Jundot** \u2014 [GitHub](https://github.com/jundot)\n- **Blaizzy** \u2014 [GitHub](https://github.com/Blaizzy)\n\n## Rem",
+   "text_sha256": "f22250d846b92587",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_calls": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_transposed": 400
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 143,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403479112,
+    "t": 499.2963230420137
+   },
+   "mem_after": {
+    "gen": 144,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406444616,
+    "t": 505.3381258340087
+   },
+   "mem_settled": {
+    "gen": 146,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403479112,
+    "t": 513.3640520840127
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b5.transposed.k1",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "7f4c2caa94494c5e",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.7141183750063647,
+   "total_s": 5.037646042008419,
+   "finish": "length",
+   "text": ")\n\n    return convert_file_to_markdown(file, global_settings=global_settings)\n\n\ndef _is_plain_text_attachment(file: MarkItDownFile) -> bool:\n    if file.extension in PLAIN_TEXT_EXTENSIONS:\n        return True\n    if file.mime_type in PLAIN_TEXT_MIME_TYPES:\n",
+   "text_sha256": "decd3c26a15274c7",
+   "counts": {
+    "clear_cache_calls": 5,
+    "prepare_calls": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_transposed": 400
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 149,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403479112,
+    "t": 521.4416710000078
+   },
+   "mem_after": {
+    "gen": 150,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406444616,
+    "t": 527.4974196669937
+   },
+   "mem_settled": {
+    "gen": 152,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403479112,
+    "t": 535.5209660840046
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  },
+  {
+   "label": "L2048.b5.transposed.k2",
+   "planned_prompt_ids": 2048,
+   "prompt_sha256": "e5779f6ae5291aad",
+   "prompt_tokens": 2048,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 1.7110312500153668,
+   "total_s": 5.033094375015935,
+   "finish": "length",
+   "text": "dn_z_only\": true,\n  \"qwen35_ane_prefill_gdn_cpu\": false,\n  \"qwen35_ane_prefill_gdn_cpu_fraction\": 0.25,\n  \"qwen35_ane_prefill_gdn_cpu_threads\": 0,",
+   "text_sha256": "612737818c9ecf66",
+   "counts": {
+    "clear_cache_calls": 4,
+    "prepare_calls": 400,
+    "a8_qmm_calls": 400,
+    "a8_q8_transposed": 400
+   },
+   "rows_hist": {
+    "2047": 400
+   },
+   "mem_before": {
+    "gen": 155,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 32403479112,
+    "t": 543.590291208995
+   },
+   "mem_after": {
+    "gen": 156,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32406444616,
+    "t": 549.6333641250094
+   },
+   "mem_settled": {
+    "gen": 158,
+    "op": "mem",
+    "active": 31522970366,
+    "cache": 16,
+    "peak": 34555058978,
+    "phys_footprint": 32403479112,
+    "t": 557.659226000018
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 400,
+    "prepared_copy_bytes": 1520435200
+   }
+  }
+ ],
+ "events": [
+  {
+   "block": 0,
+   "arm": "native",
+   "length": 2048,
+   "switch": {
+    "gen": 10,
+    "op": "set_plans",
+    "native_modules": 208,
+    "transposed_modules": 192,
+    "subset": "rest",
+    "native": true
+   }
+  },
+  {
+   "block": 1,
+   "arm": "transposed",
+   "length": 2048,
+   "switch": {
+    "gen": 35,
+    "op": "set_plans",
+    "native_modules": 0,
+    "transposed_modules": 400,
+    "subset": "rest",
+    "native": false
+   }
+  },
+  {
+   "block": 2,
+   "arm": "transposed",
+   "length": 2048,
+   "switch": {
+    "gen": 60,
+    "op": "set_plans",
+    "native_modules": 0,
+    "transposed_modules": 400,
+    "subset": "rest",
+    "native": false
+   }
+  },
+  {
+   "block": 3,
+   "arm": "native",
+   "length": 2048,
+   "switch": {
+    "gen": 85,
+    "op": "set_plans",
+    "native_modules": 208,
+    "transposed_modules": 192,
+    "subset": "rest",
+    "native": true
+   }
+  },
+  {
+   "block": 4,
+   "arm": "native",
+   "length": 2048,
+   "switch": {
+    "gen": 110,
+    "op": "set_plans",
+    "native_modules": 208,
+    "transposed_modules": 192,
+    "subset": "rest",
+    "native": true
+   }
+  },
+  {
+   "block": 5,
+   "arm": "transposed",
+   "length": 2048,
+   "switch": {
+    "gen": 135,
+    "op": "set_plans",
+    "native_modules": 0,
+    "transposed_modules": 400,
+    "subset": "rest",
+    "native": false
+   }
+  }
+ ],
+ "flags": {
+  "gen": 1,
+  "op": "flags",
+  "pid": 62236,
+  "oq_a8_module_loaded": true,
+  "mlp_patched": true,
+  "gdn_registered": true,
+  "omlx_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/__init__.py",
+  "ext_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/custom_kernels/qwen35_prefill/_ext.cpython-311-darwin.so",
+  "oq_a8_available": true
+ },
+ "mem_after_load": {
+  "gen": 3,
+  "op": "mem",
+  "active": 30002535166,
+  "cache": 194262160,
+  "peak": 0,
+  "phys_footprint": 31075424840,
+  "t": 4.615700416994514
+ },
+ "log_suspect_lines": [
+  "2026-10-09 15:55:29,077 - omlx.patches.qwen35_oq_a8 - INFO - oQ A8 prefill kernels enabled (mlp=True, gdn=True, modules=1255, min_tokens=128)",
+  "2026-10-09 15:55:29,077 - omlx.patches.qwen35_ragged_decode - INFO - qwen3_5 ragged decode threadgroup fallback patch applied"
+ ]
+}

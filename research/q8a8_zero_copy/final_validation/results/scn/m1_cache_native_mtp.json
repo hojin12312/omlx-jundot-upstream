@@ -1,0 +1,505 @@
+{
+ "schema": 1,
+ "mode": "cache",
+ "arm": "native_mtp",
+ "argv": [
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/scenarios.py",
+  "--python",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/venv323/bin/python",
+  "--tree",
+  "<HOME>/Projects/omlx-q8a8-measured/prep",
+  "--workdir",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work",
+  "--model-dir",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models",
+  "--checkpoint",
+  "<HOME>/Projects/mltf-qwen4-routed-a8/q8a8/models/Qwen3.8-27B-oQ8e-mtp",
+  "--model",
+  "Qwen3.8-27B-oQ8e-mtp",
+  "--corpus",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/corpus.json",
+  "--mode",
+  "cache",
+  "--arm",
+  "native_mtp",
+  "--a8",
+  "on",
+  "--mtp",
+  "on",
+  "--out",
+  "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/final_validation/results/scn/m1_cache_native_mtp.json",
+  "--lengths",
+  "4096"
+ ],
+ "tree": "<HOME>/Projects/omlx-q8a8-measured/prep",
+ "tree_git_head": "7a82157d865f3f628926298bdee463a4b680f95f",
+ "model_settings": {
+  "qwen35_oq_a8_enabled": true,
+  "qwen35_oq_a8_min_tokens": 128,
+  "mtp_enabled": true
+ },
+ "env": {
+  "PYTHONPATH": "<HOME>/Projects/omlx-q8a8-measured/prep:<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/harness/hook",
+  "HOME": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/scn_cache_native_mtp/home",
+  "OMLX_DEC_CTL": "<HOME>/Projects/omlx-q8a8-measured/final/research/q8a8_zero_copy/work/scn_cache_native_mtp/ctl"
+ },
+ "requests": [
+  {
+   "label": "L4096.miss",
+   "planned_prompt_ids": 4096,
+   "prompt_sha256": "256678936aaa3a7a",
+   "prompt_tokens": 4096,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 3.0439270000206307,
+   "total_s": 4.228395166021073,
+   "finish": "length",
+   "text": "(_OPEN_MARKER):\n                    self._append_text(\n                        stream_parts, visible_parts, source[pos:idx]\n                    )\n                    self._buffer = suffix\n                    break\n\n            self._append_text(stream_parts, visible_parts, source[pos:idx])\n\n            if marker == _OPEN_MARKER:\n",
+   "text_sha256": "74dc1e04d5c21512",
+   "counts": {
+    "clear_cache_calls": 21,
+    "prepare_native": 800,
+    "a8_qmm_calls": 800,
+    "a8_q8_native": 800
+   },
+   "rows_hist": {
+    "2047": 400,
+    "2048": 400
+   },
+   "mem_before": {
+    "gen": 5,
+    "op": "mem",
+    "active": 34306441982,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 35330611976,
+    "t": 13.124347124976339
+   },
+   "mem_after": {
+    "gen": 6,
+    "op": "mem",
+    "active": 34324278018,
+    "cache": 16,
+    "peak": 37510515486,
+    "phys_footprint": 35303234936,
+    "t": 18.362212749983883
+   },
+   "mem_settled": {
+    "gen": 8,
+    "op": "mem",
+    "active": 34324278018,
+    "cache": 16,
+    "peak": 37510515486,
+    "phys_footprint": 35293961592,
+    "t": 26.387543332995847
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4096.hit_identical",
+   "planned_prompt_ids": 4096,
+   "prompt_sha256": "256678936aaa3a7a",
+   "prompt_tokens": 4096,
+   "completion_tokens": 64,
+   "cached_tokens": 4095,
+   "ttft_s": 0.17243995898752473,
+   "total_s": 1.3482832919980865,
+   "finish": "length",
+   "text": "(_OPEN_MARKER):\n                    self._append_text(\n                        stream_parts, visible_parts, source[pos:idx]\n                    )\n                    self._buffer = suffix\n                    break\n\n            self._append_text(stream_parts, visible_parts, source[pos:idx])\n\n            if marker == _OPEN_MARKER:\n",
+   "text_sha256": "74dc1e04d5c21512",
+   "counts": {
+    "clear_cache_calls": 1
+   },
+   "rows_hist": {},
+   "mem_before": {
+    "gen": 11,
+    "op": "mem",
+    "active": 34324278018,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 35294403960,
+    "t": 34.46525962499436
+   },
+   "mem_after": {
+    "gen": 12,
+    "op": "mem",
+    "active": 34324278022,
+    "cache": 16,
+    "peak": 35286488420,
+    "phys_footprint": 35303906680,
+    "t": 36.831674374989234
+   },
+   "mem_settled": {
+    "gen": 14,
+    "op": "mem",
+    "active": 34324278022,
+    "cache": 16,
+    "peak": 35286488420,
+    "phys_footprint": 35294649720,
+    "t": 44.85536662497907
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4096.partial_half",
+   "planned_prompt_ids": 4096,
+   "prompt_sha256": "b784c32454773100",
+   "prompt_tokens": 4096,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 3.0317982499836944,
+   "total_s": 3.838736042001983,
+   "finish": "length",
+   "text": "       )\n\n    return processed\n\n\nasync def preprocess_markitdown_file_parts_async(\n    messages: list[Message],\n    *,\n    global_settings: Any | None = None,\n    engine_pool: Any | None = None,\n    settings_manager: Any | None = None,\n    get",
+   "text_sha256": "8435e3ae1236ee56",
+   "counts": {
+    "clear_cache_calls": 21,
+    "prepare_native": 800,
+    "a8_qmm_calls": 800,
+    "a8_q8_native": 800
+   },
+   "rows_hist": {
+    "2047": 400,
+    "2048": 400
+   },
+   "mem_before": {
+    "gen": 17,
+    "op": "mem",
+    "active": 34324278022,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 35294698872,
+    "t": 52.91340191598283
+   },
+   "mem_after": {
+    "gen": 18,
+    "op": "mem",
+    "active": 34342114058,
+    "cache": 16,
+    "peak": 37528351526,
+    "phys_footprint": 35323698624,
+    "t": 57.76331712497631
+   },
+   "mem_settled": {
+    "gen": 20,
+    "op": "mem",
+    "active": 34342114058,
+    "cache": 16,
+    "peak": 37528351526,
+    "phys_footprint": 35314982336,
+    "t": 65.78741212497698
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4096.hit_prefix+suffix",
+   "planned_prompt_ids": 5117,
+   "prompt_sha256": "dbbdf9c40013e722",
+   "prompt_tokens": 5117,
+   "completion_tokens": 64,
+   "cached_tokens": 2048,
+   "ttft_s": 2.3782249169889838,
+   "total_s": 3.699455958994804,
+   "finish": "length",
+   "text": "(\n            \"MarkItDown is disabled. Enable it in Settings > Integrations to use file parts.\"\n        )\n\n    for msg in messages:\n        if not isinstance(msg.content, list):\n            yield _content_text(msg.content)\n            continue\n\n        for part in msg.content:\n           ",
+   "text_sha256": "befd846049f3ebc8",
+   "counts": {
+    "clear_cache_calls": 21,
+    "prepare_native": 800,
+    "a8_qmm_calls": 800,
+    "a8_q8_native": 800
+   },
+   "rows_hist": {
+    "1020": 400,
+    "2048": 400
+   },
+   "mem_before": {
+    "gen": 23,
+    "op": "mem",
+    "active": 34342114058,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 35315211712,
+    "t": 73.85242120799376
+   },
+   "mem_after": {
+    "gen": 24,
+    "op": "mem",
+    "active": 34342114062,
+    "cache": 16,
+    "peak": 37584855850,
+    "phys_footprint": 35387923952,
+    "t": 78.57001620798837
+   },
+   "mem_settled": {
+    "gen": 26,
+    "op": "mem",
+    "active": 34342114062,
+    "cache": 16,
+    "peak": 37584855850,
+    "phys_footprint": 35378666992,
+    "t": 86.59098087498569
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4096.hit_suffix100",
+   "planned_prompt_ids": 4193,
+   "prompt_sha256": "9022ef378da0ae0c",
+   "prompt_tokens": 4193,
+   "completion_tokens": 64,
+   "cached_tokens": 4096,
+   "ttft_s": 0.37799129099585116,
+   "total_s": 1.5648313330020756,
+   "finish": "length",
+   "text": "\"markitdown_enabled\", True))\n\n\ndef markitdown_model_id(global_settings: Any | None) -> str:\n    if global_settings is None:\n        return MARKITDOWN_MODEL_ID\n    integrations = getattr(global_settings, \"integrations\", None)\n    if integrations is None:",
+   "text_sha256": "668b6b61b065ace9",
+   "counts": {
+    "clear_cache_calls": 20
+   },
+   "rows_hist": {},
+   "mem_before": {
+    "gen": 29,
+    "op": "mem",
+    "active": 34342114062,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 35378666992,
+    "t": 94.6579361249751
+   },
+   "mem_after": {
+    "gen": 30,
+    "op": "mem",
+    "active": 34342114066,
+    "cache": 16,
+    "peak": 35288236188,
+    "phys_footprint": 35388579312,
+    "t": 97.23776183297741
+   },
+   "mem_settled": {
+    "gen": 32,
+    "op": "mem",
+    "active": 34342114066,
+    "cache": 16,
+    "peak": 35288236188,
+    "phys_footprint": 35379125744,
+    "t": 105.25746758299647
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4096.hit_suffix130",
+   "planned_prompt_ids": 4223,
+   "prompt_sha256": "62286b3f8d3befa8",
+   "prompt_tokens": 4223,
+   "completion_tokens": 64,
+   "cached_tokens": 4192,
+   "ttft_s": 0.3252998749958351,
+   "total_s": 1.7678442090109456,
+   "finish": "length",
+   "text": "itdown_enabled(global_settings):\n        return False\n    return bool(getattr(global_settings, \"markitdown_model\", None))\n\n\ndef markitdown_model_id(global_settings: Any | None) -> str | None:\n    if not markitdown_model_visible(global_settings):\n        return None\n   ",
+   "text_sha256": "b78dc80b55838ff0",
+   "counts": {
+    "clear_cache_calls": 20
+   },
+   "rows_hist": {},
+   "mem_before": {
+    "gen": 35,
+    "op": "mem",
+    "active": 34342114066,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 35379125744,
+    "t": 113.31265254097525
+   },
+   "mem_after": {
+    "gen": 36,
+    "op": "mem",
+    "active": 34342114070,
+    "cache": 16,
+    "peak": 35287668024,
+    "phys_footprint": 35388431880,
+    "t": 116.09673012499115
+   },
+   "mem_settled": {
+    "gen": 38,
+    "op": "mem",
+    "active": 34342114070,
+    "cache": 16,
+    "peak": 35287668024,
+    "phys_footprint": 35379174920,
+    "t": 124.12198237498524
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4096.after_wipe_reload",
+   "planned_prompt_ids": 4096,
+   "prompt_sha256": "256678936aaa3a7a",
+   "prompt_tokens": 4096,
+   "completion_tokens": 64,
+   "cached_tokens": 0,
+   "ttft_s": 3.318040000012843,
+   "total_s": 4.490734125021845,
+   "finish": "length",
+   "text": "(_OPEN_MARKER):\n                    self._append_text(\n                        stream_parts, visible_parts, source[pos:idx]\n                    )\n                    self._buffer = suffix\n                    break\n\n            self._append_text(stream_parts, visible_parts, source[pos:idx])\n\n            if marker == _OPEN_MARKER:\n",
+   "text_sha256": "74dc1e04d5c21512",
+   "counts": {
+    "clear_cache_calls": 21,
+    "prepare_native": 800,
+    "a8_qmm_calls": 800,
+    "a8_q8_native": 800
+   },
+   "rows_hist": {
+    "2047": 400,
+    "2048": 400
+   },
+   "mem_before": {
+    "gen": 44,
+    "op": "mem",
+    "active": 30002027256,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 30794751232,
+    "t": 140.95393479097402
+   },
+   "mem_after": {
+    "gen": 45,
+    "op": "mem",
+    "active": 34323219198,
+    "cache": 16,
+    "peak": 35285453164,
+    "phys_footprint": 35282263728,
+    "t": 146.4577461659792
+   },
+   "mem_settled": {
+    "gen": 47,
+    "op": "mem",
+    "active": 34323219198,
+    "cache": 16,
+    "peak": 35285453164,
+    "phys_footprint": 35272957616,
+    "t": 154.47907566599315
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  },
+  {
+   "label": "L4096.hit_after_reload",
+   "planned_prompt_ids": 4096,
+   "prompt_sha256": "256678936aaa3a7a",
+   "prompt_tokens": 4096,
+   "completion_tokens": 64,
+   "cached_tokens": 4095,
+   "ttft_s": 0.17011945802369155,
+   "total_s": 1.3455223750206642,
+   "finish": "length",
+   "text": "(_OPEN_MARKER):\n                    self._append_text(\n                        stream_parts, visible_parts, source[pos:idx]\n                    )\n                    self._buffer = suffix\n                    break\n\n            self._append_text(stream_parts, visible_parts, source[pos:idx])\n\n            if marker == _OPEN_MARKER:\n",
+   "text_sha256": "74dc1e04d5c21512",
+   "counts": {
+    "clear_cache_calls": 1
+   },
+   "rows_hist": {},
+   "mem_before": {
+    "gen": 50,
+    "op": "mem",
+    "active": 34323219198,
+    "cache": 16,
+    "peak": 0,
+    "phys_footprint": 35273416368,
+    "t": 162.55120120799984
+   },
+   "mem_after": {
+    "gen": 51,
+    "op": "mem",
+    "active": 34323219202,
+    "cache": 16,
+    "peak": 35285413216,
+    "phys_footprint": 35283050160,
+    "t": 164.91346379098832
+   },
+   "mem_settled": {
+    "gen": 53,
+    "op": "mem",
+    "active": 34323219202,
+    "cache": 16,
+    "peak": 35285413216,
+    "phys_footprint": 35273596592,
+    "t": 172.935881582991
+   },
+   "prepared_scan": {
+    "layers_with_prepared_copy": 0,
+    "prepared_copy_bytes": 0
+   }
+  }
+ ],
+ "events": [
+  {
+   "unloaded": {
+    "gen": 40,
+    "op": "mem",
+    "active": 1048,
+    "cache": 0,
+    "peak": 35287668024,
+    "phys_footprint": 306366768,
+    "t": 127.96637754098629
+   }
+  }
+ ],
+ "flags": {
+  "gen": 1,
+  "op": "flags",
+  "pid": 35672,
+  "oq_a8_module_loaded": true,
+  "mlp_patched": true,
+  "gdn_registered": true,
+  "omlx_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/__init__.py",
+  "ext_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/custom_kernels/qwen35_prefill/_ext.cpython-311-darwin.so",
+  "oq_a8_available": true
+ },
+ "mem_after_load": {
+  "gen": 3,
+  "op": "mem",
+  "active": 34633598082,
+  "cache": 9419268,
+  "peak": 0,
+  "phys_footprint": 35670727552,
+  "t": 4.740973165986361
+ },
+ "flags_after_reload": {
+  "gen": 41,
+  "op": "flags",
+  "pid": 35672,
+  "oq_a8_module_loaded": true,
+  "mlp_patched": true,
+  "gdn_registered": true,
+  "omlx_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/__init__.py",
+  "ext_file": "<HOME>/Projects/omlx-q8a8-measured/prep/omlx/custom_kernels/qwen35_prefill/_ext.cpython-311-darwin.so",
+  "oq_a8_available": true
+ },
+ "log_suspect_lines": [
+  "2026-10-09 10:24:00,230 - omlx.patches.qwen35_oq_a8 - INFO - oQ A8 prefill kernels enabled (mlp=True, gdn=True, modules=1255, min_tokens=128)",
+  "2026-10-09 10:24:00,230 - omlx.patches.qwen35_ragged_decode - INFO - qwen3_5 ragged decode threadgroup fallback patch applied",
+  "2026-10-09 10:26:06,010 - omlx.patches.qwen35_oq_a8 - INFO - oQ A8 prefill kernels enabled (mlp=True, gdn=True, modules=1255, min_tokens=128)"
+ ]
+}
